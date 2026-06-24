@@ -1,2410 +1,809 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Mundo de Tier 🚀 Aprende Jugando</title>
-<meta name="description" content="Aplicación educativa para Tier: matemáticas, lenguaje y memoria de forma visual y divertida.">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reino de Tier</title>
+<link rel="icon" href="data:," />
 
 <style>
-/* ======================================================================
-   MUNDO DE TIER — HOJA DE ESTILOS
-   Equipo: UX/UI infantil con autismo · Psicopedagogía · Terapia del
-   lenguaje · Frontend Senior · Diseño gamificado.
-   Filosofía visual: calma + alegría. Colores vivos pero en dosis
-   controladas, mucho aire entre elementos, glassmorphism suave,
-   tipografía redondeada y muy legible, animaciones cortas y opcionales.
-   ====================================================================== */
+/* ============================================================
+   TOKENS DE DISEÑO — paleta mate/pastel de bajo estímulo
+   ============================================================ */
+:root {
+  --color-cielo: #5b7fa6;
+  --color-terracota: #d98c7a;
+  --color-sauce: #7fae8e;
+  --color-mostaza: #e8c468;
+  --color-crema: #faf6ef;
+  --color-crema-suave: #f1ece1;
+  --color-texto: #3a3a3a;
+  --color-texto-suave: #6b6b6b;
+  --color-borde: #e3dcc9;
 
-/* ---------- TOKENS DE DISEÑO ---------- */
-:root{
-  /* Paleta principal — "Cielo de Aventura":
-     azul cielo + violeta suave como base de calma,
-     coral y menta como acentos de alegría/recompensa,
-     amarillo sol solo para monedas/estrellas (uso restringido) */
-  --sky-50:  #f3f7ff;
-  --sky-100: #e7f0ff;
-  --sky-200: #c9e0ff;
-  --violet-400: #8b8ff0;
-  --violet-500: #6f74e8;
-  --violet-600: #5a5fd6;
-  --coral-400: #ff8c7a;
-  --coral-500: #ff6f59;
-  --mint-400: #5fd9b4;
-  --mint-500: #38c69d;
-  --sun-400: #ffd166;
-  --sun-500: #ffbe3d;
-  --ink-900: #2b2d52;
-  --ink-700: #4a4d77;
-  --ink-500: #7376a3;
-  --white: #ffffff;
+  --fuente-display: "Baloo 2", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --fuente-cuerpo: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --fuente-datos: "JetBrains Mono", "Courier New", monospace;
 
-  --radius-lg: 28px;
-  --radius-md: 20px;
-  --radius-sm: 14px;
-
-  --shadow-soft: 0 10px 30px rgba(91, 95, 214, 0.16);
-  --shadow-deep: 0 20px 50px rgba(43, 45, 82, 0.18);
-  --shadow-press: 0 4px 10px rgba(43, 45, 82, 0.14);
-
-  --font-display: 'Baloo 2', 'Comic Sans MS', system-ui, sans-serif;
-  --font-body: 'Quicksand', system-ui, sans-serif;
-
-  --dur-fast: 150ms;
-  --dur-med: 320ms;
-  --dur-slow: 600ms;
-  --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
-  --ease-smooth: cubic-bezier(.4, 0, .2, 1);
-
-  /* Tamaño base de fuente — se sobreescribe en modo texto-grande */
-  --base-font-size: 18px;
+  --radio-suave: 16px;
+  --sombra-suave: 0 4px 14px rgba(58, 58, 58, 0.08);
+  --duracion-transicion: 320ms;
+  --easing-suave: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---------- MODO BAJO ESTÍMULO (alto contraste, sin gradientes vivos) ---------- */
-body.modo-calma{
-  --sky-50:  #ffffff;
-  --sky-100: #f4f4f6;
-  --sky-200: #e7e7ec;
-  --violet-400: #5a5fd6;
-  --violet-500: #4347b8;
-  --violet-600: #34378f;
-  --coral-400: #d65c4a;
-  --coral-500: #b8493a;
-  --mint-400: #2f9c7c;
-  --mint-500: #237a61;
-  --sun-400: #d99b1f;
-  --sun-500: #b87f12;
-  --shadow-soft: 0 4px 10px rgba(0,0,0,0.12);
-  --shadow-deep: 0 6px 16px rgba(0,0,0,0.14);
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
-/* ---------- TEXTO GRANDE ---------- */
-body.texto-grande{ --base-font-size: 23px; }
-
-/* ---------- RESET BÁSICO ---------- */
-*,*::before,*::after{ box-sizing: border-box; margin:0; padding:0; }
-html{ -webkit-tap-highlight-color: transparent; }
-body{
-  font-family: var(--font-body);
-  font-size: var(--base-font-size);
-  color: var(--ink-900);
-  background: linear-gradient(160deg, var(--sky-50) 0%, var(--sky-100) 45%, var(--sky-200) 100%);
-  min-height: 100vh;
-  overflow-x: hidden;
-  transition: background var(--dur-med) var(--ease-smooth), color var(--dur-med) var(--ease-smooth);
-  -webkit-font-smoothing: antialiased;
+@font-face {
+  font-family: "Baloo 2";
+  src: url("/assets/fonts/fuente-display.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
 }
-button{ font-family: inherit; cursor: pointer; border: none; background: none; }
-img,svg{ display:block; max-width:100%; }
-button:focus-visible, a:focus-visible, [tabindex]:focus-visible{
-  outline: 3px solid var(--violet-600);
-  outline-offset: 3px;
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("/assets/fonts/fuente-cuerpo.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
 }
 
-/* Respeta preferencia del sistema operativo además del toggle propio */
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-}
-body.sin-animaciones *{
-  animation: none !important;
-  transition: background-color var(--dur-fast) linear, color var(--dur-fast) linear !important;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-crema);
+  color: var(--color-texto);
+  font-family: var(--fuente-cuerpo);
+  line-height: 1.5;
 }
 
-/* ---------- TIPOGRAFÍA WEB (sin dependencias externas: usamos fuentes del sistema con fallback redondeado) ---------- */
-h1,h2,h3,.fuente-display{
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0.2px;
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--color-cielo);
+  outline-offset: 2px;
 }
+button { font-family: inherit; cursor: pointer; }
 
-/* ---------- LAYOUT GENERAL ---------- */
-#app{
-  width: 100%;
+.pantalla-bienvenida {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
-  position: relative;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px;
+  background: linear-gradient(180deg, var(--color-crema) 0%, var(--color-crema-suave) 100%);
+  text-align: center;
 }
+.pantalla-bienvenida h1 {
+  font-family: var(--fuente-display);
+  font-size: clamp(28px, 5vw, 44px);
+  color: var(--color-cielo);
+  margin: 0;
+}
+.mascota-contenedor { width: 140px; height: 140px; }
+.mascota-img { width: 100%; height: 100%; object-fit: contain; }
 
-.pantalla{
-  width: 100%;
-  max-width: 720px;
-  display: none;
-  flex-direction: column;
-  gap: 18px;
-  animation: aparecer var(--dur-med) var(--ease-smooth);
+.globo-dialogo {
+  background: #fff;
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio-suave);
+  padding: 12px 20px;
+  font-size: 16px;
+  max-width: 320px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--duracion-transicion) var(--easing-suave),
+              transform var(--duracion-transicion) var(--easing-suave);
 }
-.pantalla.activa{ display: flex; }
+.globo-dialogo.visible { opacity: 1; transform: translateY(0); }
 
-@keyframes aparecer{
-  from{ opacity: 0; transform: translateY(14px); }
-  to{ opacity: 1; transform: translateY(0); }
+.boton-iniciar-sesion {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 2px solid var(--color-borde);
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-texto);
+  box-shadow: var(--sombra-suave);
+  transition: transform var(--duracion-transicion) var(--easing-suave);
 }
-body.sin-animaciones .pantalla{ animation: none; }
+.boton-iniciar-sesion:hover { transform: translateY(-2px); }
+.boton-iniciar-sesion svg { width: 22px; height: 22px; }
 
-/* ---------- TARJETA GLASSMORPHISM ---------- */
-.tarjeta{
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border: 1px solid rgba(255,255,255,0.6);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  padding: 26px;
-}
-body.modo-calma .tarjeta{
-  background: var(--white);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 2px solid var(--sky-200);
-}
-
-/* ---------- BARRA SUPERIOR (HUD) ---------- */
-.hud{
-  width: 100%;
-  max-width: 720px;
+.hud {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 10px 16px;
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  margin-bottom: 14px;
-  position: sticky;
-  top: 10px;
-  z-index: 50;
-}
-body.modo-calma .hud{ background: var(--white); backdrop-filter:none; border: 2px solid var(--sky-200); }
-
-.hud-grupo{ display:flex; align-items:center; gap:8px; }
-.hud-pastilla{
-  display:flex; align-items:center; gap:6px;
-  background: var(--white);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-weight: 700;
-  font-size: 0.85em;
-  box-shadow: var(--shadow-press);
-  color: var(--ink-700);
-}
-.hud-pastilla .icono{ font-size: 1.2em; }
-
-.btn-icono{
-  width: 44px; height: 44px;
-  display:flex; align-items:center; justify-content:center;
-  border-radius: 50%;
-  background: var(--white);
-  box-shadow: var(--shadow-press);
-  font-size: 1.3em;
-  transition: transform var(--dur-fast) var(--ease-bounce);
-}
-.btn-icono:hover{ transform: scale(1.08); }
-.btn-icono:active{ transform: scale(0.94); }
-
-/* ---------- BOTONES PRINCIPALES ---------- */
-.btn{
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  padding: 16px 22px;
-  border-radius: var(--radius-md);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05em;
-  color: var(--white);
-  box-shadow: var(--shadow-press);
-  transition: transform var(--dur-fast) var(--ease-bounce), box-shadow var(--dur-fast) var(--ease-smooth), filter var(--dur-fast);
-  min-height: 56px;
-  -webkit-tap-highlight-color: transparent;
-}
-.btn:hover{ filter: brightness(1.05); }
-.btn:active{ transform: scale(0.96); box-shadow: 0 2px 6px rgba(43,45,82,0.18); }
-.btn-grande{ width:100%; padding: 22px; font-size: 1.25em; border-radius: var(--radius-lg); }
-
-.btn-primario{ background: linear-gradient(135deg, var(--violet-500), var(--violet-600)); }
-.btn-exito{ background: linear-gradient(135deg, var(--mint-400), var(--mint-500)); }
-.btn-alerta{ background: linear-gradient(135deg, var(--coral-400), var(--coral-500)); }
-.btn-sol{ background: linear-gradient(135deg, var(--sun-400), var(--sun-500)); color: var(--ink-900); }
-.btn-fantasma{
-  background: var(--white);
-  color: var(--violet-600);
-  border: 2px solid var(--sky-200);
-  box-shadow: none;
-}
-
-.btn[disabled]{ opacity: 0.5; pointer-events: none; }
-
-/* ---------- AVATAR / MASCOTA ---------- */
-.escenario-mascota{
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  text-align:center;
-}
-.mascota-svg-wrap{
-  width: 160px; height: 160px;
-  animation: flotar 3.2s ease-in-out infinite;
-}
-body.sin-animaciones .mascota-svg-wrap{ animation:none; }
-@keyframes flotar{
-  0%,100%{ transform: translateY(0) rotate(-1deg); }
-  50%{ transform: translateY(-10px) rotate(1deg); }
-}
-.globo-mascota{
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 14px 18px;
-  box-shadow: var(--shadow-soft);
-  font-weight: 700;
-  color: var(--ink-900);
-  max-width: 320px;
-  position: relative;
-  font-size: 1.05em;
-}
-
-/* ---------- BIENVENIDA ---------- */
-.bienvenida-titulo{
-  text-align:center;
-  font-size: 2.1em;
-  color: var(--violet-600);
-  text-shadow: 0 2px 0 rgba(255,255,255,0.6);
-}
-.bienvenida-sub{
-  text-align:center;
-  color: var(--ink-700);
-  font-weight: 600;
-  font-size: 1.1em;
-}
-
-/* ---------- GRID DE NIVELES (mapa de aventura) ---------- */
-.mapa-niveles{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
-}
-.nivel-tarjeta{
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  padding: 20px 12px;
-  border-radius: var(--radius-md);
-  background: var(--white);
-  box-shadow: var(--shadow-soft);
-  transition: transform var(--dur-fast) var(--ease-bounce);
-  text-align:center;
-  position: relative;
-  border: 3px solid transparent;
-}
-.nivel-tarjeta:hover{ transform: translateY(-4px); }
-.nivel-tarjeta:active{ transform: scale(0.97); }
-.nivel-tarjeta.bloqueado{ opacity:0.55; filter: grayscale(0.3); }
-.nivel-tarjeta.actual{ border-color: var(--sun-500); }
-.nivel-emoji{ font-size: 2.6em; line-height:1; }
-.nivel-nombre{ font-weight:700; color: var(--ink-900); font-size:0.95em; }
-.nivel-candado{ position:absolute; top:8px; right:10px; font-size:1.2em; }
-.nivel-estrellas{ display:flex; gap:2px; font-size: 0.9em; }
-
-/* ---------- ÁREA DE JUEGO / PREGUNTA ---------- */
-.pregunta-zona{
-  display:flex; flex-direction:column; align-items:center; gap:18px;
-  text-align:center;
-}
-.barra-progreso-nivel{
-  width:100%; height: 14px;
-  background: var(--sky-200);
-  border-radius: 999px;
-  overflow:hidden;
-}
-.barra-progreso-rellenado{
-  height:100%;
-  background: linear-gradient(90deg, var(--mint-400), var(--mint-500));
-  border-radius: 999px;
-  transition: width var(--dur-slow) var(--ease-smooth);
-}
-
-.visual-operacion{
-  display:flex; align-items:center; justify-content:center;
-  gap: 14px;
   flex-wrap: wrap;
-  font-size: 1.4em;
-  font-weight: 800;
-  color: var(--ink-900);
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 22px 16px;
-  box-shadow: var(--shadow-soft);
-  min-height: 110px;
-}
-.grupo-emoji{
-  display:flex; flex-wrap:wrap; gap:4px; max-width: 180px;
-  justify-content:center;
-  font-size: 1.5em;
-}
-.grupo-emoji span{ display:inline-block; animation: pop var(--dur-med) var(--ease-bounce) backwards; }
-body.sin-animaciones .grupo-emoji span{ animation:none; }
-@keyframes pop{ from{ transform: scale(0); opacity:0;} to{ transform: scale(1); opacity:1; } }
-.signo-operacion{ font-size: 1.3em; color: var(--violet-500); }
-
-.opciones-respuesta{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  width:100%;
-}
-.opcion-btn{
-  padding: 20px 10px;
-  font-size: 1.6em;
-  font-weight: 800;
-  border-radius: var(--radius-md);
-  background: var(--white);
-  color: var(--ink-900);
-  box-shadow: var(--shadow-soft);
-  border: 3px solid var(--sky-200);
-  transition: transform var(--dur-fast) var(--ease-bounce), border-color var(--dur-fast), background var(--dur-fast);
-  min-height: 80px;
-}
-.opcion-btn:hover{ transform: translateY(-3px); border-color: var(--violet-400); }
-.opcion-btn:active{ transform: scale(0.95); }
-.opcion-btn.correcta{ background: var(--mint-400); color:var(--white); border-color: var(--mint-500); }
-.opcion-btn.incorrecta{ background: var(--coral-400); color:var(--white); border-color: var(--coral-500); }
-.opcion-btn.pista{ box-shadow: 0 0 0 4px var(--sun-400) inset, var(--shadow-soft); }
-
-.pista-caja{
-  display:flex; align-items:center; gap:10px;
-  background: var(--sun-400);
-  color: var(--ink-900);
-  border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  font-weight:700;
-  font-size: 0.95em;
-  max-width: 100%;
-}
-
-/* ---------- FEEDBACK / TOAST DE REFUERZO ---------- */
-.toast-refuerzo{
-  position: fixed;
-  top: 18px; left:50%;
-  transform: translate(-50%, -120%);
-  background: linear-gradient(135deg, var(--mint-400), var(--mint-500));
-  color:white;
-  padding: 14px 26px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 1.1em;
-  box-shadow: var(--shadow-deep);
-  z-index: 999;
-  display:flex; align-items:center; gap:10px;
-  transition: transform var(--dur-med) var(--ease-bounce);
-}
-.toast-refuerzo.mostrar{ transform: translate(-50%, 0); }
-.toast-refuerzo.error{ background: linear-gradient(135deg, var(--coral-400), var(--coral-500)); }
-
-/* ---------- CONFETI ---------- */
-.lienzo-confeti{
-  position: fixed; inset:0; pointer-events:none; z-index: 998;
-}
-
-/* ---------- MEMORIA (cartas) ---------- */
-.tablero-memoria{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  width: 100%;
-}
-.carta-memoria{
-  aspect-ratio: 1/1;
-  border-radius: var(--radius-sm);
-  position: relative;
-  perspective: 600px;
-}
-.carta-memoria .cara{
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  border-radius: var(--radius-sm);
-  backface-visibility: hidden;
-  transition: transform var(--dur-med) var(--ease-smooth);
-  font-size: 1.8em;
-  box-shadow: var(--shadow-soft);
-}
-.carta-memoria .cara-dorso{
-  background: linear-gradient(135deg, var(--violet-400), var(--violet-600));
-  color:white;
-  font-size: 1.5em;
-}
-.carta-memoria .cara-frente{
-  background: var(--white);
-  transform: rotateY(180deg);
-}
-.carta-memoria.volteada .cara-dorso{ transform: rotateY(180deg); }
-.carta-memoria.volteada .cara-frente{ transform: rotateY(0); }
-.carta-memoria.acertada .cara-frente{ background: var(--mint-400); }
-body.sin-animaciones .carta-memoria .cara{ transition: none; }
-
-/* ---------- ATENCIÓN (buscar elemento) ---------- */
-.tablero-atencion{
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  width:100%;
-}
-.celda-atencion{
-  aspect-ratio:1/1;
-  display:flex; align-items:center; justify-content:center;
-  font-size: 1.6em;
-  background: var(--white);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-press);
-  transition: transform var(--dur-fast) var(--ease-bounce);
-}
-.celda-atencion:active{ transform: scale(0.9); }
-.celda-atencion.objetivo-encontrado{ background: var(--mint-400); }
-.celda-atencion.objetivo-erroneo{ background: var(--coral-400); }
-
-.cronometro{
-  font-family: var(--font-display);
-  font-size: 1.5em;
-  color: var(--violet-600);
-  font-weight: 800;
-}
-
-/* ---------- LENGUAJE ---------- */
-.tarjeta-vocabulario{
-  display:flex; flex-direction:column; align-items:center; gap:14px;
-  text-align:center;
-}
-.imagen-vocabulario{
-  font-size: 5em;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.12));
-}
-.palabra-vocabulario{
-  font-family: var(--font-display);
-  font-size: 1.8em;
-  color: var(--ink-900);
-  letter-spacing: 1px;
-}
-.fila-opciones-palabra{
-  display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
-}
-
-/* ---------- ESTADÍSTICAS ---------- */
-.grid-stats{
-  display:grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 14px;
-}
-.stat-caja{
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 18px 10px;
-  box-shadow: var(--shadow-soft);
-  text-align:center;
-}
-.stat-numero{
-  font-family: var(--font-display);
-  font-size: 1.8em;
-  color: var(--violet-600);
-}
-.stat-etiqueta{ font-size: 0.85em; color: var(--ink-500); font-weight:600; }
-
-/* ---------- LOGROS ---------- */
-.grid-logros{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
-  gap: 14px;
-}
-.logro-medalla{
-  display:flex; flex-direction:column; align-items:center; gap:6px;
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 16px 8px;
-  box-shadow: var(--shadow-soft);
-  text-align:center;
-  opacity: 0.4;
-  filter: grayscale(0.6);
-  transition: opacity var(--dur-med), filter var(--dur-med), transform var(--dur-fast) var(--ease-bounce);
-}
-.logro-medalla.desbloqueado{
-  opacity:1; filter:none;
-}
-.logro-medalla.desbloqueado:hover{ transform: scale(1.05); }
-.logro-emoji{ font-size: 2.2em; }
-.logro-nombre{ font-size: 0.82em; font-weight:700; color: var(--ink-900); }
-
-/* ---------- NAV INFERIOR ---------- */
-.nav-inferior{
-  position: sticky;
-  bottom: 10px;
-  width: 100%;
-  max-width: 720px;
-  display:flex;
-  justify-content: space-around;
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(12px);
-  border-radius: var(--radius-lg);
-  padding: 10px;
-  box-shadow: var(--shadow-deep);
-  margin-top: 14px;
-  z-index: 60;
-}
-body.modo-calma .nav-inferior{ background: var(--white); backdrop-filter:none; border: 2px solid var(--sky-200); }
-.nav-item{
-  display:flex; flex-direction:column; align-items:center; gap:2px;
-  padding: 8px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.72em;
-  font-weight: 700;
-  color: var(--ink-500);
-  transition: color var(--dur-fast), background var(--dur-fast);
-  min-width: 56px;
-}
-.nav-item .nav-emoji{ font-size: 1.5em; }
-.nav-item.activo{ color: var(--violet-600); background: var(--sky-100); }
-
-/* ---------- PANEL DE ACCESIBILIDAD ---------- */
-.fila-switch{
-  display:flex; align-items:center; justify-content:space-between;
   gap: 12px;
-  padding: 12px 4px;
-  border-bottom: 1px solid var(--sky-100);
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
-.fila-switch:last-child{ border-bottom:none; }
-.switch{
-  width: 56px; height: 32px;
-  background: var(--sky-200);
-  border-radius: 999px;
+.hud-usuario { display: flex; align-items: center; gap: 12px; }
+.hud-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid var(--color-cielo); object-fit: cover;
+}
+.hud-saludo { font-family: var(--fuente-display); font-size: 18px; }
+.hud-stats { display: flex; gap: 18px; font-family: var(--fuente-datos); font-size: 15px; }
+.hud-stat { display: flex; align-items: center; gap: 6px; }
+.hud-stat-icono {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--color-mostaza); display: inline-block;
+}
+.hud nav { display: flex; gap: 8px; }
+.hud nav button {
+  background: var(--color-crema-suave);
+  border: 2px solid var(--color-borde);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  transition: background 200ms ease;
+}
+.hud nav button:hover { background: var(--color-borde); }
+
+main { padding: 24px; max-width: 720px; margin: 0 auto; }
+.seccion-app { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+.pregunta-texto {
+  font-family: var(--fuente-display);
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.bloques-grilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  gap: 16px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.bloque-saber {
   position: relative;
-  transition: background var(--dur-fast);
-  flex-shrink:0;
-}
-.switch.on{ background: var(--mint-500); }
-.switch .bola{
-  position:absolute; top:3px; left:3px;
-  width:26px; height:26px;
-  border-radius:50%;
-  background:white;
-  box-shadow: var(--shadow-press);
-  transition: transform var(--dur-fast) var(--ease-bounce);
-}
-.switch.on .bola{ transform: translateX(24px); }
-body.sin-animaciones .switch .bola{ transition:none; }
-
-/* ---------- TÍTULOS DE SECCIÓN ---------- */
-.titulo-seccion{
-  display:flex; align-items:center; gap:10px;
-  font-size: 1.4em;
-  color: var(--ink-900);
-}
-.subtitulo{
-  color: var(--ink-500);
-  font-weight:600;
-  font-size: 0.95em;
-}
-
-/* ---------- UTILIDADES ---------- */
-.centro{ text-align:center; }
-.fila{ display:flex; gap:10px; align-items:center; }
-.fila-entre{ display:flex; justify-content:space-between; align-items:center; }
-.mt-8{ margin-top:8px; } .mt-16{ margin-top:16px; }
-.oculto{ display:none !important; }
-
-/* ---------- RESPONSIVE ---------- */
-@media (min-width: 720px){
-  .visual-operacion{ font-size: 1.8em; }
-  .opciones-respuesta{ grid-template-columns: repeat(4,1fr); }
-  .tablero-memoria{ grid-template-columns: repeat(6,1fr); }
-}
-@media (max-width: 380px){
-  .tablero-memoria{ grid-template-columns: repeat(3,1fr); }
-  .tablero-atencion{ grid-template-columns: repeat(4,1fr); }
-}
-
-/* Animación de monedas/estrellas ganadas saltando hacia el HUD */
-@keyframes saltar-premio{
-  0%{ transform: scale(0.4) translateY(20px); opacity:0; }
-  60%{ transform: scale(1.2) translateY(-6px); opacity:1; }
-  100%{ transform: scale(1) translateY(0); opacity:1; }
-}
-.premio-animado{ animation: saltar-premio var(--dur-med) var(--ease-bounce); }
-body.sin-animaciones .premio-animado{ animation:none; }
-
-/* ======================================================================
-   SECCIÓN: REPITE CONMIGO (HABLA) — micrófono y reconocimiento de voz
-   ====================================================================== */
-.boton-microfono{
-  width: 130px; height: 130px;
-  border-radius: 50%;
-  display:flex; align-items:center; justify-content:center;
-  background: linear-gradient(135deg, var(--coral-400), var(--coral-500));
-  box-shadow: var(--shadow-deep);
-  font-size: 3em;
-  color: var(--white);
-  transition: transform var(--dur-fast) var(--ease-bounce), box-shadow var(--dur-fast);
-  position: relative;
-  flex-shrink: 0;
-}
-.boton-microfono:active{ transform: scale(0.93); }
-.boton-microfono.escuchando{
-  background: linear-gradient(135deg, var(--mint-400), var(--mint-500));
-  animation: pulso-microfono 1.1s ease-in-out infinite;
-}
-body.sin-animaciones .boton-microfono.escuchando{ animation:none; }
-@keyframes pulso-microfono{
-  0%,100%{ box-shadow: 0 0 0 0 rgba(56,198,157,0.55), var(--shadow-deep); }
-  50%{ box-shadow: 0 0 0 18px rgba(56,198,157,0), var(--shadow-deep); }
-}
-.boton-microfono[disabled]{ opacity:0.55; }
-
-.habla-estado-texto{
-  font-weight: 700;
-  color: var(--ink-700);
-  text-align:center;
-  min-height: 1.4em;
-}
-.habla-lo-que-dijo{
-  background: var(--white);
-  border-radius: var(--radius-sm);
-  padding: 10px 18px;
-  font-weight: 700;
-  color: var(--violet-600);
-  box-shadow: var(--shadow-press);
-  min-height: 1.4em;
-  text-align:center;
-}
-.habla-aviso-soporte{
-  background: var(--sun-400);
-  color: var(--ink-900);
-  border-radius: var(--radius-sm);
-  padding: 12px 16px;
-  font-weight:700;
-  font-size:0.92em;
-  text-align:center;
-}
-
-/* ======================================================================
-   SECCIÓN: HORA DE SOÑAR (relajación / distracción para dormir)
-   ====================================================================== */
-.btn-sonar{
-  width:100%;
-  display:flex; align-items:center; justify-content:center; gap:12px;
-  padding: 18px 22px;
-  border-radius: var(--radius-lg);
-  font-family: var(--font-display);
-  font-weight:700;
-  font-size: 1.1em;
-  color: var(--white);
-  background: linear-gradient(135deg, #5a5fd6, #2b2d6e);
-  box-shadow: var(--shadow-deep);
-  transition: transform var(--dur-fast) var(--ease-bounce);
-  min-height: 64px;
-}
-.btn-sonar:active{ transform: scale(0.97); }
-.btn-sonar .icono-luna{ font-size:1.5em; }
-
-/* Pantalla nocturna a pantalla completa, paleta independiente del modo calma */
-#pantalla-sonar{
-  position: fixed;
-  inset: 0;
-  z-index: 1500;
-  display:none;
+  background: var(--color-mostaza);
+  border: 3px solid #c9a64f;
+  border-radius: 12px;
+  padding: 18px 0;
+  display: flex;
   flex-direction: column;
-  background: radial-gradient(ellipse at top, #1b1f4d 0%, #0c0e2b 60%, #05060f 100%);
-  color: #eef0ff;
+  align-items: center;
+  gap: 4px;
+  transition: transform 180ms var(--easing-suave), background 220ms ease;
   overflow: hidden;
 }
-#pantalla-sonar.activa{ display:flex; }
+.bloque-saber:not(:disabled):hover { transform: translateY(-3px); }
+.bloque-signo { font-family: var(--fuente-display); font-size: 22px; color: #fff; }
+.bloque-valor { font-family: var(--fuente-datos); font-size: 20px; font-weight: 700; }
+.bloque-acierto { background: var(--color-sauce); border-color: #5e8c6c; }
+.bloque-intenta-de-nuevo { background: var(--color-crema-suave); border-color: var(--color-borde); opacity: 0.7; }
 
-.sonar-topbar{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 18px 18px 6px;
-  position: relative;
-  z-index: 5;
+.moneda-flotante {
+  position: absolute; top: 50%; left: 50%;
+  font-size: 18px; color: var(--color-mostaza);
+  animation: flotar-moneda 700ms ease-out forwards;
 }
-.sonar-topbar .btn-icono{
-  background: rgba(255,255,255,0.12);
-  color: #eef0ff;
-  box-shadow:none;
-}
-.sonar-titulo{
-  font-family: var(--font-display);
-  font-size: 1.15em;
-  text-align:center;
-  color: #eef0ff;
-  opacity: 0.9;
+@keyframes flotar-moneda {
+  0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+  60%  { transform: translate(-50%, -140%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, -180%) scale(0.9); opacity: 0; }
 }
 
-.sonar-lienzo-wrap{
-  position:absolute; inset:0; z-index:1;
+.pilotos-grilla { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.tarjeta-piloto {
+  background: #fff;
+  border: 3px solid var(--color-borde);
+  border-radius: var(--radio-suave);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 120px;
+  transition: transform 200ms var(--easing-suave), border-color 200ms ease;
 }
-#lienzo-sonar{ width:100%; height:100%; display:block; }
+.tarjeta-piloto:hover { transform: translateY(-3px); border-color: var(--color-piloto, var(--color-cielo)); }
+.vehiculo-preview { width: 64px; height: 36px; border-radius: 10px; }
+.kart-canvas {
+  display: block; width: 100%; max-width: 640px; margin: 0 auto;
+  border-radius: var(--radio-suave); box-shadow: var(--sombra-suave);
+}
+.titulo-seccion { font-family: var(--fuente-display); text-align: center; color: var(--color-cielo); }
 
-.sonar-contenido{
-  position: relative;
-  z-index: 5;
-  flex: 1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content: flex-end;
-  gap: 18px;
-  padding: 16px 16px 26px;
-}
-
-.sonar-escenas{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content:center;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius-lg);
-  padding: 10px;
-}
-.sonar-escena-btn{
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  color: #eef0ff;
-  font-weight:700;
-  font-size:0.82em;
-  background: rgba(255,255,255,0.06);
-  transition: background var(--dur-fast), transform var(--dur-fast) var(--ease-bounce);
-  min-width: 64px;
-}
-.sonar-escena-btn .emoji-escena{ font-size:1.6em; }
-.sonar-escena-btn:active{ transform: scale(0.94); }
-.sonar-escena-btn.activa{ background: rgba(143,148,240,0.5); }
-
-.sonar-respiracion{
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  text-align:center;
-}
-.sonar-circulo-respiracion{
-  width: 96px; height: 96px;
-  border-radius:50%;
-  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), rgba(143,148,240,0.35));
-  box-shadow: 0 0 40px rgba(143,148,240,0.45);
-  transition: transform 4s ease-in-out;
-}
-.sonar-circulo-respiracion.inhalar{ transform: scale(1.5); transition: transform 4s ease-in-out; }
-.sonar-circulo-respiracion.exhalar{ transform: scale(1); transition: transform 6s ease-in-out; }
-body.sin-animaciones .sonar-circulo-respiracion{ transition: none; transform:none !important; }
-.sonar-respiracion-texto{
-  font-weight:700;
-  font-size: 1.05em;
-  color: #eef0ff;
-  min-height: 1.4em;
-}
-
-.sonar-controles{
-  display:flex;
-  gap: 14px;
-  align-items:center;
-}
-.sonar-btn-control{
-  width:54px; height:54px;
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  background: rgba(255,255,255,0.12);
-  color:#eef0ff;
-  font-size:1.4em;
-  transition: transform var(--dur-fast) var(--ease-bounce), background var(--dur-fast);
-}
-.sonar-btn-control:active{ transform: scale(0.92); }
-.sonar-btn-control.on{ background: rgba(95,217,180,0.55); }
-
-.sonar-temporizador{
-  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
-}
-.sonar-chip-tiempo{
-  padding: 8px 14px;
-  border-radius:999px;
-  background: rgba(255,255,255,0.1);
-  color:#eef0ff;
-  font-weight:700;
-  font-size:0.82em;
-}
-.sonar-chip-tiempo.activa{ background: rgba(143,148,240,0.55); }
-
-@media (min-width:720px){
-  .sonar-contenido{ max-width:720px; margin:0 auto; }
-}
-
+[hidden] { display: none !important; }
 </style>
 </head>
 <body>
 
-<!-- ======================================================================
-     CONTENEDOR PRINCIPAL DE LA APLICACIÓN
-     ====================================================================== -->
-<div id="app">
+<!-- ============ PANTALLA DE BIENVENIDA / LOGIN ============ -->
+<section id="vista-bienvenida" class="pantalla-bienvenida">
+  <div id="mascota-bienvenida" class="mascota-contenedor"></div>
+  <p id="globo-bienvenida" class="globo-dialogo"></p>
+  <h1>Reino de Tier</h1>
+  <button id="btn-iniciar-sesion" class="boton-iniciar-sesion" type="button">
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/>
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
+      <path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.7 13.5-4.7l-6.2-5.3C29.4 36.6 26.8 37.5 24 37.5c-5.3 0-9.7-3.1-11.3-7.4l-6.5 5C9.6 41 16.2 45 24 45z"/>
+      <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.3l6.2 5.3C40.9 35.9 45 30.5 45 24c0-1.2-.1-2.3-.4-3.5z"/>
+    </svg>
+    ¡Iniciar mi aventura!
+  </button>
+</section>
 
-  <!-- HUD superior: visible en todas las pantallas salvo bienvenida -->
-  <div class="hud oculto" id="hud">
-    <div class="hud-grupo">
-      <div class="hud-pastilla"><span class="icono">🪙</span><span id="hud-monedas">0</span></div>
-      <div class="hud-pastilla"><span class="icono">⭐</span><span id="hud-estrellas">0</span></div>
+<!-- ============ APLICACIÓN PRINCIPAL ============ -->
+<section id="vista-app" hidden>
+  <header class="hud">
+    <div class="hud-usuario">
+      <img id="hud-avatar" class="hud-avatar" alt="" />
+      <span id="hud-saludo" class="hud-saludo"></span>
     </div>
-    <button class="btn-icono" id="btn-accesibilidad" title="Ajustes" aria-label="Ajustes de accesibilidad">⚙️</button>
-  </div>
+    <div class="hud-stats">
+      <span class="hud-stat"><span class="hud-stat-icono"></span><span id="hud-monedas">0</span></span>
+      <span class="hud-stat">⭐ <span id="hud-estrellas">0</span></span>
+    </div>
+    <nav>
+      <button id="nav-inicio" type="button">Inicio</button>
+      <button id="nav-aventura-kart" type="button">Aventura Kart</button>
+      <button id="btn-cerrar-sesion" type="button">Salir</button>
+    </nav>
+  </header>
 
-  <!-- ============== PANTALLA: BIENVENIDA ============== -->
-  <section class="pantalla activa" id="pantalla-bienvenida">
-    <div class="tarjeta centro">
-      <div class="escenario-mascota">
-        <div class="mascota-svg-wrap" id="mascota-svg-bienvenida"></div>
-        <h1 class="bienvenida-titulo">¡Hola Tier! 👋</h1>
-        <p class="bienvenida-sub">Hoy aprenderemos jugando 🎮✨</p>
-        <div class="globo-mascota" id="globo-bienvenida">¡Vamos a jugar y aprender juntos!</div>
+  <main>
+    <section id="seccion-inicio" class="seccion-app">
+      <div id="mascota-app" class="mascota-contenedor"></div>
+      <p id="globo-app" class="globo-dialogo visible"></p>
+    </section>
+
+    <section id="seccion-kart" class="seccion-app" hidden>
+      <div id="seleccion-piloto"></div>
+      <div id="juego-kart" hidden>
+        <canvas id="canvas-pista" class="kart-canvas" width="640" height="280"></canvas>
+        <div id="contenedor-pregunta-kart"></div>
       </div>
-      <button class="btn btn-primario btn-grande mt-16" id="btn-empezar">
-        <span>🚀</span> Empezar
-      </button>
-      <button class="btn-sonar mt-8" id="btn-sonar-bienvenida">
-        <span class="icono-luna">🌙</span> Hora de Soñar
-      </button>
-    </div>
-  </section>
+    </section>
+  </main>
+</section>
 
-  <!-- ============== PANTALLA: MAPA DE NIVELES (HOME) ============== -->
-  <section class="pantalla" id="pantalla-niveles">
-    <div class="tarjeta">
-      <div class="titulo-seccion">🗺️ <span>Mapa de Aventuras</span></div>
-      <p class="subtitulo">Elige un nivel para jugar</p>
-      <div class="mapa-niveles mt-16" id="mapa-niveles"></div>
-    </div>
-    <button class="btn-sonar" id="btn-sonar-mapa">
-      <span class="icono-luna">🌙</span> Hora de Soñar
-    </button>
-  </section>
+<script type="module">
+/* ============================================================
+   1. CONFIGURACIÓN CENTRALIZADA DE ASSETS (marca blanca)
+   ============================================================ */
+const BASE_ASSETS = "/assets";
 
-  <!-- ============== PANTALLA: JUEGO DE MATEMÁTICAS (niveles 1-5) ============== -->
-  <section class="pantalla" id="pantalla-juego">
-    <div class="tarjeta">
-      <div class="fila-entre">
-        <button class="btn-icono" id="btn-volver-juego" aria-label="Volver">⬅️</button>
-        <h2 id="titulo-nivel-juego" class="fuente-display" style="font-size:1.1em;"></h2>
-        <div style="width:44px;"></div>
-      </div>
-      <div class="barra-progreso-nivel mt-16">
-        <div class="barra-progreso-rellenado" id="barra-nivel" style="width:0%"></div>
-      </div>
-
-      <div class="pregunta-zona mt-16">
-        <div id="pista-zona"></div>
-        <div class="visual-operacion" id="visual-operacion"></div>
-        <div class="opciones-respuesta" id="opciones-respuesta"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== PANTALLA: LENGUAJE / VOCABULARIO ============== -->
-  <section class="pantalla" id="pantalla-lenguaje">
-    <div class="tarjeta" id="bloque-adivina-palabra">
-      <div class="fila-entre">
-        <button class="btn-icono" id="btn-volver-lenguaje" aria-label="Volver">⬅️</button>
-        <h2 class="fuente-display" style="font-size:1.1em;">🗣️ Palabras</h2>
-        <div style="width:44px;"></div>
-      </div>
-      <div class="tarjeta-vocabulario mt-16">
-        <div class="imagen-vocabulario" id="imagen-vocabulario">🍎</div>
-        <button class="btn btn-sol" id="btn-escuchar-palabra">🔊 Escuchar</button>
-        <p class="subtitulo">¿Qué palabra es esta imagen?</p>
-        <div class="fila-opciones-palabra" id="opciones-palabra"></div>
-      </div>
-    </div>
-
-    <!-- Subnavegación interna entre "Adivina" y "Repite conmigo" -->
-    <div class="tarjeta" style="padding:10px;">
-      <div class="fila" style="justify-content:center; gap:8px;">
-        <button class="btn btn-primario" id="tab-lenguaje-adivina" style="flex:1; min-height:48px; font-size:0.95em;">🧩 Adivina</button>
-        <button class="btn btn-fantasma" id="tab-lenguaje-repite" style="flex:1; min-height:48px; font-size:0.95em;">🎤 Repite conmigo</button>
-      </div>
-    </div>
-
-    <!-- ====== REPITE CONMIGO: ejercicio de habla con micrófono ====== -->
-    <div class="tarjeta oculto" id="bloque-repite-conmigo">
-      <div class="tarjeta-vocabulario">
-        <div class="imagen-vocabulario" id="imagen-repite">🍎</div>
-        <div class="palabra-vocabulario" id="palabra-repite">Manzana</div>
-
-        <button class="btn-icono" id="btn-escuchar-repite" title="Escuchar la palabra" aria-label="Escuchar la palabra" style="width:60px;height:60px;font-size:1.6em;">🔊</button>
-
-        <button class="boton-microfono" id="btn-microfono" aria-label="Presiona y repite la palabra">🎤</button>
-        <p class="habla-estado-texto" id="habla-estado-texto">Presiona el micrófono y repite la palabra</p>
-        <div class="habla-lo-que-dijo oculto" id="habla-lo-que-dijo"></div>
-
-        <div class="habla-aviso-soporte oculto" id="habla-aviso-soporte">
-          😊 Este dispositivo no tiene micrófono activado para esta app, pero puedes seguir practicando escuchando y repitiendo en voz alta con quien te acompaña.
-        </div>
-
-        <button class="btn btn-fantasma mt-8" id="btn-siguiente-repite">Siguiente palabra ➡️</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== PANTALLA: MEMORIA ============== -->
-  <section class="pantalla" id="pantalla-memoria">
-    <div class="tarjeta">
-      <div class="fila-entre">
-        <button class="btn-icono" id="btn-volver-memoria" aria-label="Volver">⬅️</button>
-        <h2 class="fuente-display" style="font-size:1.1em;">🧠 Memoria</h2>
-        <button class="btn-icono" id="btn-reiniciar-memoria" aria-label="Reiniciar">🔄</button>
-      </div>
-      <p class="subtitulo centro mt-8" id="contador-memoria">Parejas encontradas: 0 / 8</p>
-      <div class="tablero-memoria mt-16" id="tablero-memoria"></div>
-    </div>
-  </section>
-
-  <!-- ============== PANTALLA: ATENCIÓN ============== -->
-  <section class="pantalla" id="pantalla-atencion">
-    <div class="tarjeta">
-      <div class="fila-entre">
-        <button class="btn-icono" id="btn-volver-atencion" aria-label="Volver">⬅️</button>
-        <h2 class="fuente-display" style="font-size:1.1em;">🔍 Atención</h2>
-        <div class="cronometro" id="cronometro-atencion">30</div>
-      </div>
-      <p class="subtitulo centro mt-8" id="instruccion-atencion">Encuentra: 🍌</p>
-      <div class="tablero-atencion mt-16" id="tablero-atencion"></div>
-    </div>
-  </section>
-
-  <!-- ============== PANTALLA: ESTADÍSTICAS ============== -->
-  <section class="pantalla" id="pantalla-stats">
-    <div class="tarjeta">
-      <div class="titulo-seccion">📊 <span>Mis Progresos</span></div>
-      <div class="grid-stats mt-16" id="grid-stats"></div>
-    </div>
-    <div class="tarjeta">
-      <div class="titulo-seccion">🏆 <span>Mis Logros</span></div>
-      <div class="grid-logros mt-16" id="grid-logros"></div>
-    </div>
-  </section>
-
-  <!-- ============== NAV INFERIOR ============== -->
-  <nav class="nav-inferior oculto" id="nav-inferior">
-    <button class="nav-item activo" data-destino="pantalla-niveles"><span class="nav-emoji">🏠</span>Inicio</button>
-    <button class="nav-item" data-destino="pantalla-lenguaje"><span class="nav-emoji">🗣️</span>Palabras</button>
-    <button class="nav-item" data-destino="pantalla-memoria"><span class="nav-emoji">🧠</span>Memoria</button>
-    <button class="nav-item" data-destino="pantalla-atencion"><span class="nav-emoji">🔍</span>Atención</button>
-    <button class="nav-item" data-destino="pantalla-stats"><span class="nav-emoji">📊</span>Logros</button>
-    <button class="nav-item" id="nav-item-sonar"><span class="nav-emoji">🌙</span>Soñar</button>
-  </nav>
-
-</div>
-
-<!-- ============== PANTALLA COMPLETA: HORA DE SOÑAR ============== -->
-<div id="pantalla-sonar">
-  <div class="sonar-lienzo-wrap"><canvas id="lienzo-sonar"></canvas></div>
-
-  <div class="sonar-topbar">
-    <button class="btn-icono" id="btn-cerrar-sonar" aria-label="Salir de Hora de Soñar">⬅️</button>
-    <span class="sonar-titulo">🌙 Hora de Soñar</span>
-    <button class="btn-icono" id="btn-sonido-sonar" aria-label="Silenciar sonido">🔊</button>
-  </div>
-
-  <div class="sonar-contenido">
-
-    <div class="sonar-respiracion">
-      <div class="sonar-circulo-respiracion" id="circulo-respiracion"></div>
-      <p class="sonar-respiracion-texto" id="texto-respiracion">Mira la lucecita... respira con calma</p>
-    </div>
-
-    <div class="sonar-controles">
-      <button class="sonar-btn-control" id="btn-respiracion-toggle" title="Guía de respiración" aria-label="Activar guía de respiración">🫧</button>
-      <button class="sonar-btn-control" id="btn-musica-toggle" title="Sonido relajante" aria-label="Activar sonido relajante">🎵</button>
-    </div>
-
-    <div class="sonar-temporizador" id="sonar-temporizador">
-      <button class="sonar-chip-tiempo" data-min="5">5 min</button>
-      <button class="sonar-chip-tiempo" data-min="10">10 min</button>
-      <button class="sonar-chip-tiempo" data-min="20">20 min</button>
-      <button class="sonar-chip-tiempo" data-min="0">Sin límite</button>
-    </div>
-
-    <div class="sonar-escenas" id="sonar-escenas">
-      <button class="sonar-escena-btn activa" data-escena="estrellas"><span class="emoji-escena">✨</span>Estrellas</button>
-      <button class="sonar-escena-btn" data-escena="olas"><span class="emoji-escena">🌊</span>Olas</button>
-      <button class="sonar-escena-btn" data-escena="luciernagas"><span class="emoji-escena">🌿</span>Luciérnagas</button>
-      <button class="sonar-escena-btn" data-escena="lluvia"><span class="emoji-escena">🌧️</span>Lluvia suave</button>
-    </div>
-
-  </div>
-</div>
-
-<!-- ============== TOAST DE REFUERZO POSITIVO ============== -->
-<div class="toast-refuerzo" id="toast-refuerzo"></div>
-
-<!-- ============== CANVAS DE CONFETI ============== -->
-<canvas class="lienzo-confeti" id="lienzo-confeti"></canvas>
-
-<!-- ============== MODAL DE ACCESIBILIDAD ============== -->
-<div id="modal-accesibilidad" class="oculto" style="position:fixed;inset:0;background:rgba(43,45,82,0.35);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;">
-  <div class="tarjeta" style="max-width:420px;width:100%;background:var(--white);backdrop-filter:none;">
-    <div class="fila-entre">
-      <h2 class="fuente-display" style="font-size:1.2em;">⚙️ Ajustes</h2>
-      <button class="btn-icono" id="btn-cerrar-accesibilidad" aria-label="Cerrar">✖️</button>
-    </div>
-    <div class="mt-16" id="lista-switches"></div>
-  </div>
-</div>
-
-<!-- ============== MODAL DE LOGRO DESBLOQUEADO ============== -->
-<div id="modal-logro" class="oculto" style="position:fixed;inset:0;background:rgba(43,45,82,0.45);display:flex;align-items:center;justify-content:center;z-index:1001;padding:16px;">
-  <div class="tarjeta centro" style="max-width:340px;width:100%;background:var(--white);backdrop-filter:none;">
-    <div style="font-size:4em;" id="logro-emoji-modal">🏆</div>
-    <h2 class="fuente-display mt-8" style="color:var(--violet-600);">¡Logro desbloqueado!</h2>
-    <p class="subtitulo mt-8" id="logro-nombre-modal">Maestro de Sumas</p>
-    <button class="btn btn-exito btn-grande mt-16" id="btn-cerrar-logro">¡Genial!</button>
-  </div>
-</div>
-
-<script>
-/* ======================================================================
-   MUNDO DE TIER — MOTOR DE LA APLICACIÓN
-   ----------------------------------------------------------------------
-   Arquitectura general:
-   1. ESTADO        -> objeto central + persistencia en LocalStorage
-   2. UTILIDADES     -> helpers de sonido, voz, confeti, refuerzo positivo
-   3. MASCOTA        -> SVG amigable + frases dinámicas
-   4. NAVEGACIÓN     -> mostrarPantalla() controla qué sección se ve
-   5. NIVELES MATE   -> generador adaptativo de preguntas (1 a 5)
-   6. LENGUAJE       -> vocabulario con síntesis de voz
-   7. MEMORIA        -> juego de cartas
-   8. ATENCIÓN       -> juego de búsqueda cronometrado
-   9. LOGROS/STATS   -> medallas y panel de progreso
-   10. ACCESIBILIDAD -> switches de modo calma, sonido, animación, texto
-   ====================================================================== */
-
-(function(){
-"use strict";
-
-/* ----------------------------------------------------------------------
-   1. ESTADO GLOBAL Y PERSISTENCIA
-   -------------------------------------------------------------------- */
-const CLAVE_GUARDADO = "mundoTier_progreso_v1";
-
-const estadoPorDefecto = {
-  monedas: 0,
-  estrellas: 0,
-  trofeos: 0,
-  correctas: 0,
-  incorrectas: 0,
-  nivelActual: 1,
-  nivelesDesbloqueados: [1],
-  estrellasPorNivel: { 1:0, 2:0, 3:0, 4:0, 5:0 },
-  logros: {},               // { idLogro: true }
-  tiempoUsoMs: 0,
-  ajustes: {
-    modoCalma: false,
-    sonido: true,
-    animaciones: true,
-    textoGrande: false,
-    altoContraste: false
-  },
-  // Dificultad adaptativa por nivel: -1 más fácil, 0 normal, 1 más difícil
-  dificultad: { 1:0, 2:0, 3:0, 4:0, 5:0 },
-  rachaActual: 0,
-  rachaFallos: 0
+const ASSETS = {
+  FAVICON: `${BASE_ASSETS}/favicon.ico`,
+  LOGIN_BACKGROUND: `${BASE_ASSETS}/textures/fondo-bienvenida.webp`,
+  HUD_BACKGROUND: `${BASE_ASSETS}/textures/fondo-hud.webp`,
+  MASCOTA_SPRITE: `${BASE_ASSETS}/textures/mascota-guia.webp`,
+  AVATAR_DEFECTO: `${BASE_ASSETS}/textures/avatar-por-defecto.webp`,
+  PISTA_FONDO: `${BASE_ASSETS}/textures/pista-fondo.webp`,
+  VEHICULO_JUGADOR: `${BASE_ASSETS}/textures/vehiculo-jugador.webp`,
+  VEHICULOS_SELECCION: [
+    `${BASE_ASSETS}/textures/vehiculo-rojo.webp`,
+    `${BASE_ASSETS}/textures/vehiculo-azul.webp`,
+    `${BASE_ASSETS}/textures/vehiculo-verde.webp`,
+  ],
+  VEHICULO_MODELO_3D: `${BASE_ASSETS}/models/vehiculo.glb`,
+  FUENTE_DISPLAY: `${BASE_ASSETS}/fonts/fuente-display.woff2`,
+  FUENTE_CUERPO: `${BASE_ASSETS}/fonts/fuente-cuerpo.woff2`,
+  SONIDO_ACIERTO: `${BASE_ASSETS}/audio/acierto.mp3`,
+  SONIDO_VICTORIA: `${BASE_ASSETS}/audio/victoria.mp3`,
 };
 
-let estado = cargarEstado();
-let inicioSesionMs = Date.now();
+/* ============================================================
+   2. FIREBASE — Auth (Google) + Firestore
+   ============================================================ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getFirestore, doc, setDoc, getDoc,
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import {
+  getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut,
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-function cargarEstado(){
-  try{
-    const guardado = localStorage.getItem(CLAVE_GUARDADO);
-    if(!guardado) return JSON.parse(JSON.stringify(estadoPorDefecto));
-    const datos = JSON.parse(guardado);
-    // Fusión segura por si se agregan campos nuevos en el futuro
-    return Object.assign(JSON.parse(JSON.stringify(estadoPorDefecto)), datos);
-  }catch(e){
-    return JSON.parse(JSON.stringify(estadoPorDefecto));
+// Reemplaza con las credenciales de TU propio proyecto de Firebase.
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "tu-proyecto.firebaseapp.com",
+  projectId: "tu-proyecto",
+  storageBucket: "tu-proyecto.firebasestorage.app",
+  messagingSenderId: "TU_SENDER_ID",
+  appId: "TU_APP_ID",
+  measurementId: "TU_MEASUREMENT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+function estadoInicial() {
+  return {
+    monedas: 0,
+    estrellas: 0,
+    nivelActual: 1,
+    nivelAdaptativo: 1,
+    nivelesCompletados: [],
+    pilotoElegido: null,
+    ajustes: { sonidoActivo: true, vozActiva: true, animacionesReducidas: false },
+  };
+}
+
+async function guardarProgreso(uid, estado) {
+  if (!uid) return;
+  try {
+    await setDoc(doc(db, "usuarios", uid), { ...estado, actualizadoEn: new Date().toISOString() }, { merge: true });
+  } catch (error) {
+    console.error("No se pudo guardar el progreso en Firestore:", error);
   }
 }
 
-function guardarEstado(){
-  try{
-    localStorage.setItem(CLAVE_GUARDADO, JSON.stringify(estado));
-  }catch(e){ /* almacenamiento no disponible: continuar sin bloquear la app */ }
+async function cargarProgreso(uid) {
+  if (!uid) return estadoInicial();
+  try {
+    const ref = doc(db, "usuarios", uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) return { ...estadoInicial(), ...snap.data() };
+    const inicial = estadoInicial();
+    await setDoc(ref, { ...inicial, creadoEn: new Date().toISOString() });
+    return inicial;
+  } catch (error) {
+    console.error("No se pudo cargar el progreso de Firestore:", error);
+    return estadoInicial();
+  }
 }
 
-// Guardar tiempo de uso periódicamente y al cerrar/cambiar de pestaña
-setInterval(()=>{
-  estado.tiempoUsoMs += 5000;
-  guardarEstado();
-}, 5000);
-window.addEventListener("beforeunload", guardarEstado);
+async function iniciarSesionGoogle() {
+  const resultado = await signInWithPopup(auth, provider);
+  return resultado.user;
+}
 
-/* ----------------------------------------------------------------------
-   2. UTILIDADES: SONIDO, VOZ, CONFETI, REFUERZO POSITIVO
-   -------------------------------------------------------------------- */
+async function cerrarSesionApp() {
+  await signOut(auth);
+}
 
-// --- Sonido con Web Audio API (sin archivos externos) ---
+/* ============================================================
+   3. AUDIO — sonidos 8-bit sintetizados con Web Audio API
+   ============================================================ */
 let contextoAudio = null;
-function obtenerContextoAudio(){
-  if(!contextoAudio){
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if(AC) contextoAudio = new AC();
-  }
+let silenciado = false;
+
+function obtenerContextoAudio() {
+  if (!contextoAudio) contextoAudio = new (window.AudioContext || window.webkitAudioContext)();
   return contextoAudio;
 }
 
-function reproducirTono(frecuencias, duracionMs, tipo){
-  if(!estado.ajustes.sonido) return;
+function reproducirTono(frecuencia, duracion = 0.12, volumen = 0.05, retraso = 0) {
+  if (silenciado) return;
   const ctx = obtenerContextoAudio();
-  if(!ctx) return;
-  const ahora = ctx.currentTime;
-  frecuencias.forEach((freq, i)=>{
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = tipo || "sine";
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.0001, ahora);
-    gain.gain.exponentialRampToValueAtTime(0.18, ahora + 0.02 + i*0.08);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ahora + (duracionMs/1000) + i*0.08);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(ahora + i*0.08);
-    osc.stop(ahora + (duracionMs/1000) + i*0.08 + 0.05);
-  });
+  const ahora = ctx.currentTime + retraso;
+  const oscilador = ctx.createOscillator();
+  const ganancia = ctx.createGain();
+  oscilador.type = "square";
+  oscilador.frequency.setValueAtTime(frecuencia, ahora);
+  ganancia.gain.setValueAtTime(volumen, ahora);
+  ganancia.gain.exponentialRampToValueAtTime(0.0001, ahora + duracion);
+  oscilador.connect(ganancia);
+  ganancia.connect(ctx.destination);
+  oscilador.start(ahora);
+  oscilador.stop(ahora + duracion);
 }
 
-function sonidoAcierto(){ reproducirTono([523.25, 659.25, 783.99], 0.35, "sine"); }
-function sonidoError(){ reproducirTono([220, 196], 0.3, "sine"); }
-function sonidoLogro(){ reproducirTono([523.25, 659.25, 783.99, 1046.5], 0.5, "triangle"); }
-function sonidoClicSuave(){ reproducirTono([400], 0.08, "sine"); }
-
-// --- Síntesis de voz (Speech Synthesis API) ---
-function hablar(texto){
-  if(!("speechSynthesis" in window)) return;
-  if(!estado.ajustes.sonido) return;
-  try{
-    window.speechSynthesis.cancel();
-    const enunciado = new SpeechSynthesisUtterance(texto);
-    enunciado.lang = "es-ES";
-    enunciado.rate = 0.92;
-    enunciado.pitch = 1.05;
-    window.speechSynthesis.speak(enunciado);
-  }catch(e){ /* navegador sin soporte: no interrumpe la experiencia */ }
+function sonidoClicSuave() { reproducirTono(440, 0.05, 0.03); }
+function sonidoAcierto() {
+  reproducirTono(987.77, 0.09, 0.05, 0);
+  reproducirTono(1318.51, 0.12, 0.05, 0.08);
 }
-
-// --- Toast de refuerzo positivo ---
-const elementoToast = document.getElementById("toast-refuerzo");
-const frasesExito = [
-  "¡Excelente Tier! 🌟", "¡Lo lograste! 🎉", "¡Muy inteligente! 🧠",
-  "¡Sigue así! 🚀", "¡Fantástico! ✨", "¡Eres un crack! 🏆"
-];
-const frasesAnimo = [
-  "¡Casi lo tienes! 💪", "Probemos otra vez 🌈", "¡Tú puedes! 🌟"
-];
-
-function mostrarToast(texto, esError){
-  elementoToast.textContent = texto;
-  elementoToast.classList.toggle("error", !!esError);
-  elementoToast.classList.add("mostrar");
-  clearTimeout(elementoToast._timeout);
-  elementoToast._timeout = setTimeout(()=>{
-    elementoToast.classList.remove("mostrar");
-  }, 1800);
+function sonidoIntentaDeNuevo() { reproducirTono(392.0, 0.15, 0.04, 0); }
+function sonidoVictoriaNivel() {
+  [523.25, 659.25, 783.99, 1046.5].forEach((nota, i) => reproducirTono(nota, 0.18, 0.05, i * 0.12));
 }
+function sonidoAvanceKart() { reproducirTono(660, 0.07, 0.04); }
 
-function fraseAleatoria(lista){
-  return lista[Math.floor(Math.random()*lista.length)];
-}
-
-// --- Confeti con canvas (ligero, se desactiva en modo sin animaciones) ---
-const lienzo = document.getElementById("lienzo-confeti");
-const ctxConfeti = lienzo.getContext("2d");
-let particulasConfeti = [];
-let animandoConfeti = false;
-
-function ajustarLienzo(){
-  lienzo.width = window.innerWidth;
-  lienzo.height = window.innerHeight;
-}
-window.addEventListener("resize", ajustarLienzo);
-ajustarLienzo();
-
-function lanzarConfeti(){
-  if(!estado.ajustes.animaciones) return;
-  const colores = ["#8b8ff0","#ff8c7a","#5fd9b4","#ffd166","#6f74e8"];
-  for(let i=0;i<60;i++){
-    particulasConfeti.push({
-      x: lienzo.width/2 + (Math.random()-0.5)*120,
-      y: lienzo.height*0.35,
-      vx: (Math.random()-0.5)*8,
-      vy: Math.random()*-6 - 2,
-      g: 0.25,
-      tam: Math.random()*8+4,
-      color: colores[Math.floor(Math.random()*colores.length)],
-      rot: Math.random()*360,
-      vr: (Math.random()-0.5)*10,
-      vida: 90 + Math.random()*30
-    });
-  }
-  if(!animandoConfeti){ animandoConfeti = true; requestAnimationFrame(animarConfeti); }
-}
-
-function animarConfeti(){
-  ctxConfeti.clearRect(0,0,lienzo.width, lienzo.height);
-  particulasConfeti.forEach(p=>{
-    p.x += p.vx; p.y += p.vy; p.vy += p.g; p.rot += p.vr; p.vida--;
-    ctxConfeti.save();
-    ctxConfeti.translate(p.x,p.y);
-    ctxConfeti.rotate(p.rot*Math.PI/180);
-    ctxConfeti.fillStyle = p.color;
-    ctxConfeti.fillRect(-p.tam/2,-p.tam/2,p.tam,p.tam*0.6);
-    ctxConfeti.restore();
-  });
-  particulasConfeti = particulasConfeti.filter(p=>p.vida>0 && p.y < lienzo.height+40);
-  if(particulasConfeti.length>0){
-    requestAnimationFrame(animarConfeti);
-  } else {
-    animandoConfeti = false;
-    ctxConfeti.clearRect(0,0,lienzo.width, lienzo.height);
-  }
-}
-
-/* ----------------------------------------------------------------------
-   3. MASCOTA VIRTUAL — "Pixel" el robot amigable (SVG generado en JS)
-   -------------------------------------------------------------------- */
-const SVG_MASCOTA = `
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pixel, el robot amigable">
-  <ellipse cx="100" cy="178" rx="55" ry="10" fill="#5a5fd6" opacity="0.15"/>
-  <rect x="70" y="30" width="10" height="22" rx="5" fill="#8b8ff0"/>
-  <circle cx="75" cy="26" r="8" fill="#ffd166"/>
-  <rect x="48" y="50" width="104" height="86" rx="26" fill="#8b8ff0"/>
-  <rect x="48" y="50" width="104" height="86" rx="26" fill="url(#gradCuerpo)"/>
-  <defs>
-    <linearGradient id="gradCuerpo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#8b8ff0"/>
-      <stop offset="1" stop-color="#6f74e8"/>
-    </linearGradient>
-  </defs>
-  <rect x="64" y="68" width="72" height="46" rx="18" fill="#ffffff"/>
-  <circle cx="86" cy="91" r="9" fill="#2b2d52"/>
-  <circle cx="114" cy="91" r="9" fill="#2b2d52"/>
-  <circle cx="89" cy="88" r="2.4" fill="#ffffff"/>
-  <circle cx="117" cy="88" r="2.4" fill="#ffffff"/>
-  <path d="M92 104 Q100 112 108 104" stroke="#2b2d52" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-  <rect x="20" y="64" width="20" height="14" rx="7" fill="#ff8c7a"/>
-  <rect x="160" y="64" width="20" height="14" rx="7" fill="#ff8c7a"/>
-  <rect x="76" y="142" width="20" height="26" rx="8" fill="#5a5fd6"/>
-  <rect x="104" y="142" width="20" height="26" rx="8" fill="#5a5fd6"/>
-  <rect x="70" y="164" width="32" height="10" rx="5" fill="#ffd166"/>
-  <rect x="98" y="164" width="32" height="10" rx="5" fill="#ffd166"/>
+/* ============================================================
+   4. MASCOTA GUÍA — SVG vectorial original ("Bolu")
+   ============================================================ */
+const SVG_BOLU = `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bolu, tu guía">
+  <ellipse cx="100" cy="170" rx="46" ry="8" fill="#000" opacity="0.06"/>
+  <rect x="72" y="110" width="56" height="55" rx="22" fill="#FBF3E4"/>
+  <circle cx="86" cy="138" r="4.5" fill="#E8C468" opacity="0.7"/>
+  <circle cx="114" cy="148" r="4" fill="#E8C468" opacity="0.7"/>
+  <path d="M20 108 C20 58 56 28 100 28 C144 28 180 58 180 108 C180 118 172 122 162 122 L38 122 C28 122 20 118 20 108 Z" fill="#D98C7A"/>
+  <circle cx="62" cy="72" r="13" fill="#FAF6EF"/>
+  <circle cx="118" cy="60" r="10" fill="#FAF6EF"/>
+  <circle cx="142" cy="88" r="9" fill="#FAF6EF"/>
+  <circle cx="78" cy="100" r="7" fill="#FAF6EF"/>
+  <circle cx="82" cy="118" r="5.5" fill="#3A3A3A"/>
+  <circle cx="118" cy="118" r="5.5" fill="#3A3A3A"/>
+  <path d="M86 132 Q100 142 114 132" stroke="#3A3A3A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <circle cx="68" cy="126" r="6" fill="#D98C7A" opacity="0.35"/>
+  <circle cx="132" cy="126" r="6" fill="#D98C7A" opacity="0.35"/>
 </svg>`;
 
-function pintarMascota(contenedorId){
-  const cont = document.getElementById(contenedorId);
-  if(cont) cont.innerHTML = SVG_MASCOTA;
-}
-
-function decirMascota(globoId, texto, hablarTambien){
-  const globo = document.getElementById(globoId);
-  if(globo) globo.textContent = texto;
-  if(hablarTambien) hablar(texto);
-}
-
-/* ----------------------------------------------------------------------
-   4. NAVEGACIÓN ENTRE PANTALLAS
-   -------------------------------------------------------------------- */
-const todasLasPantallas = document.querySelectorAll(".pantalla");
-const hud = document.getElementById("hud");
-const navInferior = document.getElementById("nav-inferior");
-
-function mostrarPantalla(idPantalla){
-  todasLasPantallas.forEach(p=> p.classList.toggle("activa", p.id === idPantalla));
-  const esBienvenida = idPantalla === "pantalla-bienvenida";
-  hud.classList.toggle("oculto", esBienvenida);
-  navInferior.classList.toggle("oculto", esBienvenida);
-
-  // Resaltar item de navegación correspondiente (si aplica)
-  document.querySelectorAll(".nav-item").forEach(btn=>{
-    btn.classList.toggle("activo", btn.dataset.destino === idPantalla);
-  });
-
-  // Acciones de entrada específicas por pantalla
-  if(idPantalla === "pantalla-niveles") pintarMapaNiveles();
-  if(idPantalla === "pantalla-lenguaje") mostrarTabLenguaje("adivina");
-  if(idPantalla === "pantalla-memoria") iniciarMemoria();
-  if(idPantalla === "pantalla-atencion") iniciarAtencion();
-  if(idPantalla === "pantalla-stats") pintarStatsYLogros();
-
-  window.scrollTo({top:0, behavior: estado.ajustes.animaciones ? "smooth":"auto"});
-}
-
-document.getElementById("btn-empezar").addEventListener("click", ()=>{
-  sonidoClicSuave();
-  mostrarPantalla("pantalla-niveles");
-});
-
-document.getElementById("btn-sonar-bienvenida").addEventListener("click", abrirModoSonar);
-document.getElementById("btn-sonar-mapa").addEventListener("click", abrirModoSonar);
-document.getElementById("nav-item-sonar").addEventListener("click", ()=>{
-  sonidoClicSuave();
-  abrirModoSonar();
-});
-
-document.querySelectorAll(".nav-item").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    sonidoClicSuave();
-    detenerAtencionSiActiva();
-    mostrarPantalla(btn.dataset.destino);
-  });
-});
-
-document.getElementById("btn-volver-juego").addEventListener("click", ()=> mostrarPantalla("pantalla-niveles"));
-document.getElementById("btn-volver-lenguaje").addEventListener("click", ()=> mostrarPantalla("pantalla-niveles"));
-document.getElementById("btn-volver-memoria").addEventListener("click", ()=> mostrarPantalla("pantalla-niveles"));
-document.getElementById("btn-volver-atencion").addEventListener("click", ()=>{
-  detenerAtencionSiActiva();
-  mostrarPantalla("pantalla-niveles");
-});
-
-function actualizarHud(){
-  document.getElementById("hud-monedas").textContent = estado.monedas;
-  document.getElementById("hud-estrellas").textContent = estado.estrellas;
-}
-
-/* ----------------------------------------------------------------------
-   5. NIVELES DE MATEMÁTICAS — generador adaptativo
-   -------------------------------------------------------------------- */
-const EMOJIS_CONTABLES = ["🍎","🍌","🍓","⭐","🚗","🐶","🐱","🎈","⚽","🌸"];
-
-const INFO_NIVELES = {
-  1: { nombre: "Números",      emoji: "🔢" },
-  2: { nombre: "Sumas",        emoji: "➕" },
-  3: { nombre: "Restas",       emoji: "➖" },
-  4: { nombre: "Multiplicar",  emoji: "✖️" },
-  5: { nombre: "Desafío Mixto",emoji: "🌈" }
-};
-
-const PREGUNTAS_POR_NIVEL = 8; // preguntas para completar y ganar trofeo de sesión
-let progresoNivelActual = { contestadas:0, correctasSeguidas:0 };
-let preguntaActiva = null;
-
-function pintarMapaNiveles(){
-  const mapa = document.getElementById("mapa-niveles");
-  mapa.innerHTML = "";
-  for(let n=1; n<=5; n++){
-    const desbloqueado = estado.nivelesDesbloqueados.includes(n);
-    const info = INFO_NIVELES[n];
-    const estrellas = estado.estrellasPorNivel[n] || 0;
-    const div = document.createElement("button");
-    div.className = "nivel-tarjeta" + (desbloqueado? "":" bloqueado") + (n===estado.nivelActual? " actual":"");
-    div.innerHTML = `
-      ${!desbloqueado? '<span class="nivel-candado">🔒</span>' : ''}
-      <span class="nivel-emoji">${info.emoji}</span>
-      <span class="nivel-nombre">Nivel ${n}<br>${info.nombre}</span>
-      <span class="nivel-estrellas">${"⭐".repeat(estrellas)}${"☆".repeat(3-estrellas)}</span>
-    `;
-    if(desbloqueado){
-      div.addEventListener("click", ()=>{
-        sonidoClicSuave();
-        estado.nivelActual = n;
-        guardarEstado();
-        abrirNivel(n);
-      });
-    } else {
-      div.addEventListener("click", ()=> mostrarToast("Completa el nivel anterior primero 🔒", true));
-    }
-    mapa.appendChild(div);
-  }
-}
-
-function abrirNivel(n){
-  progresoNivelActual = { contestadas:0, correctasSeguidas:0 };
-  document.getElementById("titulo-nivel-juego").textContent =
-    `${INFO_NIVELES[n].emoji} Nivel ${n}: ${INFO_NIVELES[n].nombre}`;
-  document.getElementById("barra-nivel").style.width = "0%";
-  mostrarPantalla("pantalla-juego");
-  generarPregunta(n);
-}
-
-// --- Generación de preguntas según nivel y dificultad adaptativa ---
-function generarPregunta(nivel){
-  const dif = estado.dificultad[nivel]; // -1, 0, 1
-  let a, b, operador, respuesta, tipoVisual;
-
-  if(nivel === 1){
-    // Reconocimiento de números: mostrar grupo de emojis, elegir el número correcto
-    const maxNum = dif <= 0 ? 5 : 8;
-    a = aleatorioEntre(1, maxNum);
-    respuesta = a;
-    tipoVisual = "conteo";
-  } else if(nivel === 2){
-    const maxNum = dif < 0 ? 3 : (dif === 0 ? 5 : 8);
-    a = aleatorioEntre(1, maxNum);
-    b = aleatorioEntre(1, maxNum);
-    operador = "+";
-    respuesta = a + b;
-    tipoVisual = "suma";
-  } else if(nivel === 3){
-    const maxNum = dif < 0 ? 4 : (dif === 0 ? 7 : 10);
-    a = aleatorioEntre(2, maxNum);
-    b = aleatorioEntre(1, a); // evitar resultados negativos
-    operador = "−";
-    respuesta = a - b;
-    tipoVisual = "resta";
-  } else if(nivel === 4){
-    const maxFactor = dif < 0 ? 3 : (dif === 0 ? 5 : 8);
-    a = aleatorioEntre(1, maxFactor);
-    b = aleatorioEntre(1, 3); // segundo factor pequeño para visualizar como grupos
-    operador = "×";
-    respuesta = a * b;
-    tipoVisual = "multiplicacion";
+function renderizarMascota(idContenedor) {
+  const contenedor = document.getElementById(idContenedor);
+  if (!contenedor) return;
+  if (ASSETS.MASCOTA_SPRITE) {
+    const img = new Image();
+    img.alt = "Bolu, tu guía";
+    img.className = "mascota-img";
+    img.onerror = () => { contenedor.innerHTML = SVG_BOLU; };
+    img.onload = () => { contenedor.innerHTML = ""; contenedor.appendChild(img); };
+    img.src = ASSETS.MASCOTA_SPRITE;
   } else {
-    // Nivel 5: mezcla aleatoria de todo lo anterior
-    const tipos = ["conteo","suma","resta","multiplicacion"];
-    tipoVisual = fraseAleatoria(tipos);
-    if(tipoVisual==="conteo"){ a = aleatorioEntre(1,8); respuesta = a; }
-    else if(tipoVisual==="suma"){ a=aleatorioEntre(1,7); b=aleatorioEntre(1,7); operador="+"; respuesta=a+b; }
-    else if(tipoVisual==="resta"){ a=aleatorioEntre(3,9); b=aleatorioEntre(1,a); operador="−"; respuesta=a-b; }
-    else { a=aleatorioEntre(1,6); b=aleatorioEntre(1,3); operador="×"; respuesta=a*b; }
+    contenedor.innerHTML = SVG_BOLU;
   }
-
-  preguntaActiva = { nivel, a, b, operador, respuesta, tipoVisual };
-  pintarPregunta(preguntaActiva);
 }
 
-function aleatorioEntre(min, max){
-  return Math.floor(Math.random()*(max-min+1))+min;
+function decirMascota(idGlobo, mensaje) {
+  const globo = document.getElementById(idGlobo);
+  if (!globo) return;
+  globo.textContent = mensaje;
+  globo.classList.add("visible");
 }
 
-function pintarPregunta(p){
-  const visual = document.getElementById("visual-operacion");
-  const opcionesCont = document.getElementById("opciones-respuesta");
-  const pistaZona = document.getElementById("pista-zona");
-  pistaZona.innerHTML = "";
-  opcionesCont.innerHTML = "";
+/* ============================================================
+   5. PREGUNTAS ADAPTATIVAS + BLOQUES DE SABER
+   ============================================================ */
+function generarPregunta(nivelAdaptativo = 1) {
+  const rango = { 1: 5, 2: 10, 3: 20 }[nivelAdaptativo] || 5;
+  const a = Math.floor(Math.random() * rango) + 1;
+  const b = Math.floor(Math.random() * rango) + 1;
+  const respuestaCorrecta = a + b;
 
-  const emoji = EMOJIS_CONTABLES[Math.floor(Math.random()*EMOJIS_CONTABLES.length)];
-
-  if(p.tipoVisual === "conteo"){
-    visual.innerHTML = `<div class="grupo-emoji">${generarSpansEmoji(emoji, p.a)}</div>`;
-  } else if(p.tipoVisual === "suma"){
-    visual.innerHTML = `
-      <div class="grupo-emoji">${generarSpansEmoji(emoji, p.a)}</div>
-      <span class="signo-operacion">+</span>
-      <div class="grupo-emoji">${generarSpansEmoji(emoji, p.b)}</div>`;
-  } else if(p.tipoVisual === "resta"){
-    // Mostramos el total y marcamos cuántos "se van" con opacidad reducida
-    const iconos = [];
-    for(let i=0;i<p.a;i++){
-      const seVa = i >= (p.a - p.b);
-      iconos.push(`<span style="opacity:${seVa? '0.25':'1'}; text-decoration:${seVa? 'line-through':'none'};">${emoji}</span>`);
-    }
-    visual.innerHTML = `<div class="grupo-emoji">${iconos.join("")}</div>
-      <span class="signo-operacion">quitar ${p.b}</span>`;
-  } else if(p.tipoVisual === "multiplicacion"){
-    let grupos = "";
-    for(let g=0; g<p.b; g++){
-      grupos += `<div class="grupo-emoji">${generarSpansEmoji(emoji, p.a)}</div>`;
-      if(g < p.b-1) grupos += `<span class="signo-operacion">+</span>`;
-    }
-    visual.innerHTML = grupos;
+  const opciones = new Set([respuestaCorrecta]);
+  while (opciones.size < 4) {
+    const distractor = respuestaCorrecta + (Math.floor(Math.random() * 5) - 2);
+    if (distractor >= 0 && distractor !== respuestaCorrecta) opciones.add(distractor);
   }
-
-  // Construcción de opciones: 4 opciones, 1 correcta + 3 distractores cercanos
-  const opciones = generarOpciones(p.respuesta);
-  opciones.forEach(valor=>{
-    const btn = document.createElement("button");
-    btn.className = "opcion-btn";
-    btn.textContent = valor;
-    btn.addEventListener("click", ()=> manejarRespuesta(valor, p.respuesta, btn));
-    opcionesCont.appendChild(btn);
-  });
+  return { texto: `¿Cuánto es ${a} + ${b}?`, opciones: barajar([...opciones]), respuestaCorrecta };
 }
 
-function generarSpansEmoji(emoji, cantidad){
-  let html = "";
-  for(let i=0;i<cantidad;i++){
-    html += `<span style="animation-delay:${i*60}ms">${emoji}</span>`;
-  }
-  return html;
-}
-
-function generarOpciones(correcta){
-  const set = new Set([correcta]);
-  while(set.size < 4){
-    const variacion = correcta + aleatorioEntre(-3,3);
-    if(variacion >= 0 && variacion !== correcta) set.add(variacion);
-  }
-  return Array.from(set).sort(()=>Math.random()-0.5);
-}
-
-let bloqueoRespuesta = false;
-function manejarRespuesta(valorElegido, correcta, btnElegido){
-  if(bloqueoRespuesta) return;
-  bloqueoRespuesta = true;
-  const esCorrecta = valorElegido === correcta;
-  const todosBotones = document.querySelectorAll("#opciones-respuesta .opcion-btn");
-
-  if(esCorrecta){
-    btnElegido.classList.add("correcta");
-    registrarAcierto(estado.nivelActual);
-    progresoNivelActual.correctasSeguidas++;
-  } else {
-    btnElegido.classList.add("incorrecta");
-    todosBotones.forEach(b=>{ if(parseInt(b.textContent)===correcta) b.classList.add("correcta"); });
-    registrarFallo(estado.nivelActual);
-    progresoNivelActual.correctasSeguidas = 0;
-  }
-
-  progresoNivelActual.contestadas++;
-  const progresoPct = Math.min(100, (progresoNivelActual.contestadas/PREGUNTAS_POR_NIVEL)*100);
-  document.getElementById("barra-nivel").style.width = progresoPct + "%";
-
-  setTimeout(()=>{
-    bloqueoRespuesta = false;
-    if(progresoNivelActual.contestadas >= PREGUNTAS_POR_NIVEL){
-      finalizarNivel(estado.nivelActual);
-    } else {
-      generarPregunta(estado.nivelActual);
-    }
-  }, esCorrecta ? 1100 : 1500);
-}
-
-function registrarAcierto(nivel){
-  estado.correctas++;
-  estado.monedas += 5;
-  estado.rachaActual++;
-  estado.rachaFallos = 0;
-
-  // Adaptación: 3 aciertos seguidos -> sube dificultad
-  if(estado.rachaActual % 3 === 0 && estado.dificultad[nivel] < 1){
-    estado.dificultad[nivel]++;
-  }
-
-  sonidoAcierto();
-  mostrarToast(fraseAleatoria(frasesExito));
-  lanzarConfeti();
-  guardarEstado();
-  actualizarHud();
-  revisarLogros();
-}
-
-function registrarFallo(nivel){
-  estado.incorrectas++;
-  estado.rachaActual = 0;
-  estado.rachaFallos++;
-
-  // Adaptación: 2 fallos seguidos -> baja dificultad y prepara pista visual
-  if(estado.rachaFallos >= 2){
-    if(estado.dificultad[nivel] > -1) estado.dificultad[nivel]--;
-    mostrarPistaVisual();
-    estado.rachaFallos = 0;
-  }
-
-  sonidoError();
-  mostrarToast(fraseAleatoria(frasesAnimo), true);
-  guardarEstado();
-  actualizarHud();
-}
-
-function mostrarPistaVisual(){
-  const pistaZona = document.getElementById("pista-zona");
-  pistaZona.innerHTML = `<div class="pista-caja">💡 Pista: cuenta despacio, uno por uno. ¡Tú puedes!</div>`;
-}
-
-function finalizarNivel(nivel){
-  const aciertosEnNivel = progresoNivelActual.correctasSeguidas; // referencia simple
-  const pctSesion = (progresoNivelActual.contestadas>0)
-    ? Math.round((estado.correctas/(estado.correctas+estado.incorrectas))*100) : 0;
-
-  // Otorgar estrellas según desempeño general reciente
-  let estrellasGanadas = 1;
-  if(pctSesion >= 60) estrellasGanadas = 2;
-  if(pctSesion >= 85) estrellasGanadas = 3;
-
-  estado.estrellasPorNivel[nivel] = Math.max(estado.estrellasPorNivel[nivel]||0, estrellasGanadas);
-  estado.estrellas += estrellasGanadas;
-  estado.trofeos += 1;
-
-  // Desbloquear siguiente nivel
-  if(nivel < 5 && !estado.nivelesDesbloqueados.includes(nivel+1)){
-    estado.nivelesDesbloqueados.push(nivel+1);
-  }
-  guardarEstado();
-  actualizarHud();
-  revisarLogros();
-  lanzarConfeti();
-  sonidoLogro();
-
-  document.getElementById("visual-operacion").innerHTML = `
-    <div class="centro" style="width:100%;">
-      <div style="font-size:1.6em;">🎉 ¡Nivel completado! 🎉</div>
-      <div class="mt-8">${"⭐".repeat(estrellasGanadas)}${"☆".repeat(3-estrellasGanadas)}</div>
-    </div>`;
-  document.getElementById("opciones-respuesta").innerHTML = `
-    <button class="btn btn-primario btn-grande" style="grid-column:1/-1;" id="btn-seguir-mapa">Volver al mapa 🗺️</button>`;
-  document.getElementById("pista-zona").innerHTML = "";
-  document.getElementById("btn-seguir-mapa").addEventListener("click", ()=> mostrarPantalla("pantalla-niveles"));
-}
-
-/* ----------------------------------------------------------------------
-   6. LENGUAJE — vocabulario, imagen-palabra, síntesis de voz
-   -------------------------------------------------------------------- */
-const BANCO_VOCABULARIO = [
-  {emoji:"🍎", palabra:"Manzana"}, {emoji:"🍌", palabra:"Plátano"},
-  {emoji:"🐶", palabra:"Perro"}, {emoji:"🐱", palabra:"Gato"},
-  {emoji:"☀️", palabra:"Sol"}, {emoji:"🌙", palabra:"Luna"},
-  {emoji:"🚗", palabra:"Carro"}, {emoji:"⚽", palabra:"Pelota"},
-  {emoji:"🌳", palabra:"Árbol"}, {emoji:"🏠", palabra:"Casa"},
-  {emoji:"🐟", palabra:"Pez"}, {emoji:"🦋", palabra:"Mariposa"},
-  {emoji:"🌸", palabra:"Flor"}, {emoji:"⭐", palabra:"Estrella"},
-  {emoji:"🐦", palabra:"Pájaro"}, {emoji:"🍓", palabra:"Fresa"}
-];
-
-let palabraActivaLenguaje = null;
-
-function nuevaPreguntaLenguaje(){
-  palabraActivaLenguaje = fraseAleatoria(BANCO_VOCABULARIO);
-  document.getElementById("imagen-vocabulario").textContent = palabraActivaLenguaje.emoji;
-
-  // Generar 3 opciones de palabra (1 correcta + 2 distractoras)
-  const otras = BANCO_VOCABULARIO.filter(v=>v.palabra!==palabraActivaLenguaje.palabra);
-  const distractoras = barajar(otras).slice(0,2);
-  const opciones = barajar([palabraActivaLenguaje, ...distractoras]);
-
-  const cont = document.getElementById("opciones-palabra");
-  cont.innerHTML = "";
-  opciones.forEach(op=>{
-    const btn = document.createElement("button");
-    btn.className = "btn btn-fantasma";
-    btn.textContent = op.palabra;
-    btn.addEventListener("click", ()=> manejarRespuestaLenguaje(op.palabra === palabraActivaLenguaje.palabra, btn));
-    cont.appendChild(btn);
-  });
-
-  // Leer la palabra en voz alta automáticamente al presentar la tarjeta
-  setTimeout(()=> hablar(palabraActivaLenguaje.palabra), 350);
-}
-
-document.getElementById("btn-escuchar-palabra").addEventListener("click", ()=>{
-  if(palabraActivaLenguaje) hablar(palabraActivaLenguaje.palabra);
-});
-
-function manejarRespuestaLenguaje(esCorrecta, btn){
-  if(esCorrecta){
-    btn.classList.remove("btn-fantasma");
-    btn.classList.add("btn-exito");
-    sonidoAcierto();
-    mostrarToast(fraseAleatoria(frasesExito));
-    lanzarConfeti();
-    estado.correctas++; estado.monedas += 4;
-    revisarLogros();
-  } else {
-    btn.classList.remove("btn-fantasma");
-    btn.classList.add("btn-alerta");
-    sonidoError();
-    mostrarToast(fraseAleatoria(frasesAnimo), true);
-    estado.incorrectas++;
-  }
-  guardarEstado();
-  actualizarHud();
-  setTimeout(nuevaPreguntaLenguaje, 1300);
-}
-
-function barajar(arr){
-  const copia = [...arr];
-  for(let i=copia.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [copia[i],copia[j]] = [copia[j],copia[i]];
+function barajar(arreglo) {
+  const copia = [...arreglo];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
   }
   return copia;
 }
 
-/* ----------------------------------------------------------------------
-   6.b SUBNAVEGACIÓN: "Adivina" vs "Repite conmigo"
-   -------------------------------------------------------------------- */
-const tabAdivina = document.getElementById("tab-lenguaje-adivina");
-const tabRepite = document.getElementById("tab-lenguaje-repite");
-const bloqueAdivina = document.getElementById("bloque-adivina-palabra");
-const bloqueRepiteConmigo = document.getElementById("bloque-repite-conmigo");
-
-function mostrarTabLenguaje(cual){
-  const esAdivina = cual === "adivina";
-  bloqueAdivina.classList.toggle("oculto", !esAdivina);
-  bloqueRepiteConmigo.classList.toggle("oculto", esAdivina);
-  tabAdivina.classList.toggle("btn-primario", esAdivina);
-  tabAdivina.classList.toggle("btn-fantasma", !esAdivina);
-  tabRepite.classList.toggle("btn-primario", !esAdivina);
-  tabRepite.classList.toggle("btn-fantasma", esAdivina);
-
-  detenerEscuchaHabla();
-  if(esAdivina){
-    nuevaPreguntaLenguaje();
-  } else {
-    nuevaPalabraRepite();
-  }
-}
-tabAdivina.addEventListener("click", ()=>{ sonidoClicSuave(); mostrarTabLenguaje("adivina"); });
-tabRepite.addEventListener("click", ()=>{ sonidoClicSuave(); mostrarTabLenguaje("repite"); });
-
-/* ----------------------------------------------------------------------
-   6.c REPITE CONMIGO — ejercicio de habla con reconocimiento de voz
-   -------------------------------------------------------------------- */
-let palabraActivaRepite = null;
-let reconocedorVoz = null;
-let reconociendoAhora = false;
-
-const ClaseReconocimiento = window.SpeechRecognition || window.webkitSpeechRecognition;
-const habilitarReconocimiento = !!ClaseReconocimiento;
-
-const btnMicrofono = document.getElementById("btn-microfono");
-const elEstadoHabla = document.getElementById("habla-estado-texto");
-const elLoQueDijo = document.getElementById("habla-lo-que-dijo");
-const elAvisoSoporte = document.getElementById("habla-aviso-soporte");
-
-if(!habilitarReconocimiento){
-  elAvisoSoporte.classList.remove("oculto");
-  btnMicrofono.setAttribute("disabled","disabled");
+function ajustarNivelAdaptativo(nivelActual, historialReciente) {
+  const ultimos3 = historialReciente.slice(-3);
+  const ultimos2 = historialReciente.slice(-2);
+  if (ultimos3.length === 3 && ultimos3.every(Boolean)) return Math.min(3, nivelActual + 1);
+  if (ultimos2.length === 2 && ultimos2.every((r) => r === false)) return Math.max(1, nivelActual - 1);
+  return nivelActual;
 }
 
-function nuevaPalabraRepite(){
-  palabraActivaRepite = fraseAleatoria(BANCO_VOCABULARIO);
-  document.getElementById("imagen-repite").textContent = palabraActivaRepite.emoji;
-  document.getElementById("palabra-repite").textContent = palabraActivaRepite.palabra;
-  elLoQueDijo.classList.add("oculto");
-  elLoQueDijo.textContent = "";
-  elEstadoHabla.textContent = "Presiona el micrófono y repite la palabra";
-  setTimeout(()=> hablar(palabraActivaRepite.palabra), 300);
-}
+function renderizarPregunta(idContenedor, pregunta, onResultado) {
+  const contenedor = document.getElementById(idContenedor);
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
 
-document.getElementById("btn-escuchar-repite").addEventListener("click", ()=>{
-  if(palabraActivaRepite) hablar(palabraActivaRepite.palabra);
-});
-document.getElementById("btn-siguiente-repite").addEventListener("click", ()=>{
-  sonidoClicSuave();
-  nuevaPalabraRepite();
-});
+  const titulo = document.createElement("p");
+  titulo.className = "pregunta-texto";
+  titulo.textContent = pregunta.texto;
+  contenedor.appendChild(titulo);
 
-function detenerEscuchaHabla(){
-  if(reconocedorVoz && reconociendoAhora){
-    try{ reconocedorVoz.stop(); }catch(e){}
-  }
-}
+  const grilla = document.createElement("div");
+  grilla.className = "bloques-grilla";
 
-if(habilitarReconocimiento){
-  btnMicrofono.addEventListener("click", ()=>{
-    if(reconociendoAhora){ detenerEscuchaHabla(); return; }
-    iniciarEscuchaHabla();
-  });
-}
+  pregunta.opciones.forEach((opcion) => {
+    const boton = document.createElement("button");
+    boton.className = "bloque-saber";
+    boton.type = "button";
+    boton.setAttribute("aria-label", `Responder ${opcion}`);
+    boton.innerHTML = `<span class="bloque-signo">?</span><span class="bloque-valor">${opcion}</span>`;
 
-function iniciarEscuchaHabla(){
-  try{
-    reconocedorVoz = new ClaseReconocimiento();
-    reconocedorVoz.lang = "es-ES";
-    reconocedorVoz.maxAlternatives = 3;
-    reconocedorVoz.interimResults = false;
-
-    reconocedorVoz.onstart = ()=>{
-      reconociendoAhora = true;
-      btnMicrofono.classList.add("escuchando");
-      btnMicrofono.textContent = "👂";
-      elEstadoHabla.textContent = "Te estoy escuchando... ¡habla ahora!";
-    };
-
-    reconocedorVoz.onresult = (evento)=>{
-      const alternativas = Array.from(evento.results[0]).map(r=>normalizarTexto(r.transcript));
-      const objetivo = normalizarTexto(palabraActivaRepite.palabra);
-      const dicho = alternativas[0] || "";
-      elLoQueDijo.textContent = `Escuché: "${dicho}"`;
-      elLoQueDijo.classList.remove("oculto");
-
-      const coincide = alternativas.some(alt => alt === objetivo || alt.includes(objetivo) || objetivo.includes(alt));
-
-      if(coincide){
-        elEstadoHabla.textContent = "¡Muy bien dicho! 🎉";
-        sonidoAcierto();
-        mostrarToast(fraseAleatoria(frasesExito));
-        lanzarConfeti();
-        estado.monedas += 4; estado.correctas++;
-        guardarEstado(); actualizarHud(); revisarLogros();
-        setTimeout(nuevaPalabraRepite, 1600);
-      } else {
-        elEstadoHabla.textContent = "¡Buen intento! Escuchemos otra vez 💪";
-        sonidoError();
-        mostrarToast(fraseAleatoria(frasesAnimo), true);
-        setTimeout(()=> hablar(palabraActivaRepite.palabra), 500);
-      }
-    };
-
-    reconocedorVoz.onerror = (evento)=>{
-      reconociendoAhora = false;
-      btnMicrofono.classList.remove("escuchando");
-      btnMicrofono.textContent = "🎤";
-      if(evento.error === "not-allowed" || evento.error === "service-not-allowed"){
-        elEstadoHabla.textContent = "Necesitamos permiso del micrófono para jugar a esto 🎤";
-      } else if(evento.error === "no-speech"){
-        elEstadoHabla.textContent = "No te escuché bien. ¡Intentemos otra vez!";
-      } else {
-        elEstadoHabla.textContent = "Presiona el micrófono y repite la palabra";
-      }
-    };
-
-    reconocedorVoz.onend = ()=>{
-      reconociendoAhora = false;
-      btnMicrofono.classList.remove("escuchando");
-      btnMicrofono.textContent = "🎤";
-    };
-
-    reconocedorVoz.start();
-  }catch(e){
-    elEstadoHabla.textContent = "Presiona el micrófono y repite la palabra";
-  }
-}
-
-function normalizarTexto(txt){
-  return (txt||"").toLowerCase().trim()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"") // quita acentos
-    .replace(/[^a-z0-9\s]/g,"");
-}
-
-/* ----------------------------------------------------------------------
-   7. JUEGO DE MEMORIA
-   -------------------------------------------------------------------- */
-const TEMAS_MEMORIA = ["🍎","🍌","🐶","🐱","⭐","🌸","🚗","⚽","🍓","🦋","🌙","☀️"];
-let cartasMemoria = [];
-let cartaVolteada1 = null, cartaVolteada2 = null;
-let bloqueoMemoria = false;
-let parejasEncontradas = 0;
-
-function iniciarMemoria(){
-  parejasEncontradas = 0;
-  cartaVolteada1 = null; cartaVolteada2 = null; bloqueoMemoria = false;
-  const simbolos = barajar(TEMAS_MEMORIA).slice(0,8);
-  cartasMemoria = barajar([...simbolos, ...simbolos]);
-
-  const tablero = document.getElementById("tablero-memoria");
-  tablero.innerHTML = "";
-  cartasMemoria.forEach((simbolo, indice)=>{
-    const carta = document.createElement("button");
-    carta.className = "carta-memoria";
-    carta.innerHTML = `
-      <div class="cara cara-dorso">❓</div>
-      <div class="cara cara-frente">${simbolo}</div>`;
-    carta.addEventListener("click", ()=> voltearCarta(carta, indice));
-    tablero.appendChild(carta);
-  });
-  actualizarContadorMemoria();
-}
-
-document.getElementById("btn-reiniciar-memoria").addEventListener("click", iniciarMemoria);
-
-function voltearCarta(elemento, indice){
-  if(bloqueoMemoria) return;
-  if(elemento.classList.contains("volteada") || elemento.classList.contains("acertada")) return;
-
-  elemento.classList.add("volteada");
-  sonidoClicSuave();
-
-  if(!cartaVolteada1){
-    cartaVolteada1 = {elemento, indice};
-    return;
-  }
-  cartaVolteada2 = {elemento, indice};
-  bloqueoMemoria = true;
-
-  const simbolo1 = cartasMemoria[cartaVolteada1.indice];
-  const simbolo2 = cartasMemoria[cartaVolteada2.indice];
-
-  if(simbolo1 === simbolo2){
-    cartaVolteada1.elemento.classList.add("acertada");
-    cartaVolteada2.elemento.classList.add("acertada");
-    parejasEncontradas++;
-    actualizarContadorMemoria();
-    sonidoAcierto();
-    mostrarToast(fraseAleatoria(frasesExito));
-    estado.monedas += 3; estado.correctas++;
-    guardarEstado(); actualizarHud(); revisarLogros();
-    cartaVolteada1 = null; cartaVolteada2 = null; bloqueoMemoria = false;
-
-    if(parejasEncontradas === 8){
-      setTimeout(()=>{
-        lanzarConfeti(); sonidoLogro();
-        mostrarToast("¡Memoria perfecta! 🧠✨");
-      }, 300);
-    }
-  } else {
-    sonidoError();
-    setTimeout(()=>{
-      cartaVolteada1.elemento.classList.remove("volteada");
-      cartaVolteada2.elemento.classList.remove("volteada");
-      cartaVolteada1 = null; cartaVolteada2 = null; bloqueoMemoria = false;
-    }, 900);
-  }
-}
-
-function actualizarContadorMemoria(){
-  document.getElementById("contador-memoria").textContent = `Parejas encontradas: ${parejasEncontradas} / 8`;
-}
-
-/* ----------------------------------------------------------------------
-   8. JUEGO DE ATENCIÓN — buscar el elemento objetivo, cronometrado
-   -------------------------------------------------------------------- */
-const ELEMENTOS_ATENCION = ["🍎","🍌","🍓","⭐","🚗","🐶","🐱","🎈","⚽","🌸","🔺","🔵","🟩","🟡"];
-let intervaloAtencion = null;
-let tiempoRestanteAtencion = 30;
-let objetivoAtencion = null;
-let encontradosAtencion = 0;
-
-function iniciarAtencion(){
-  detenerAtencionSiActiva();
-  tiempoRestanteAtencion = 30;
-  encontradosAtencion = 0;
-  objetivoAtencion = fraseAleatoria(ELEMENTOS_ATENCION);
-  document.getElementById("instruccion-atencion").innerHTML = `Encuentra todos los: <strong>${objetivoAtencion}</strong>`;
-  document.getElementById("cronometro-atencion").textContent = tiempoRestanteAtencion;
-
-  pintarTableroAtencion();
-
-  intervaloAtencion = setInterval(()=>{
-    tiempoRestanteAtencion--;
-    document.getElementById("cronometro-atencion").textContent = tiempoRestanteAtencion;
-    if(tiempoRestanteAtencion <= 0){
-      detenerAtencionSiActiva();
-      mostrarToast(`¡Bien hecho! Encontraste ${encontradosAtencion} 🔍`);
-      sonidoLogro();
-      lanzarConfeti();
-      estado.monedas += encontradosAtencion;
-      guardarEstado(); actualizarHud(); revisarLogros();
-      setTimeout(iniciarAtencion, 1800);
-    }
-  }, 1000);
-}
-
-function pintarTableroAtencion(){
-  const total = 20;
-  const cantidadObjetivo = aleatorioEntre(4,6);
-  const celdas = [];
-  for(let i=0;i<cantidadObjetivo;i++) celdas.push(objetivoAtencion);
-  while(celdas.length < total){
-    const candidato = fraseAleatoria(ELEMENTOS_ATENCION);
-    if(candidato !== objetivoAtencion) celdas.push(candidato);
-  }
-  const celdasMezcladas = barajar(celdas);
-
-  const tablero = document.getElementById("tablero-atencion");
-  tablero.innerHTML = "";
-  celdasMezcladas.forEach(simbolo=>{
-    const celda = document.createElement("button");
-    celda.className = "celda-atencion";
-    celda.textContent = simbolo;
-    celda.addEventListener("click", ()=>{
-      if(celda.dataset.usada) return;
-      celda.dataset.usada = "1";
-      if(simbolo === objetivoAtencion){
-        celda.classList.add("objetivo-encontrado");
-        encontradosAtencion++;
+    boton.addEventListener("click", () => {
+      grilla.querySelectorAll("button").forEach((b) => (b.disabled = true));
+      const esCorrecta = opcion === pregunta.respuestaCorrecta;
+      if (esCorrecta) {
+        boton.classList.add("bloque-acierto");
+        emitirMonedaDesdeBloque(boton);
         sonidoAcierto();
       } else {
-        celda.classList.add("objetivo-erroneo");
-        sonidoError();
+        boton.classList.add("bloque-intenta-de-nuevo");
+        sonidoIntentaDeNuevo();
       }
+      setTimeout(() => onResultado(esCorrecta), esCorrecta ? 700 : 500);
     });
-    tablero.appendChild(celda);
+
+    grilla.appendChild(boton);
   });
+
+  contenedor.appendChild(grilla);
 }
 
-function detenerAtencionSiActiva(){
-  if(intervaloAtencion){ clearInterval(intervaloAtencion); intervaloAtencion = null; }
+function emitirMonedaDesdeBloque(boton) {
+  const moneda = document.createElement("span");
+  moneda.className = "moneda-flotante";
+  moneda.textContent = "●";
+  moneda.setAttribute("aria-hidden", "true");
+  boton.appendChild(moneda);
+  moneda.addEventListener("animationend", () => moneda.remove());
 }
 
-/* ----------------------------------------------------------------------
-   9. ESTADÍSTICAS Y LOGROS
-   -------------------------------------------------------------------- */
-const DEFINICION_LOGROS = [
-  { id:"maestro_sumas",     emoji:"🏆", nombre:"Maestro de Sumas",        condicion: ()=> (estado.estrellasPorNivel[2]||0) >= 2 },
-  { id:"rey_numeros",       emoji:"👑", nombre:"Rey de los Números",      condicion: ()=> (estado.estrellasPorNivel[1]||0) >= 3 },
-  { id:"explorador_mate",   emoji:"🧭", nombre:"Explorador Matemático",   condicion: ()=> estado.nivelesDesbloqueados.length >= 4 },
-  { id:"super_memoria",     emoji:"🧠", nombre:"Super Memoria",           condicion: ()=> parejasEncontradas >= 8 },
-  { id:"campeon_dia",       emoji:"🌟", nombre:"Campeón del Día",         condicion: ()=> estado.correctas >= 20 },
-  { id:"coleccionista",     emoji:"🪙", nombre:"Coleccionista de Monedas",condicion: ()=> estado.monedas >= 100 }
+/* ============================================================
+   6. AVENTURA KART — minijuego en Canvas 2D
+   ============================================================ */
+const PILOTOS = [
+  { id: "rojo", nombre: "Piloto Rojo", color: "#D98C7A", sprite: ASSETS.VEHICULOS_SELECCION?.[0] },
+  { id: "azul", nombre: "Piloto Azul", color: "#5B7FA6", sprite: ASSETS.VEHICULOS_SELECCION?.[1] },
+  { id: "verde", nombre: "Piloto Verde", color: "#7FAE8E", sprite: ASSETS.VEHICULOS_SELECCION?.[2] },
 ];
 
-function revisarLogros(){
-  DEFINICION_LOGROS.forEach(logro=>{
-    if(!estado.logros[logro.id] && logro.condicion()){
-      estado.logros[logro.id] = true;
-      guardarEstado();
-      mostrarModalLogro(logro);
-    }
-  });
-}
+const META_DISTANCIA = 1000;
+const AVANCE_POR_ACIERTO = 110;
 
-function mostrarModalLogro(logro){
-  document.getElementById("logro-emoji-modal").textContent = logro.emoji;
-  document.getElementById("logro-nombre-modal").textContent = logro.nombre;
-  document.getElementById("modal-logro").classList.remove("oculto");
-  sonidoLogro();
-  lanzarConfeti();
-  hablar(`¡Felicidades! Lograste la medalla ${logro.nombre}`);
-}
-document.getElementById("btn-cerrar-logro").addEventListener("click", ()=>{
-  document.getElementById("modal-logro").classList.add("oculto");
-});
+let estadoCarrera = { distancia: 0, piloto: null, historial: [] };
 
-function pintarStatsYLogros(){
-  const total = estado.correctas + estado.incorrectas;
-  const pct = total>0 ? Math.round((estado.correctas/total)*100) : 0;
-  const minutosUso = Math.max(1, Math.round(estado.tiempoUsoMs/60000));
+function renderizarSeleccionPiloto(idContenedor, onElegir) {
+  const contenedor = document.getElementById(idContenedor);
+  if (!contenedor) return;
+  contenedor.innerHTML = `<h3 class="titulo-seccion">Elige tu vehículo</h3>`;
 
-  const grid = document.getElementById("grid-stats");
-  grid.innerHTML = `
-    <div class="stat-caja"><div class="stat-numero">${estado.nivelActual}</div><div class="stat-etiqueta">Nivel actual</div></div>
-    <div class="stat-caja"><div class="stat-numero">${estado.correctas}</div><div class="stat-etiqueta">Respuestas correctas</div></div>
-    <div class="stat-caja"><div class="stat-numero">${estado.incorrectas}</div><div class="stat-etiqueta">Respuestas incorrectas</div></div>
-    <div class="stat-caja"><div class="stat-numero">${pct}%</div><div class="stat-etiqueta">Éxito</div></div>
-    <div class="stat-caja"><div class="stat-numero">${estado.monedas} 🪙</div><div class="stat-etiqueta">Monedas ganadas</div></div>
-    <div class="stat-caja"><div class="stat-numero">${minutosUso} min</div><div class="stat-etiqueta">Tiempo de uso</div></div>
-  `;
+  const grilla = document.createElement("div");
+  grilla.className = "pilotos-grilla";
 
-  const grid2 = document.getElementById("grid-logros");
-  grid2.innerHTML = "";
-  DEFINICION_LOGROS.forEach(logro=>{
-    const desbloqueado = !!estado.logros[logro.id];
-    const div = document.createElement("div");
-    div.className = "logro-medalla" + (desbloqueado? " desbloqueado":"");
-    div.innerHTML = `<div class="logro-emoji">${logro.emoji}</div><div class="logro-nombre">${logro.nombre}</div>`;
-    grid2.appendChild(div);
-  });
-}
-
-/* ----------------------------------------------------------------------
-   10. ACCESIBILIDAD — modo calma, sonido, animaciones, texto grande
-   -------------------------------------------------------------------- */
-const DEFINICION_SWITCHES = [
-  { clave:"modoCalma",   etiqueta:"😌 Modo bajo estímulo",     claseBody:"modo-calma" },
-  { clave:"sonido",      etiqueta:"🔊 Sonidos y voz",          claseBody:null },
-  { clave:"animaciones", etiqueta:"✨ Animaciones",            claseBody:null },
-  { clave:"textoGrande", etiqueta:"🔠 Texto grande",           claseBody:"texto-grande" }
-];
-
-function pintarSwitches(){
-  const lista = document.getElementById("lista-switches");
-  lista.innerHTML = "";
-  DEFINICION_SWITCHES.forEach(def=>{
-    const activo = estado.ajustes[def.clave];
-    const fila = document.createElement("div");
-    fila.className = "fila-switch";
-    fila.innerHTML = `
-      <span style="font-weight:700;">${def.etiqueta}</span>
-      <div class="switch ${activo? 'on':''}" data-clave="${def.clave}"><div class="bola"></div></div>
-    `;
-    fila.querySelector(".switch").addEventListener("click", (e)=>{
-      estado.ajustes[def.clave] = !estado.ajustes[def.clave];
-      guardarEstado();
-      aplicarAjustesVisuales();
-      pintarSwitches();
-      sonidoClicSuave();
+  PILOTOS.forEach((piloto) => {
+    const tarjeta = document.createElement("button");
+    tarjeta.type = "button";
+    tarjeta.className = "tarjeta-piloto";
+    tarjeta.setAttribute("aria-label", `Elegir ${piloto.nombre}`);
+    tarjeta.style.setProperty("--color-piloto", piloto.color);
+    tarjeta.innerHTML = `<div class="vehiculo-preview" style="background:${piloto.color}"></div><span>${piloto.nombre}</span>`;
+    tarjeta.addEventListener("click", () => {
+      estadoCarrera.piloto = piloto;
+      onElegir(piloto.id);
     });
-    lista.appendChild(fila);
+    grilla.appendChild(tarjeta);
   });
+
+  contenedor.appendChild(grilla);
 }
 
-function aplicarAjustesVisuales(){
-  document.body.classList.toggle("modo-calma", estado.ajustes.modoCalma);
-  document.body.classList.toggle("texto-grande", estado.ajustes.textoGrande);
-  document.body.classList.toggle("sin-animaciones", !estado.ajustes.animaciones);
-}
+function iniciarCarrera({ idCanvas, idPregunta, nivelAdaptativoInicial = 1, onCambioNivel, onMeta }) {
+  const canvas = document.getElementById(idCanvas);
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
 
-document.getElementById("btn-accesibilidad").addEventListener("click", ()=>{
-  pintarSwitches();
-  document.getElementById("modal-accesibilidad").classList.remove("oculto");
-});
-document.getElementById("btn-cerrar-accesibilidad").addEventListener("click", ()=>{
-  document.getElementById("modal-accesibilidad").classList.add("oculto");
-});
+  estadoCarrera.distancia = 0;
+  estadoCarrera.historial = [];
+  let nivelAdaptativo = nivelAdaptativoInicial;
 
-/* ----------------------------------------------------------------------
-   11. HORA DE SOÑAR — animaciones calmantes para ayudar a relajarse y dormir
-   -------------------------------------------------------------------- */
-const pantallaSonar = document.getElementById("pantalla-sonar");
-const lienzoSonar = document.getElementById("lienzo-sonar");
-const ctxSonar = lienzoSonar.getContext("2d");
+  dibujarPista(ctx, canvas, estadoCarrera.distancia);
 
-let escenaSonarActiva = "estrellas";
-let animandoSonar = false;
-let idAnimacionSonar = null;
-let particulasSonar = [];
-
-let sonidoSonarActivo = false;
-let nodosSonido = null; // referencias de Web Audio para poder detener
-let respiracionActiva = false;
-let intervaloRespiracion = null;
-let temporizadorSonarMin = 0;
-let cuentaAtrasSonarId = null;
-
-function ajustarLienzoSonar(){
-  lienzoSonar.width = window.innerWidth;
-  lienzoSonar.height = window.innerHeight;
-}
-window.addEventListener("resize", ()=>{
-  if(pantallaSonar.classList.contains("activa")) ajustarLienzoSonar();
-});
-
-function abrirModoSonar(){
-  sonidoClicSuave();
-  detenerAtencionSiActiva();
-  pantallaSonar.classList.add("activa");
-  ajustarLienzoSonar();
-  iniciarParticulasSonar(escenaSonarActiva);
-  if(!animandoSonar){ animandoSonar = true; idAnimacionSonar = requestAnimationFrame(animarSonar); }
-  hablar("Hora de soñar. Respira tranquilo y mira las lucecitas.");
-}
-
-function cerrarModoSonar(){
-  pantallaSonar.classList.remove("activa");
-  animandoSonar = false;
-  if(idAnimacionSonar) cancelAnimationFrame(idAnimacionSonar);
-  detenerSonidoSonar();
-  detenerRespiracionGuiada();
-  detenerTemporizadorSonar();
-}
-document.getElementById("btn-cerrar-sonar").addEventListener("click", cerrarModoSonar);
-
-// --- Selección de escena ---
-document.querySelectorAll(".sonar-escena-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    sonidoClicSuave();
-    document.querySelectorAll(".sonar-escena-btn").forEach(b=> b.classList.remove("activa"));
-    btn.classList.add("activa");
-    escenaSonarActiva = btn.dataset.escena;
-    iniciarParticulasSonar(escenaSonarActiva);
-  });
-});
-
-// --- Generación de partículas según la escena elegida ---
-function iniciarParticulasSonar(escena){
-  particulasSonar = [];
-  const ancho = lienzoSonar.width, alto = lienzoSonar.height;
-
-  if(escena === "estrellas"){
-    for(let i=0;i<70;i++){
-      particulasSonar.push({
-        tipo:"estrella",
-        x: Math.random()*ancho, y: Math.random()*alto*0.85,
-        r: Math.random()*1.6+0.6,
-        fase: Math.random()*Math.PI*2,
-        velFase: 0.01 + Math.random()*0.02
-      });
-    }
-  } else if(escena === "olas"){
-    for(let i=0;i<4;i++){
-      particulasSonar.push({
-        tipo:"ola",
-        offsetY: alto*0.55 + i*alto*0.1,
-        amplitud: 14 + i*4,
-        velocidad: 0.01 + i*0.004,
-        fase: Math.random()*Math.PI*2,
-        opacidad: 0.18 + i*0.08
-      });
-    }
-  } else if(escena === "luciernagas"){
-    for(let i=0;i<28;i++){
-      particulasSonar.push({
-        tipo:"luciernaga",
-        x: Math.random()*ancho, y: Math.random()*alto,
-        r: Math.random()*2.4+1.6,
-        fase: Math.random()*Math.PI*2,
-        velFase: 0.015 + Math.random()*0.02,
-        vx: (Math.random()-0.5)*0.4,
-        vy: (Math.random()-0.5)*0.3
-      });
-    }
-  } else if(escena === "lluvia"){
-    for(let i=0;i<60;i++){
-      particulasSonar.push({
-        tipo:"lluvia",
-        x: Math.random()*ancho, y: Math.random()*alto,
-        largo: Math.random()*16+10,
-        vel: Math.random()*3+3,
-        opacidad: Math.random()*0.3+0.15
-      });
-    }
-  }
-}
-
-function animarSonar(){
-  const ancho = lienzoSonar.width, alto = lienzoSonar.height;
-  ctxSonar.clearRect(0,0,ancho,alto);
-
-  if(escenaSonarActiva === "estrellas"){
-    particulasSonar.forEach(p=>{
-      p.fase += p.velFase;
-      const brillo = 0.4 + 0.6*Math.abs(Math.sin(p.fase));
-      ctxSonar.beginPath();
-      ctxSonar.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctxSonar.fillStyle = `rgba(238,240,255,${brillo.toFixed(2)})`;
-      ctxSonar.fill();
-    });
-  } else if(escenaSonarActiva === "olas"){
-    particulasSonar.forEach(p=>{
-      p.fase += p.velocidad;
-      ctxSonar.beginPath();
-      ctxSonar.moveTo(0, p.offsetY);
-      for(let x=0; x<=ancho; x+=14){
-        const y = p.offsetY + Math.sin(x*0.015 + p.fase)*p.amplitud;
-        ctxSonar.lineTo(x,y);
+  function siguientePregunta() {
+    const pregunta = generarPregunta(nivelAdaptativo);
+    renderizarPregunta(idPregunta, pregunta, (correcto) => {
+      estadoCarrera.historial.push(correcto);
+      const nuevoNivel = ajustarNivelAdaptativo(nivelAdaptativo, estadoCarrera.historial);
+      if (nuevoNivel !== nivelAdaptativo) {
+        nivelAdaptativo = nuevoNivel;
+        onCambioNivel?.(nivelAdaptativo);
       }
-      ctxSonar.lineTo(ancho, alto); ctxSonar.lineTo(0, alto); ctxSonar.closePath();
-      ctxSonar.fillStyle = `rgba(120,140,255,${p.opacidad})`;
-      ctxSonar.fill();
-    });
-  } else if(escenaSonarActiva === "luciernagas"){
-    particulasSonar.forEach(p=>{
-      p.fase += p.velFase;
-      p.x += p.vx; p.y += p.vy;
-      if(p.x<0) p.x=ancho; if(p.x>ancho) p.x=0;
-      if(p.y<0) p.y=alto; if(p.y>alto) p.y=0;
-      const brillo = 0.3 + 0.7*Math.abs(Math.sin(p.fase));
-      ctxSonar.beginPath();
-      ctxSonar.arc(p.x, p.y, p.r*1.8, 0, Math.PI*2);
-      ctxSonar.fillStyle = `rgba(180,255,200,${(brillo*0.35).toFixed(2)})`;
-      ctxSonar.fill();
-      ctxSonar.beginPath();
-      ctxSonar.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctxSonar.fillStyle = `rgba(220,255,210,${brillo.toFixed(2)})`;
-      ctxSonar.fill();
-    });
-  } else if(escenaSonarActiva === "lluvia"){
-    particulasSonar.forEach(p=>{
-      p.y += p.vel;
-      if(p.y > alto){ p.y = -p.largo; p.x = Math.random()*ancho; }
-      ctxSonar.beginPath();
-      ctxSonar.moveTo(p.x, p.y);
-      ctxSonar.lineTo(p.x, p.y + p.largo);
-      ctxSonar.strokeStyle = `rgba(210,220,255,${p.opacidad})`;
-      ctxSonar.lineWidth = 1.4;
-      ctxSonar.stroke();
+
+      if (correcto) {
+        estadoCarrera.distancia = Math.min(META_DISTANCIA, estadoCarrera.distancia + AVANCE_POR_ACIERTO);
+        sonidoAvanceKart();
+        animarAvance(ctx, canvas, estadoCarrera.distancia);
+      }
+
+      if (estadoCarrera.distancia >= META_DISTANCIA) {
+        sonidoVictoriaNivel();
+        document.getElementById(idPregunta).innerHTML = "";
+        onMeta?.();
+        return;
+      }
+      siguientePregunta();
     });
   }
 
-  if(animandoSonar) idAnimacionSonar = requestAnimationFrame(animarSonar);
+  siguientePregunta();
 }
 
-// --- Guía de respiración: inhalar 4s, exhalar 6s, en bucle ---
-const circuloRespiracion = document.getElementById("circulo-respiracion");
-const textoRespiracion = document.getElementById("texto-respiracion");
-const btnRespiracionToggle = document.getElementById("btn-respiracion-toggle");
+function animarAvance(ctx, canvas, distanciaObjetivo) {
+  const duracionMs = 450;
+  const inicio = performance.now();
+  const distanciaInicial = distanciaObjetivo - AVANCE_POR_ACIERTO;
 
-function cicloRespiracion(){
-  circuloRespiracion.classList.remove("exhalar");
-  circuloRespiracion.classList.add("inhalar");
-  textoRespiracion.textContent = "Respira... entra el aire 🌬️";
-  setTimeout(()=>{
-    if(!respiracionActiva) return;
-    circuloRespiracion.classList.remove("inhalar");
-    circuloRespiracion.classList.add("exhalar");
-    textoRespiracion.textContent = "Suelta el aire despacito... 😌";
-  }, 4000);
-}
-
-function iniciarRespiracionGuiada(){
-  respiracionActiva = true;
-  btnRespiracionToggle.classList.add("on");
-  cicloRespiracion();
-  intervaloRespiracion = setInterval(cicloRespiracion, 10000);
-}
-function detenerRespiracionGuiada(){
-  respiracionActiva = false;
-  btnRespiracionToggle.classList.remove("on");
-  if(intervaloRespiracion){ clearInterval(intervaloRespiracion); intervaloRespiracion = null; }
-  circuloRespiracion.classList.remove("inhalar","exhalar");
-  textoRespiracion.textContent = "Mira la lucecita... respira con calma";
-}
-btnRespiracionToggle.addEventListener("click", ()=>{
-  sonidoClicSuave();
-  if(respiracionActiva) detenerRespiracionGuiada();
-  else iniciarRespiracionGuiada();
-});
-
-// --- Sonido ambiental relajante (tono suave en bucle, generado, sin archivos) ---
-const btnMusicaToggle = document.getElementById("btn-musica-toggle");
-const btnSonidoSonar = document.getElementById("btn-sonido-sonar");
-let silenciadoSonar = false;
-
-function iniciarSonidoSonar(){
-  const ctx = obtenerContextoAudio();
-  if(!ctx) return;
-  const osc1 = ctx.createOscillator();
-  const osc2 = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc1.type = "sine"; osc1.frequency.value = 196; // sonido grave, tipo "ola lejana"
-  osc2.type = "sine"; osc2.frequency.value = 247;
-  gain.gain.value = 0.0001;
-  osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
-  osc1.start(); osc2.start();
-  gain.gain.exponentialRampToValueAtTime(silenciadoSonar ? 0.0001 : 0.05, ctx.currentTime + 2);
-  nodosSonido = { osc1, osc2, gain, ctx };
-  sonidoSonarActivo = true;
-  btnMusicaToggle.classList.add("on");
-}
-function detenerSonidoSonar(){
-  if(nodosSonido){
-    try{
-      const { osc1, osc2, gain, ctx } = nodosSonido;
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1);
-      setTimeout(()=>{ try{ osc1.stop(); osc2.stop(); }catch(e){} }, 1100);
-    }catch(e){}
-    nodosSonido = null;
+  function paso(ahora) {
+    const t = Math.min(1, (ahora - inicio) / duracionMs);
+    const distanciaActual = distanciaInicial + (distanciaObjetivo - distanciaInicial) * t;
+    dibujarPista(ctx, canvas, distanciaActual);
+    if (t < 1) requestAnimationFrame(paso);
   }
-  sonidoSonarActivo = false;
-  btnMusicaToggle.classList.remove("on");
+  requestAnimationFrame(paso);
 }
-btnMusicaToggle.addEventListener("click", ()=>{
-  sonidoClicSuave();
-  if(sonidoSonarActivo) detenerSonidoSonar();
-  else iniciarSonidoSonar();
-});
-btnSonidoSonar.addEventListener("click", ()=>{
-  silenciadoSonar = !silenciadoSonar;
-  btnSonidoSonar.textContent = silenciadoSonar ? "🔇" : "🔊";
-  if(nodosSonido){
-    nodosSonido.gain.gain.exponentialRampToValueAtTime(silenciadoSonar ? 0.0001 : 0.05, nodosSonido.ctx.currentTime + 0.6);
-  }
-});
 
-// --- Temporizador para apagar el modo Soñar automáticamente ---
-function detenerTemporizadorSonar(){
-  if(cuentaAtrasSonarId){ clearTimeout(cuentaAtrasSonarId); cuentaAtrasSonarId = null; }
-  document.querySelectorAll(".sonar-chip-tiempo").forEach(c=> c.classList.remove("activa"));
+function dibujarPista(ctx, canvas, distancia) {
+  const ancho = canvas.width;
+  const alto = canvas.height;
+  const progreso = distancia / META_DISTANCIA;
+
+  ctx.fillStyle = "#CFE3EC";
+  ctx.fillRect(0, 0, ancho, alto * 0.55);
+
+  ctx.fillStyle = "#9C9C9C";
+  ctx.fillRect(0, alto * 0.55, ancho, alto * 0.45);
+
+  ctx.strokeStyle = "#FAF6EF";
+  ctx.lineWidth = 4;
+  ctx.setLineDash([18, 18]);
+  ctx.beginPath();
+  ctx.moveTo(0, alto * 0.78);
+  ctx.lineTo(ancho, alto * 0.78);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  const xMeta = ancho - 50;
+  ctx.fillStyle = "#3A3A3A";
+  ctx.fillRect(xMeta, alto * 0.45, 4, alto * 0.4);
+  ctx.fillStyle = "#D98C7A";
+  ctx.fillRect(xMeta + 4, alto * 0.45, 22, 16);
+
+  const piloto = estadoCarrera.piloto || PILOTOS[0];
+  const xKart = 40 + progreso * (xMeta - 90);
+  const yKart = alto * 0.78;
+  dibujarKart(ctx, xKart, yKart, piloto.color);
+
+  ctx.fillStyle = "#E8C46844";
+  ctx.fillRect(20, 14, ancho - 40, 10);
+  ctx.fillStyle = "#E8C468";
+  ctx.fillRect(20, 14, (ancho - 40) * progreso, 10);
 }
-document.querySelectorAll(".sonar-chip-tiempo").forEach(chip=>{
-  chip.addEventListener("click", ()=>{
-    sonidoClicSuave();
-    detenerTemporizadorSonar();
-    chip.classList.add("activa");
-    const minutos = parseInt(chip.dataset.min, 10);
-    if(minutos > 0){
-      cuentaAtrasSonarId = setTimeout(()=>{
-        cerrarModoSonar();
-      }, minutos*60000);
-    }
+
+function dibujarKart(ctx, x, y, color) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  ctx.fillStyle = "rgba(0,0,0,0.12)";
+  ctx.beginPath();
+  ctx.ellipse(0, 16, 26, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.roundRect(-24, -10, 48, 22, 8);
+  ctx.fill();
+
+  ctx.fillStyle = "#FAF6EF";
+  ctx.beginPath();
+  ctx.roundRect(-10, -20, 24, 14, 6);
+  ctx.fill();
+
+  ctx.fillStyle = "#3A3A3A";
+  ctx.beginPath();
+  ctx.arc(-16, 14, 7, 0, Math.PI * 2);
+  ctx.arc(16, 14, 7, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* ============================================================
+   7. APP — orquestador principal (auth, HUD, navegación)
+   ============================================================ */
+let usuarioActual = null;
+let progreso = null;
+
+const vistaBienvenida = document.getElementById("vista-bienvenida");
+const vistaApp = document.getElementById("vista-app");
+const btnIniciarSesion = document.getElementById("btn-iniciar-sesion");
+const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
+
+function alternarVistas(autenticado) {
+  vistaBienvenida.hidden = autenticado;
+  vistaApp.hidden = !autenticado;
+}
+
+function inicializarHud() {
+  document.getElementById("hud-saludo").textContent =
+    `¡Hola, ${usuarioActual.displayName?.split(" ")[0] || "Tier"}! 👋`;
+
+  const avatar = document.getElementById("hud-avatar");
+  avatar.src = usuarioActual.photoURL || ASSETS.AVATAR_DEFECTO;
+  avatar.alt = usuarioActual.displayName || "Tu avatar";
+
+  document.getElementById("hud-monedas").textContent = progreso.monedas;
+  document.getElementById("hud-estrellas").textContent = progreso.estrellas;
+}
+
+async function sincronizar() {
+  await guardarProgreso(usuarioActual.uid, progreso);
+}
+
+function iniciarModuloKart() {
+  const contenedorSeleccion = document.getElementById("seleccion-piloto");
+  const contenedorJuego = document.getElementById("juego-kart");
+  contenedorJuego.hidden = true;
+  contenedorSeleccion.hidden = false;
+
+  renderizarSeleccionPiloto("seleccion-piloto", () => {
+    contenedorSeleccion.hidden = true;
+    contenedorJuego.hidden = false;
+
+    iniciarCarrera({
+      idCanvas: "canvas-pista",
+      idPregunta: "contenedor-pregunta-kart",
+      nivelAdaptativoInicial: progreso.nivelAdaptativo,
+      onCambioNivel: (nuevoNivel) => {
+        progreso.nivelAdaptativo = nuevoNivel;
+        sincronizar();
+      },
+      onMeta: () => {
+        progreso.estrellas += 1;
+        progreso.monedas += 5;
+        inicializarHud();
+        sincronizar();
+        decirMascota("globo-app", "¡Llegaste a la meta! Qué bien lo hiciste.");
+      },
+    });
   });
-});
-
-/* ----------------------------------------------------------------------
-   INICIALIZACIÓN GENERAL
-   -------------------------------------------------------------------- */
-function iniciar(){
-  aplicarAjustesVisuales();
-  pintarMascota("mascota-svg-bienvenida");
-  decirMascota("globo-bienvenida", "¡Vamos a jugar y aprender juntos!", false);
-  actualizarHud();
-  // Mensaje de bienvenida hablado, breve y opcional (respeta el ajuste de sonido)
-  setTimeout(()=> hablar("Hola Tier. Hoy aprenderemos jugando."), 600);
 }
 
-iniciar();
+function mostrarSeccion(idSeccion) {
+  document.querySelectorAll(".seccion-app").forEach((s) => { s.hidden = s.id !== idSeccion; });
+}
 
-})();
+btnIniciarSesion.addEventListener("click", async () => {
+  sonidoClicSuave();
+  try {
+    await iniciarSesionGoogle();
+  } catch {
+    decirMascota("globo-bienvenida", "No pudimos iniciar sesión. ¿Probamos otra vez?");
+  }
+});
+
+btnCerrarSesion.addEventListener("click", async () => {
+  sonidoClicSuave();
+  await cerrarSesionApp();
+});
+
+document.getElementById("nav-aventura-kart").addEventListener("click", () => {
+  sonidoClicSuave();
+  mostrarSeccion("seccion-kart");
+  iniciarModuloKart();
+});
+
+document.getElementById("nav-inicio").addEventListener("click", () => {
+  sonidoClicSuave();
+  mostrarSeccion("seccion-inicio");
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    usuarioActual = user;
+    progreso = await cargarProgreso(user.uid);
+    alternarVistas(true);
+    inicializarHud();
+    renderizarMascota("mascota-app");
+    decirMascota("globo-app", "¡Vamos a jugar y aprender juntos!");
+    mostrarSeccion("seccion-inicio");
+  } else {
+    usuarioActual = null;
+    progreso = null;
+    alternarVistas(false);
+    renderizarMascota("mascota-bienvenida");
+    decirMascota("globo-bienvenida", "Hola, soy Bolu. ¿Listo para jugar?");
+  }
+});
 </script>
-
 </body>
 </html>
