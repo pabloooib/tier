@@ -2,77 +2,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Reino de Tier — Retro Kart</title>
-
-<!-- ═══════════════════════════════════════════════════
-     FAVICON INLINE — sin dependencia externa
-════════════════════════════════════════════════════ -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b7fa6'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle'%3E🏎%3C/text%3E%3C/svg%3E" />
-
+<link rel="icon" href="mario-assets/favicon.ico"/>
 <style>
-/* ═══════════════════════════════════════════════════════════
-   TIPOGRAFÍA — Mario Kart F2 embebida como base64
-════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════
+   FUENTE MARIO KART DESDE ASSETS DEL ZIP
+════════════════════════════════════════════════════ */
 @font-face {
   font-family: "MarioKart";
-  src: url("data:font/truetype;base64,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AAAAAAAAADQAAAABAAAAAAABAA0AOwABAAAAAAACAAcANAABAAAAAAADABoAOwABAAAAAAAEAA0AOwABAAAAAAAFAC4AVQABAAAAAAAGAAsAgwABAAAAAAAKAD8AjgADAAEEAwACAAwC0wADAAEEBQACABAAzQADAAEEBgACAAwA3QADAAEEBwACABAA6QADAAEECAACABAA+QADAAEECQAAAGgBCQADAAEECQABABoBfwADAAEECQACAA4BcQADAAEECQADADQBfwADAAEECQAEABoBfwADAAEECQAFAFwBswADAAEECQAGABYCDwADAAEECQAKAH4CJQADAAEECgACAAwC0wADAAEECwACABACowADAAEEDAACAAwC0wADAAEEDgACAAwC8QADAAEEEAACAA4CswADAAEEEwACABICwQADAAEEFAACAAwC0wADAAEEFQACABAC0wADAAEEFgACAAwC0wADAAEEGQACAA4C4wADAAEEGwACABAC8QADAAEEHQACAAwC0wADAAEEHwACAAwC0wADAAEEJAACAA4DAQADAAEELQACAA4DDwADAAEICgACAAwC0wADAAEIFgACAAwC0wADAAEMCgACAAwC0wADAAEMDAACAAwC01R5cGVmYWNlIKkgKHlvdXIgY29tcGFueSkuIDIwMTQuIEFsbCBSaWdodHMgUmVzZXJ2ZWRSZWd1bGFyTWFyaW8gS2FydCBGMjpWZXJzaW9uIDEuMDBWZXJzaW9uIDEuMDAgTm92ZW1iZXIgMSwgMjAxNCwgaW5pdGlhbCByZWxlYXNlTWFyaW9LYXJ0RjJUaGlzIGZvbnQgd2FzIGNyZWF0ZWQgdXNpbmcgRm9udENyZWF0b3IgNi41IGZyb20gSGlnaC1Mb2dpYy5jb20AbwBiAHkBDQBlAGoAbgDpAG4AbwByAG0AYQBsAFMAdABhAG4AZABhAHIAZAOaA7EDvQO/A70DuQO6A6wAVAB5AHAAZQBmAGEAYwBlACAAqQAgACgAeQBvAHUAcgAgAGMAbwBtAHAAYQBuAHkAKQAuACAAMgAwADEANAAuACAAQQBsAGwAIABSAGkAZwBoAHQAcwAgAFIAZQBzAGUAcgB2AGUAZABSAGUAZwB1AGwAYQByAE0AYQByAGkAbwAgAEsAYQByAHQAIABGADIAOgBWAGUAcgBzAGkAbwBuACAAMQAuADAAMABWAGUAcgBzAGkAbwBuACAAMQAuADAAMAAgAE4AbwB2AGUAbQBiAGUAcgAgADEALAAgADIAMAAxADQALAAgAGkAbgBpAHQAaQBhAGwAIAByAGUAbABlAGEAcwBlAE0AYQByAGkAbwBLAGEAcgB0AEYAMgBUAGgAaQBzACAAZgBvAG4AdAAgAHcAYQBzACAAYwByAGUAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAEYAbwBuAHQAQwByAGUAYQB0AG8AcgAgADYALgA1ACAAZgByAG8AbQAgAEgAaQBnAGgALQBMAG8AZwBpAGMALgBjAG8AbQBOAG8AcgBtAGEAYQBsAGkATgBvAHIAbQBhAGwAZQBTAHQAYQBuAGQAYQBhAHIAZABOAG8AcgBtAGEAbABuAHkEHgQxBEsERwQ9BEsEOQBOAG8AcgBtAOEAbABuAGUATgBhAHYAYQBkAG4AbwBBAHIAcgB1AG4AdABhAAACAAAAAAAA/ycAlgAAAAAAAAAAAAAAAAAAAAAAAAAAAOwAAAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEAQgBDAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAKMAhACFAL0AlgDoAIYAjgCLAJ0AqQCkAIoA2gCDAJMBAgEDAI0AlwCIAMMA3gEEAJ4AqgD1APQA9gCiAK0AyQDHAK4AYgBjAJAAZADLAGUAyADKAM8AzADNAM4A6QBmANMA0ADRAK8AZwDwAJEA1gDUANUAaADrAO0AiQBqAGkAawBtAGwAbgCgAG8AcQBwAHIAcwB1AHQAdgB3AOoAeAB6AHkAewB9AHwAuAChAH8AfgCAAIEA7ADuALoA1wDYAOEBBQDbANwA3QDgANkA3wCyALMAtgC3AMQAtAC1AMUAggDCAIcAqwC+AL8AvAD3AQYBBwEIAQkAjACYAKgAmgCZAO8ApQCSAJwApwCUAJUBCgELB3VuaTAwQjIHdW5pMDBCMwd1bmkwMEI5B3VuaTAyQzkEbGlyYQZwZXNldGEERXVybwlhZmlpNjEzNTIHdW5pRjAwMQd1bmlGMDAyAAAAAAAAAf//AAI=") format("truetype");
+  src: url("mario-assets/fonts/mario_kart_f2.ttf") format("truetype");
   font-weight: 400 700;
   font-display: swap;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DESIGN TOKENS — paleta pastel/mate retro arcade
-════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════════════════ */
 :root {
-  /* Paleta principal */
-  --c-sky:       #5b7fa6;
-  --c-terra:     #d98c7a;
-  --c-sage:      #7fae8e;
-  --c-mustard:   #e8c468;
-  --c-cream:     #faf6ef;
-  --c-cream-2:   #f1ece1;
-  --c-txt:       #3a3a3a;
-  --c-txt-soft:  #6b6b6b;
-  --c-border:    #e3dcc9;
-  --c-glass:     rgba(250,246,239,0.70);
-  --c-glass-dk:  rgba(20,20,36,0.82);
+  --c-bg:        #080c18;
+  --c-bg2:       #0d1224;
+  --c-panel:     #111827;
+  --c-panel2:    #1a2235;
+  --c-sky:       #4f8ef7;
+  --c-sky-glow:  rgba(79,142,247,0.35);
+  --c-gold:      #f5c842;
+  --c-gold-dim:  rgba(245,200,66,0.18);
+  --c-terra:     #e8725a;
+  --c-sage:      #56c99a;
+  --c-purple:    #9b72f5;
+  --c-cream:     #eef2ff;
+  --c-txt:       #e8ecf5;
+  --c-txt-soft:  #7a8aaa;
+  --c-border:    rgba(79,142,247,0.18);
+  --c-border2:   rgba(79,142,247,0.08);
+  --c-glass:     rgba(17,24,39,0.85);
 
-  /* Tipografía */
-  --f-game: "MarioKart", "Trebuchet MS", system-ui, sans-serif;
-  --f-body: system-ui, -apple-system, sans-serif;
-  --f-mono: "JetBrains Mono", "Courier New", monospace;
+  --f-game: "MarioKart","Trebuchet MS",system-ui,sans-serif;
+  --f-body: system-ui,-apple-system,sans-serif;
+  --f-mono: "JetBrains Mono","Courier New",monospace;
 
-  /* Radios */
-  --r-xs:   10px;
-  --r-sm:   16px;
-  --r-md:   24px;
-  --r-lg:   32px;
+  --r-xs:   8px;
+  --r-sm:   14px;
+  --r-md:   20px;
+  --r-lg:   28px;
   --r-pill: 999px;
 
-  /* Sombras */
-  --sh-float: 0 8px 32px rgba(58,58,58,0.12), 0 2px 8px rgba(58,58,58,0.06);
-  --sh-soft:  0 4px 14px rgba(58,58,58,0.08);
-  --sh-hud:   0 4px 28px rgba(58,58,58,0.14), 0 1px 4px rgba(58,58,58,0.08);
-  --sh-btn:   0 6px 20px rgba(91,127,166,0.25);
-
-  /* Animaciones */
-  --dur:  300ms;
+  --sh-sky:    0 0 32px rgba(79,142,247,0.25), 0 4px 16px rgba(0,0,0,0.5);
+  --sh-gold:   0 0 24px rgba(245,200,66,0.3),  0 4px 12px rgba(0,0,0,0.4);
+  --sh-panel:  0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+  --dur: 280ms;
   --ease: cubic-bezier(0.22,1,0.36,1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    transition-duration: 0.001ms !important;
-  }
+  *,*::before,*::after { animation-duration:0.001ms!important; transition-duration:0.001ms!important; }
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior:smooth; }
 
 body {
-  background: var(--c-cream);
+  background: var(--c-bg);
   color: var(--c-txt);
   font-family: var(--f-body);
   line-height: 1.55;
@@ -81,15 +74,16 @@ body {
 }
 
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
 button:focus-visible, a:focus-visible {
-  outline: 3px solid var(--c-sky);
+  outline: 2px solid var(--c-sky);
   outline-offset: 3px;
   border-radius: var(--r-xs);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PANTALLA BIENVENIDA
-════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════
+   PANTALLA BIENVENIDA — ARCADE NIGHT
+════════════════════════════════════════════════════ */
 .welcome-screen {
   min-height: 100dvh;
   display: flex;
@@ -100,203 +94,294 @@ button:focus-visible, a:focus-visible {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%,  rgba(91,127,166,0.18) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 35% at 85% 95%, rgba(217,140,122,0.14) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(232,196,104,0.12) 0%, transparent 55%),
-    linear-gradient(175deg, var(--c-cream) 0%, var(--c-cream-2) 100%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(79,142,247,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(155,114,245,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 35% at 5%  90%,  rgba(86,201,154,0.12) 0%, transparent 55%),
+    linear-gradient(180deg, #060a14 0%, #0a1020 60%, #080c18 100%);
 }
 
-/* Burbujas decorativas de fondo */
-.welcome-screen::before,
-.welcome-screen::after {
-  content: "";
+/* Estrellas de fondo animadas */
+.stars-bg {
+  position:absolute; inset:0; pointer-events:none; overflow:hidden;
+}
+.star {
   position: absolute;
   border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.22;
-  animation: drift 12s ease-in-out infinite alternate;
+  background: #fff;
+  animation: twinkle linear infinite;
 }
-.welcome-screen::before {
-  width: 420px; height: 420px;
-  background: radial-gradient(circle, var(--c-mustard) 0%, transparent 70%);
-  top: -130px; right: -100px;
-  animation-delay: 0s;
-}
-.welcome-screen::after {
-  width: 340px; height: 340px;
-  background: radial-gradient(circle, var(--c-sky) 0%, transparent 70%);
-  bottom: -80px; left: -90px;
-  animation-delay: -5s;
+@keyframes twinkle {
+  0%,100% { opacity:0.15; transform:scale(1); }
+  50%      { opacity:0.9;  transform:scale(1.4); }
 }
 
-@keyframes drift {
-  from { transform: translate(0,0) scale(1); }
-  to   { transform: translate(20px, 15px) scale(1.06); }
+/* Línea de pista decorativa */
+.welcome-track-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--c-sky), var(--c-gold), var(--c-sky), transparent);
+  opacity: 0.5;
 }
 
 .welcome-card {
   background: var(--c-glass);
-  border: 1.5px solid rgba(227,220,201,0.75);
+  border: 1px solid rgba(79,142,247,0.25);
   border-radius: var(--r-lg);
-  box-shadow: var(--sh-float);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  padding: 44px 40px 40px;
+  box-shadow: var(--sh-panel), 0 0 80px rgba(79,142,247,0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 48px 44px 44px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 22px;
-  max-width: 400px;
+  gap: 20px;
+  max-width: 420px;
   width: 100%;
   position: relative;
   z-index: 1;
 }
 
+/* Esquinas decorativas */
+.welcome-card::before,
+.welcome-card::after {
+  content: "";
+  position: absolute;
+  width: 18px; height: 18px;
+  border-color: var(--c-sky);
+  border-style: solid;
+  opacity: 0.6;
+}
+.welcome-card::before { top:12px; left:12px;  border-width: 2px 0 0 2px; }
+.welcome-card::after  { bottom:12px; right:12px; border-width: 0 2px 2px 0; }
+
+.welcome-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcome-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: var(--c-sky);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
 .welcome-card h1 {
   font-family: var(--f-game);
-  font-size: clamp(22px,5vw,34px);
-  color: var(--c-sky);
+  font-size: clamp(26px,6vw,40px);
+  color: var(--c-cream);
   text-align: center;
-  line-height: 1.2;
-  letter-spacing: 1px;
+  line-height: 1.15;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 30px rgba(79,142,247,0.5);
 }
 .welcome-card h1 em {
   font-style: normal;
-  color: var(--c-terra);
+  color: var(--c-gold);
+  text-shadow: 0 0 20px rgba(245,200,66,0.5);
 }
 
-.mascot-wrap { width: 108px; height: 108px; flex-shrink: 0; }
-.mascot-img  { width: 100%; height: 100%; object-fit: contain; }
+.mascot-wrap { width: 110px; height: 110px; flex-shrink: 0; }
+.mascot-wrap svg, .mascot-wrap img { width:100%; height:100%; object-fit:contain; }
 
 .speech-bubble {
-  background: #fff;
-  border: 1.5px solid var(--c-border);
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
   border-radius: var(--r-md);
-  padding: 9px 16px;
-  font-size: 14px;
+  padding: 10px 18px;
+  font-size: 13px;
   color: var(--c-txt-soft);
   text-align: center;
-  max-width: 260px;
+  max-width: 280px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
   position: relative;
 }
 .speech-bubble::after {
-  content: "";
-  position: absolute;
-  top: -8px; left: 50%;
-  transform: translateX(-50%);
-  border: 8px solid transparent;
-  border-top: none;
-  border-bottom-color: #fff;
+  content:"";
+  position:absolute;
+  bottom:-8px; left:50%;
+  transform:translateX(-50%);
+  border:8px solid transparent;
+  border-top-color: var(--c-panel);
+  border-bottom:none;
 }
-.speech-bubble.visible { opacity: 1; transform: translateY(0); }
+.speech-bubble.visible { opacity:1; transform:translateY(0); }
 
 .btn-login {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: #fff;
-  border: 2px solid var(--c-border);
+  background: linear-gradient(135deg, #1a2a4a 0%, #0f1c38 100%);
+  border: 1.5px solid rgba(79,142,247,0.4);
   border-radius: var(--r-pill);
-  padding: 14px 28px;
-  font-size: 16px;
+  padding: 15px 32px;
+  font-size: 15px;
   font-weight: 700;
   font-family: var(--f-body);
-  color: var(--c-txt);
-  box-shadow: var(--sh-soft);
+  color: var(--c-cream);
+  box-shadow: var(--sh-sky);
   width: 100%;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color 200ms;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color 200ms, background 200ms;
+  position: relative;
+  overflow: hidden;
+}
+.btn-login::before {
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(79,142,247,0.15), transparent);
+  opacity:0;
+  transition: opacity 200ms;
 }
 .btn-login:hover {
   transform: translateY(-3px);
-  box-shadow: var(--sh-float);
+  box-shadow: 0 0 40px rgba(79,142,247,0.4), 0 8px 24px rgba(0,0,0,0.5);
   border-color: var(--c-sky);
 }
-.btn-login:active  { transform: translateY(0); }
-.btn-login:disabled { opacity: 0.6; pointer-events: none; }
-.btn-login svg { width: 22px; height: 22px; flex-shrink: 0; }
+.btn-login:hover::before { opacity:1; }
+.btn-login:active { transform: translateY(0); }
+.btn-login:disabled { opacity:0.5; pointer-events:none; }
+.btn-login svg { width:22px; height:22px; flex-shrink:0; }
 
-/* ═══════════════════════════════════════════════════════════
-   HUD — ISLA DINÁMICA FLOTANTE
-════════════════════════════════════════════════════════════ */
+/* Info controles en bienvenida */
+.controls-hint {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ctrl-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--c-panel);
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-pill);
+  padding: 5px 12px;
+  font-size: 11px;
+  color: var(--c-txt-soft);
+  font-family: var(--f-mono);
+}
+.ctrl-badge span { font-size:14px; }
+
+/* ════════════════════════════════════════════════════
+   HUD — BARRA SUPERIOR PREMIUM
+════════════════════════════════════════════════════ */
 .hud-shell {
   position: sticky;
-  top: 10px;
-  z-index: 200;
-  padding: 0 14px;
-  pointer-events: none;
+  top: 0;
+  z-index: 300;
+  padding: 8px 12px;
+  background: rgba(8,12,24,0.95);
+  border-bottom: 1px solid var(--c-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
+
 .hud {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 9px 16px;
-  background: var(--c-glass);
-  border: 1.5px solid rgba(227,220,201,0.8);
-  border-radius: var(--r-pill);
-  box-shadow: var(--sh-hud);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  pointer-events: all;
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
-  transition: box-shadow 300ms;
 }
-.hud:hover { box-shadow: 0 8px 40px rgba(58,58,58,0.17); }
 
-.hud-user  { display: flex; align-items: center; gap: 9px; }
+.hud-user { display:flex; align-items:center; gap:10px; }
 .hud-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  border: 2.5px solid var(--c-sky); object-fit: cover; flex-shrink: 0;
+  width:36px; height:36px; border-radius:50%;
+  border:2px solid var(--c-sky);
+  object-fit:cover; flex-shrink:0;
+  box-shadow: 0 0 12px var(--c-sky-glow);
 }
 .hud-name {
   font-family: var(--f-game);
-  font-size: 14px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  max-width: 140px;
+  font-size: 13px;
+  color: var(--c-cream);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  max-width: 130px;
 }
 
-.hud-stats { display: flex; gap: 10px; }
+.hud-stats { display:flex; gap:8px; }
 .hud-chip {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--c-cream-2);
+  display:flex; align-items:center; gap:5px;
+  background: var(--c-panel);
   border: 1px solid var(--c-border);
   border-radius: var(--r-pill);
-  padding: 4px 10px;
+  padding: 4px 11px;
   font-family: var(--f-mono);
-  font-size: 12px; font-weight: 700;
+  font-size:12px; font-weight:700;
+  color: var(--c-cream);
 }
-.coin-dot {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--c-mustard); flex-shrink: 0;
-}
+.chip-gold  { border-color: rgba(245,200,66,0.3); color: var(--c-gold); }
+.chip-star  { border-color: rgba(155,114,245,0.3); color: var(--c-purple); }
+.chip-lvl   { border-color: rgba(86,201,154,0.3);  color: var(--c-sage); }
 
-.hud-nav { display: flex; gap: 5px; }
+.hud-nav { display:flex; gap:5px; align-items:center; }
 .hud-nav button {
-  background: var(--c-cream-2);
-  border: 1.5px solid var(--c-border);
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
   border-radius: var(--r-pill);
-  padding: 5px 13px;
-  font-size: 12px; font-weight: 700;
-  color: var(--c-txt);
-  transition: background 200ms, border-color 200ms, transform 150ms;
+  padding: 5px 14px;
+  font-size: 12px; font-weight:700;
+  color: var(--c-txt-soft);
+  transition: all 180ms;
 }
-.hud-nav button:hover { background: var(--c-border); transform: translateY(-1px); }
+.hud-nav button:hover { color:var(--c-cream); border-color:var(--c-sky); }
 .hud-nav button.active {
-  background: var(--c-sky); border-color: var(--c-sky); color: #fff;
+  background: linear-gradient(135deg,rgba(79,142,247,0.25),rgba(79,142,247,0.1));
+  border-color: var(--c-sky);
+  color: var(--c-sky);
+  box-shadow: 0 0 12px rgba(79,142,247,0.2);
+}
+.btn-logout {
+  background: rgba(232,114,90,0.12) !important;
+  border-color: rgba(232,114,90,0.3) !important;
+  color: var(--c-terra) !important;
+}
+.btn-logout:hover {
+  background: rgba(232,114,90,0.22) !important;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MAIN
-════════════════════════════════════════════════════════════ */
+/* Indicador de gamepad */
+.gamepad-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-txt-soft);
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-border2);
+  transition: all 300ms;
+}
+.gamepad-indicator.connected {
+  color: var(--c-sage);
+  border-color: rgba(86,201,154,0.3);
+  background: rgba(86,201,154,0.08);
+}
+.gamepad-dot {
+  width:6px; height:6px; border-radius:50%;
+  background: var(--c-txt-soft);
+  transition: background 300ms;
+}
+.gamepad-indicator.connected .gamepad-dot { background: var(--c-sage); }
+
+/* ════════════════════════════════════════════════════
+   MAIN LAYOUT
+════════════════════════════════════════════════════ */
 main {
-  padding: 20px 16px 60px;
-  max-width: 740px;
+  padding: 20px 14px 80px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -304,353 +389,845 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  padding-top: 10px;
+  gap: 20px;
+  padding-top: 16px;
+  animation: fadeUp 350ms var(--ease) both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
 .section-title {
   font-family: var(--f-game);
-  font-size: 20px;
+  font-size: 18px;
   color: var(--c-sky);
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(79,142,247,0.4);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   BLOQUES ? — PREGUNTAS ADAPTATIVAS
-════════════════════════════════════════════════════════════ */
-.question-text {
-  font-family: var(--f-game);
-  font-size: 20px;
-  text-align: center;
-  color: var(--c-txt);
-  letter-spacing: 0.5px;
-}
-
-.blocks-grid {
+/* ════════════════════════════════════════════════════
+   HOME — PANTALLA PRINCIPAL
+════════════════════════════════════════════════════ */
+.home-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
-  max-width: 300px;
   width: 100%;
+  max-width: 520px;
 }
 
-.block-btn {
-  position: relative;
-  background: linear-gradient(145deg, #f5d77a, var(--c-mustard));
-  border: none;
+.home-card {
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
   border-radius: var(--r-md);
-  padding: 20px 0;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  box-shadow:
-    0 4px 16px rgba(232,196,104,0.32),
-    0 2px 4px rgba(58,58,58,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.45);
-  overflow: hidden;
-  animation: blockFloat 2.6s ease-in-out infinite;
-  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+  gap: 8px;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease), border-color 200ms, box-shadow 200ms;
+  text-align: center;
 }
-.block-btn:nth-child(2) { animation-delay:  0.2s; }
-.block-btn:nth-child(3) { animation-delay:  0.4s; }
-.block-btn:nth-child(4) { animation-delay:  0.6s; }
-
-@keyframes blockFloat {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
+.home-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--c-sky);
+  box-shadow: var(--sh-sky);
 }
-
-.block-btn:not(:disabled):hover {
-  transform: translateY(-7px) scale(1.04);
-  box-shadow: 0 12px 28px rgba(232,196,104,0.42), 0 4px 8px rgba(58,58,58,0.08);
-  animation-play-state: paused;
-}
-.block-btn:not(:disabled):active { transform: scale(0.97); }
-.block-btn:disabled { animation-play-state: paused; }
-
-.block-sign {
+.home-card-icon { font-size:28px; }
+.home-card-title {
   font-family: var(--f-game);
-  font-size: 18px; font-weight: 700;
-  color: rgba(255,255,255,0.92);
-  text-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  font-size: 13px;
+  color: var(--c-cream);
 }
-.block-val {
-  font-family: var(--f-mono);
-  font-size: 22px; font-weight: 700;
-  color: var(--c-txt);
-}
+.home-card-desc { font-size: 11px; color: var(--c-txt-soft); }
 
-.block-btn.correct {
-  background: linear-gradient(145deg, #95c8a4, var(--c-sage)) !important;
-  box-shadow: 0 4px 16px rgba(127,174,142,0.38), inset 0 1px 0 rgba(255,255,255,0.4) !important;
+/* ════════════════════════════════════════════════════
+   SELECCIÓN DE KART / PILOTO
+════════════════════════════════════════════════════ */
+.pilots-grid {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.block-btn.wrong {
-  background: var(--c-cream-2) !important;
-  box-shadow: none !important;
-  opacity: 0.5;
-}
-
-.coin-burst {
-  position: absolute; top: 50%; left: 50%;
-  font-size: 16px; color: var(--c-mustard);
-  pointer-events: none;
-  animation: coinBurst 680ms ease-out forwards;
-}
-@keyframes coinBurst {
-  0%   { transform: translate(-50%,-50%) scale(0.4); opacity: 1; }
-  60%  { transform: translate(-50%,-170%) scale(1.3); opacity: 1; }
-  100% { transform: translate(-50%,-220%) scale(0.8); opacity: 0; }
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SELECCIÓN DE PILOTOS
-════════════════════════════════════════════════════════════ */
-.pilots-grid { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
 .pilot-card {
-  background: #fff;
+  background: var(--c-panel);
   border: 2px solid var(--c-border);
   border-radius: var(--r-md);
-  padding: 18px 12px 14px;
-  display: flex; flex-direction: column; align-items: center; gap: 9px;
-  width: 114px;
-  box-shadow: var(--sh-soft);
+  padding: 20px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 110px;
+  cursor: pointer;
   transition: transform 220ms var(--ease), border-color 220ms, box-shadow 220ms;
+  position: relative;
+  overflow: hidden;
+}
+.pilot-card::before {
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
 }
 .pilot-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--color-p, var(--c-sky));
-  box-shadow: 0 10px 28px rgba(58,58,58,0.13);
+  transform: translateY(-6px) scale(1.03);
+  border-color: var(--pilot-color, var(--c-sky));
+  box-shadow: 0 0 24px color-mix(in srgb, var(--pilot-color,var(--c-sky)) 40%, transparent);
 }
-.pilot-card:active { transform: translateY(-2px); }
 .pilot-swatch {
-  width: 62px; height: 36px; border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 0 rgba(255,255,255,0.3);
-}
-.pilot-name { font-size: 12px; font-weight: 700; color: var(--c-txt-soft); text-align: center; }
-
-/* ═══════════════════════════════════════════════════════════
-   CANVAS 3D — MARCO RETRO-FUTURISTA
-════════════════════════════════════════════════════════════ */
-.race-frame {
-  width: 100%; max-width: 660px;
-  background: #0e0e1e;
-  border-radius: var(--r-md);
-  padding: 10px;
-  box-shadow:
-    0 0 0 1.5px rgba(91,127,166,0.45),
-    0 0 28px rgba(91,127,166,0.18),
-    0 10px 36px rgba(0,0,0,0.24);
+  width:56px; height:32px; border-radius:8px;
+  background: var(--pilot-color, var(--c-sky));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--pilot-color,var(--c-sky)) 50%, transparent);
   position: relative;
 }
-.race-frame::before {
-  content: "● ● ●  REINO DE TIER";
-  display: block;
-  color: rgba(91,127,166,0.55);
+.pilot-swatch::after {
+  content:"🏎";
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px;
+}
+.pilot-name { font-family:var(--f-game); font-size:11px; color:var(--c-txt-soft); }
+.pilot-stat {
   font-family: var(--f-mono);
   font-size: 10px;
-  letter-spacing: 5px;
-  padding: 0 4px 8px;
+  color: var(--pilot-color, var(--c-sky));
+  opacity: 0.8;
 }
-.race-frame::after {
-  content: "";
-  position: absolute;
-  inset: 10px 10px auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(91,127,166,0.35), transparent);
+
+/* ════════════════════════════════════════════════════
+   CANVAS FRAME — CIRCUITO 3D
+════════════════════════════════════════════════════ */
+.race-frame {
+  width:100%; max-width:760px;
+  background: #050810;
+  border-radius: var(--r-md);
+  padding: 12px;
+  box-shadow:
+    0 0 0 1px rgba(79,142,247,0.3),
+    0 0 40px rgba(79,142,247,0.12),
+    0 12px 48px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.race-frame-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 10px;
+}
+
+.race-title-bar {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: rgba(79,142,247,0.55);
+  text-transform: uppercase;
+}
+
+.race-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-txt-soft);
 }
 
 #race-canvas {
   display: block;
   width: 100%;
-  height: clamp(240px, 45vw, 380px);
-  border-radius: 12px;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
-  background: #111;
+  height: clamp(220px, 42vw, 360px);
+  border-radius: 10px;
+  box-shadow: inset 0 2px 14px rgba(0,0,0,0.7);
+  background: #0a0d1a;
 }
 
 .race-loading {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(14,14,30,0.88);
-  border-radius: var(--r-md);
+  position:absolute;
+  inset:12px; inset-block-start:46px;
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px;
+  background: rgba(5,8,16,0.95);
+  border-radius: 10px;
   font-family: var(--f-game);
   color: var(--c-sky);
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
   backdrop-filter: blur(6px);
   transition: opacity 500ms;
+  z-index: 10;
 }
-.race-loading.hidden { opacity: 0; pointer-events: none; }
+.race-loading.hidden { opacity:0; pointer-events:none; }
 
-.speed-bar-wrap {
+.loading-spinner {
+  width:32px; height:32px;
+  border:3px solid rgba(79,142,247,0.2);
+  border-top-color: var(--c-sky);
+  border-radius:50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Barra de velocidad / progreso */
+.race-progress-wrap {
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.race-progress-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-txt-soft);
+  white-space: nowrap;
+  min-width: 60px;
+}
+.speed-bar-track {
+  flex: 1;
   background: rgba(255,255,255,0.06);
   border-radius: var(--r-pill);
   height: 8px;
   overflow: hidden;
+  position: relative;
 }
 .speed-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--c-sky), var(--c-mustard));
+  height:100%;
+  background: linear-gradient(90deg, var(--c-sky), var(--c-gold));
   border-radius: var(--r-pill);
-  width: 0%;
+  width:0%;
   transition: width 420ms var(--ease);
-  box-shadow: 0 0 8px rgba(232,196,104,0.6);
+  box-shadow: 0 0 10px rgba(245,200,66,0.5);
+  position:relative;
+}
+.speed-bar::after {
+  content:"";
+  position:absolute; right:0; top:0; bottom:0; width:8px;
+  background: rgba(255,255,255,0.4);
+  border-radius:var(--r-pill);
+  animation: shimmer 1s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.race-progress-pct {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-gold);
+  min-width: 32px;
+  text-align: right;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PREGUNTA EN KART
-════════════════════════════════════════════════════════════ */
+/* Checkpoint indicators */
+.checkpoints {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+  justify-content: center;
+}
+.checkpoint {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(79,142,247,0.2);
+  transition: all 300ms;
+}
+.checkpoint.done {
+  background: var(--c-gold);
+  border-color: var(--c-gold);
+  box-shadow: 0 0 8px rgba(245,200,66,0.5);
+}
+.checkpoint.current {
+  background: var(--c-sky);
+  border-color: var(--c-sky);
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 4px rgba(79,142,247,0.5); }
+  50%      { box-shadow: 0 0 12px rgba(79,142,247,0.9); }
+}
+
+/* ════════════════════════════════════════════════════
+   BLOQUES ? — PREGUNTAS  
+════════════════════════════════════════════════════ */
 #kart-question-wrap {
-  width: 100%; max-width: 660px;
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  width:100%; max-width:760px;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   NOTIFICACIÓN DE NIVEL
-════════════════════════════════════════════════════════════ */
+.question-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.question-text {
+  font-family: var(--f-game);
+  font-size: clamp(18px,4vw,24px);
+  text-align: center;
+  color: var(--c-cream);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.diff-badge {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid;
+  white-space: nowrap;
+}
+.diff-1 { color:var(--c-sage);   border-color:rgba(86,201,154,0.4);  background:rgba(86,201,154,0.08); }
+.diff-2 { color:var(--c-gold);   border-color:rgba(245,200,66,0.4);  background:rgba(245,200,66,0.08); }
+.diff-3 { color:var(--c-terra);  border-color:rgba(232,114,90,0.4);  background:rgba(232,114,90,0.08); }
+
+.blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px,1fr));
+  gap: 12px;
+  max-width: 320px;
+  width: 100%;
+}
+
+.block-btn {
+  position: relative;
+  background: linear-gradient(145deg, #1e2a42, #162036);
+  border: 2px solid rgba(79,142,247,0.25);
+  border-radius: var(--r-md);
+  padding: 22px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 180ms var(--ease), border-color 180ms, box-shadow 180ms;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* Letras de teclado en esquina */
+.block-key {
+  position:absolute; top:6px; left:8px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  color: rgba(79,142,247,0.5);
+  line-height:1;
+}
+/* Número de gamepad */
+.block-gp {
+  position:absolute; top:6px; right:8px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  color: rgba(245,200,66,0.4);
+  line-height:1;
+}
+
+.block-btn:not(:disabled):hover {
+  transform: translateY(-6px) scale(1.05);
+  border-color: var(--c-sky);
+  box-shadow: 0 0 24px rgba(79,142,247,0.3), 0 8px 24px rgba(0,0,0,0.5);
+}
+.block-btn:not(:disabled):active { transform:scale(0.97); }
+.block-btn:disabled { cursor:default; }
+
+.block-sign {
+  font-family: var(--f-game);
+  font-size: 20px; font-weight:700;
+  color: rgba(79,142,247,0.7);
+}
+.block-val {
+  font-family: var(--f-mono);
+  font-size: 26px; font-weight:700;
+  color: var(--c-cream);
+}
+
+/* Highlight de tecla presionada */
+.block-btn.key-highlight {
+  border-color: var(--c-gold) !important;
+  box-shadow: 0 0 20px rgba(245,200,66,0.4) !important;
+  transform: scale(0.97);
+}
+
+.block-btn.correct {
+  background: linear-gradient(145deg, #14362a, #0e2820) !important;
+  border-color: var(--c-sage) !important;
+  box-shadow: 0 0 20px rgba(86,201,154,0.3) !important;
+}
+.block-btn.wrong {
+  background: linear-gradient(145deg, #2a1418, #1e0f12) !important;
+  border-color: rgba(232,114,90,0.3) !important;
+  opacity:0.6;
+}
+
+.coin-burst {
+  position:absolute; top:50%; left:50%;
+  font-size:18px;
+  pointer-events:none;
+  animation: coinBurst 700ms ease-out forwards;
+}
+@keyframes coinBurst {
+  0%   { transform:translate(-50%,-50%) scale(0.3); opacity:1; }
+  60%  { transform:translate(-50%,-180%) scale(1.4); opacity:1; }
+  100% { transform:translate(-50%,-240%) scale(0.9); opacity:0; }
+}
+
+/* ════════════════════════════════════════════════════
+   CONTROLES EN PANTALLA — MÓVIL / TÁCTIL
+════════════════════════════════════════════════════ */
+.touch-controls {
+  display: none;
+  width: 100%;
+  max-width: 760px;
+  padding: 10px 0 0;
+}
+@media (pointer:coarse) {
+  .touch-controls { display:block; }
+}
+/* También mostrar si el usuario toca la pantalla aunque sea PC */
+.touch-controls.force-show { display:block; }
+
+.touch-controls-inner {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 8px;
+}
+
+.touch-btn {
+  background: var(--c-panel);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: 18px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 150ms;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+.touch-btn::after {
+  content:"";
+  position:absolute; inset:0;
+  background: rgba(79,142,247,0.15);
+  opacity:0;
+  transition: opacity 100ms;
+}
+.touch-btn:active::after { opacity:1; }
+.touch-btn:active { transform:scale(0.94); }
+
+.touch-btn-icon { font-size:22px; line-height:1; }
+.touch-btn-label { font-family:var(--f-mono); font-size:9px; color:var(--c-txt-soft); }
+
+/* Índice de respuestas en touch */
+.touch-btn.answer-btn {
+  border-color: rgba(79,142,247,0.3);
+}
+.touch-btn.answer-btn:active,
+.touch-btn.answer-btn.pressing {
+  border-color: var(--c-sky);
+  box-shadow: 0 0 16px rgba(79,142,247,0.3);
+}
+
+/* ════════════════════════════════════════════════════
+   PANEL DE CONTROLES — INFO
+════════════════════════════════════════════════════ */
+.controls-panel {
+  background: var(--c-panel);
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-sm);
+  padding: 12px 16px;
+  width: 100%;
+  max-width: 760px;
+}
+.controls-panel-title {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-txt-soft);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.controls-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ctrl-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--c-txt-soft);
+}
+.key-badge {
+  background: var(--c-panel2);
+  border: 1px solid rgba(79,142,247,0.3);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-sky);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ════════════════════════════════════════════════════
+   NIVEL ADAPTATIVO — INDICADOR VISUAL
+════════════════════════════════════════════════════ */
+.adaptive-bar {
+  width: 100%;
+  max-width: 760px;
+  background: var(--c-panel);
+  border: 1px solid var(--c-border2);
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.adaptive-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--c-txt-soft);
+  white-space: nowrap;
+}
+.adaptive-track {
+  flex:1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.adaptive-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  transition: width 600ms var(--ease), background 400ms;
+  width: 33%;
+  background: var(--c-sage);
+}
+.adaptive-fill.lvl2 { width:66%;  background: var(--c-gold); }
+.adaptive-fill.lvl3 { width:100%; background: var(--c-terra); }
+
+.adaptive-streak {
+  display: flex;
+  gap: 3px;
+}
+.streak-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transition: background 300ms;
+}
+.streak-dot.hit  { background: var(--c-sage); }
+.streak-dot.miss { background: var(--c-terra); }
+
+/* ════════════════════════════════════════════════════
+   RESULTADO FINAL DE CARRERA
+════════════════════════════════════════════════════ */
+.race-result {
+  background: var(--c-panel);
+  border: 1px solid rgba(245,200,66,0.3);
+  border-radius: var(--r-lg);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(245,200,66,0.12);
+  animation: fadeUp 400ms var(--ease) both;
+}
+.result-title {
+  font-family: var(--f-game);
+  font-size: 28px;
+  color: var(--c-gold);
+  text-shadow: 0 0 20px rgba(245,200,66,0.5);
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+.result-stat {
+  background: var(--c-panel2);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--c-border2);
+}
+.result-stat-val {
+  font-family: var(--f-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--c-cream);
+}
+.result-stat-label {
+  font-size: 11px;
+  color: var(--c-txt-soft);
+  margin-top: 2px;
+}
+
+.btn-play-again {
+  background: linear-gradient(135deg, var(--c-sky), #3a6fd4);
+  border-radius: var(--r-pill);
+  padding: 13px 32px;
+  font-family: var(--f-game);
+  font-size: 15px;
+  color: #fff;
+  box-shadow: var(--sh-sky);
+  width: 100%;
+  transition: transform 200ms, box-shadow 200ms;
+}
+.btn-play-again:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 32px rgba(79,142,247,0.5), 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* ════════════════════════════════════════════════════
+   TOAST DE NIVEL
+════════════════════════════════════════════════════ */
 .level-toast {
   position: fixed;
-  bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--c-glass-dk);
-  border: 1.5px solid rgba(91,127,166,0.45);
+  bottom: 24px; left:50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--c-glass);
+  border: 1px solid rgba(79,142,247,0.4);
   border-radius: var(--r-pill);
-  padding: 10px 24px;
+  padding: 11px 26px;
   font-family: var(--f-game);
-  font-size: 14px;
-  color: #fff;
-  backdrop-filter: blur(14px);
-  box-shadow: var(--sh-float);
+  font-size: 13px;
+  color: var(--c-cream);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--sh-sky);
   transition: transform 350ms var(--ease), opacity 350ms;
-  z-index: 500;
-  pointer-events: none;
-  opacity: 0;
+  z-index: 600;
+  pointer-events:none;
+  opacity:0;
+  white-space: nowrap;
 }
 .level-toast.show {
   transform: translateX(-50%) translateY(0);
-  opacity: 1;
+  opacity:1;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════
    UTILS
-════════════════════════════════════════════════════════════ */
-[hidden] { display: none !important; }
+════════════════════════════════════════════════════ */
+[hidden] { display:none!important; }
+
+/* Scanlines leve en canvas */
+.race-frame::before {
+  content:"";
+  position:absolute;
+  inset:12px; inset-block-start:46px;
+  border-radius:10px;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+  pointer-events:none;
+  z-index:5;
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════ BIENVENIDA ═══════════════════════════════ -->
+<!-- ══════════════════ BIENVENIDA ══════════════════ -->
 <section id="view-welcome" class="welcome-screen">
+  <!-- Estrellas generadas por JS -->
+  <div class="stars-bg" id="stars-bg"></div>
+  <div class="welcome-track-line"></div>
+
   <div class="welcome-card">
     <div id="mascot-welcome" class="mascot-wrap"></div>
     <p id="bubble-welcome" class="speech-bubble"></p>
-    <h1>Reino de <em>Tier</em></h1>
+
+    <div class="welcome-logo">
+      <span class="welcome-eyebrow">🏁 edición arcade</span>
+      <h1>Reino de <em>Tier</em></h1>
+    </div>
+
     <button id="btn-login" class="btn-login" type="button">
+      <!-- Google logo -->
       <svg viewBox="0 0 48 48" aria-hidden="true">
         <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/>
         <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
         <path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.7 13.5-4.7l-6.2-5.3C29.4 36.6 26.8 37.5 24 37.5c-5.3 0-9.7-3.1-11.3-7.4l-6.5 5C9.6 41 16.2 45 24 45z"/>
         <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4-4 5.3l6.2 5.3C40.9 35.9 45 30.5 45 24c0-1.2-.1-2.3-.4-3.5z"/>
       </svg>
-      ¡Iniciar mi aventura!
+      Iniciar mi aventura
     </button>
+
+    <div class="controls-hint">
+      <span class="ctrl-badge"><span>⌨️</span> A B C D</span>
+      <span class="ctrl-badge"><span>🎮</span> Gamepad</span>
+      <span class="ctrl-badge"><span>👆</span> Táctil</span>
+    </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ APP ═══════════════════════════════ -->
+<!-- ══════════════════ APP ══════════════════ -->
 <section id="view-app" hidden>
+
+  <!-- HUD -->
   <div class="hud-shell">
     <header class="hud">
       <div class="hud-user">
-        <img id="hud-avatar" class="hud-avatar" alt="" />
+        <img id="hud-avatar" class="hud-avatar" alt=""/>
         <span id="hud-name" class="hud-name"></span>
       </div>
       <div class="hud-stats">
-        <span class="hud-chip"><span class="coin-dot"></span><span id="hud-coins">0</span></span>
-        <span class="hud-chip">⭐ <span id="hud-stars">0</span></span>
+        <span class="hud-chip chip-gold">🪙 <span id="hud-coins">0</span></span>
+        <span class="hud-chip chip-star">⭐ <span id="hud-stars">0</span></span>
+        <span class="hud-chip chip-lvl">Nv.<span id="hud-level">1</span></span>
       </div>
       <nav class="hud-nav">
+        <div class="gamepad-indicator" id="gamepad-indicator">
+          <div class="gamepad-dot"></div>
+          <span id="gamepad-label">🎮</span>
+        </div>
         <button id="nav-home" type="button">Inicio</button>
         <button id="nav-kart" type="button">Kart 🏁</button>
-        <button id="btn-logout" type="button">Salir</button>
+        <button id="btn-logout" class="btn-logout" type="button">Salir</button>
       </nav>
     </header>
   </div>
 
   <main>
-    <!-- Sección Inicio -->
+    <!-- ─── SECCIÓN HOME ─── -->
     <section id="sec-home" class="section-app">
       <div id="mascot-app" class="mascot-wrap"></div>
       <p id="bubble-app" class="speech-bubble visible"></p>
+
+      <div class="home-grid">
+        <div class="home-card" id="home-go-kart" role="button" tabindex="0">
+          <span class="home-card-icon">🏎️</span>
+          <span class="home-card-title">¡A Correr!</span>
+          <span class="home-card-desc">Modo carrera adaptativo</span>
+        </div>
+        <div class="home-card" role="button" tabindex="0" style="cursor:default;opacity:0.5">
+          <span class="home-card-icon">🏆</span>
+          <span class="home-card-title">Logros</span>
+          <span class="home-card-desc">Próximamente</span>
+        </div>
+        <div class="home-card" role="button" tabindex="0" style="cursor:default;opacity:0.5">
+          <span class="home-card-icon">📊</span>
+          <span class="home-card-title">Estadísticas</span>
+          <span class="home-card-desc">Próximamente</span>
+        </div>
+        <div class="home-card" role="button" tabindex="0" style="cursor:default;opacity:0.5">
+          <span class="home-card-icon">🎓</span>
+          <span class="home-card-title">Práctica</span>
+          <span class="home-card-desc">Próximamente</span>
+        </div>
+      </div>
     </section>
 
-    <!-- Sección Kart -->
+    <!-- ─── SECCIÓN KART ─── -->
     <section id="sec-kart" class="section-app" hidden>
+
+      <!-- Selección de piloto -->
       <div id="pilot-select"></div>
 
-      <div id="kart-game" hidden>
-        <!-- Marco retro-futurista con canvas 3D -->
+      <!-- Juego -->
+      <div id="kart-game" hidden style="width:100%;display:flex;flex-direction:column;align-items:center;gap:14px">
+
+        <!-- Canvas 3D -->
         <div class="race-frame">
-          <canvas id="race-canvas"></canvas>
-          <div class="race-loading" id="race-loading">CARGANDO CIRCUITO…</div>
-          <div class="speed-bar-wrap">
-            <div class="speed-bar" id="speed-bar"></div>
+          <div class="race-frame-header">
+            <span class="race-title-bar">● ● ●  REINO DE TIER — CIRCUITO</span>
+            <div class="race-meta">
+              <span id="race-lap">VLT 1/1</span>
+              <span id="race-time">00:00</span>
+            </div>
           </div>
+          <canvas id="race-canvas"></canvas>
+          <div class="race-loading" id="race-loading">
+            <div class="loading-spinner"></div>
+            CARGANDO CIRCUITO…
+          </div>
+          <div class="race-progress-wrap">
+            <span class="race-progress-label" id="race-q-count">0/10</span>
+            <div class="speed-bar-track">
+              <div class="speed-bar" id="speed-bar"></div>
+            </div>
+            <span class="race-progress-pct" id="race-pct">0%</span>
+          </div>
+          <div class="checkpoints" id="checkpoints"></div>
         </div>
 
-        <!-- Bloques ? de preguntas -->
+        <!-- Barra adaptativa -->
+        <div class="adaptive-bar">
+          <span class="adaptive-label">DIFICULTAD</span>
+          <div class="adaptive-track">
+            <div class="adaptive-fill" id="adaptive-fill"></div>
+          </div>
+          <div class="adaptive-streak" id="adaptive-streak"></div>
+        </div>
+
+        <!-- Pregunta + bloques -->
         <div id="kart-question-wrap"></div>
+
+        <!-- Controles táctiles (móvil / touch) -->
+        <div class="touch-controls" id="touch-controls">
+          <div class="touch-controls-inner" id="touch-buttons"></div>
+        </div>
+
+        <!-- Info controles -->
+        <div class="controls-panel">
+          <div class="controls-panel-title">Controles</div>
+          <div class="controls-grid" id="controls-info"></div>
+        </div>
+
       </div>
     </section>
   </main>
 </section>
 
-<!-- Toast de nivel adaptativo -->
+<!-- Toast -->
 <div class="level-toast" id="level-toast"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     THREE.JS — importmap + módulo principal
-════════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     THREE.JS + LÓGICA PRINCIPAL
+══════════════════════════════════════════════════ -->
 <script type="importmap">
 {
   "imports": {
-    "three":              "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
-    "three/addons/":      "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+    "three":         "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
   }
 }
 </script>
 
 <script type="module">
-/* ═══════════════════════════════════════════════════════════════════════
-   1. ASSET MANIFEST — rutas relativas al ZIP descomprimido junto al HTML
-════════════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   ASSET MANIFEST
+════════════════════════════════════════════════ */
 const A = {
-  ICON:        "mario-assets/icon.webp",
-  FAVICON:     "mario-assets/favicon.ico",
-  GRADIENT:    "mario-assets/gradient.jpg",
-  SNES:        "mario-assets/snes.webp",
-  KART_GLB:    "mario-assets/models/kart.glb",
-  TRACK_GLB:   "mario-assets/models/mario-circuit-test-transformed.glb",
-  WHEEL_GLB:   "mario-assets/models/wheel-transformed.glb",
-  WITCH_GLB:   "mario-assets/models/witch-transformed.glb",
-  TEX_NOISE:   "mario-assets/textures/noise.png",
-  TEX_NORMAL:  "mario-assets/textures/normal.jpg",
-  TEX_LENSDIR: "mario-assets/textures/lensDirt.jpg",
-  TEX_SMOKE:   "mario-assets/textures/particles/smoke.png",
-  TEX_SPARK:   "mario-assets/textures/particles/spark.png",
-  TEX_SUN:     "mario-assets/textures/sun.png",
+  ICON:      "mario-assets/icon.webp",
+  GRADIENT:  "mario-assets/gradient.jpg",
+  KART_GLB:  "mario-assets/models/kart.glb",
+  TRACK_GLB: "mario-assets/models/mario-circuit-test-transformed.glb",
+  WHEEL_GLB: "mario-assets/models/wheel-transformed.glb",
+  WITCH_GLB: "mario-assets/models/witch-transformed.glb",
+  NOISE:     "mario-assets/textures/noise.png",
+  NORMAL:    "mario-assets/textures/normal.jpg",
+  LENSDIRT:  "mario-assets/textures/lensDirt.jpg",
+  SMOKE:     "mario-assets/textures/particles/smoke.png",
+  SPARK:     "mario-assets/textures/particles/spark.png",
+  ALPHA:     "mario-assets/textures/particles/alpha.png",
+  SUN:       "mario-assets/textures/sun.png",
 };
 
-/* ═══════════════════════════════════════════════════════════════════════
-   2. FIREBASE — CDN oficial Web SDK v10.8.0
-════════════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   FIREBASE
+════════════════════════════════════════════════ */
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc }
@@ -658,645 +1235,967 @@ import { getFirestore, doc, setDoc, getDoc }
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-const firebaseConfig = {
+const fbApp = initializeApp({
   apiKey:            "AIzaSyAmF7xlObPgrrJf47iBNYIjIkq5TjPkVqY",
   authDomain:        "tier-e6a45.firebaseapp.com",
   projectId:         "tier-e6a45",
   storageBucket:     "tier-e6a45.firebasestorage.app",
   messagingSenderId: "1067748529919",
   appId:             "1:1067748529919:web:c6b519be184bf93c1e9eca",
-  measurementId:     "G-WT2YRGKEZW",
-};
-
-const fbApp    = initializeApp(firebaseConfig);
-const db       = getFirestore(fbApp);
-const auth     = getAuth(fbApp);
+});
+const db = getFirestore(fbApp);
+const auth = getAuth(fbApp);
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+provider.setCustomParameters({ prompt:"select_account" });
 
-/* ═══════════════════════════════════════════════════════════════════════
-   3. FIRESTORE — estado y persistencia
-════════════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════
+   ESTADO
+════════════════════════════════════════════════ */
 function freshState() {
-  return {
-    coins: 0,
-    stars: 0,
-    level: 1,
-    adaptiveLevel: 1,
-    history: [],
-    pilot: null,
-    settings: { sound: true, voice: true, reducedMotion: false },
-  };
+  return { coins:0, stars:0, level:1, adaptiveLevel:1, history:[], pilot:null, bestTime:null };
 }
-
-async function saveProgress(uid, state) {
-  if (!uid) return;
-  try {
-    await setDoc(doc(db, "usuarios", uid), { ...state, updatedAt: new Date().toISOString() }, { merge: true });
-    console.log("[Tier] Progreso guardado.");
-  } catch (e) {
-    console.error("[Tier] Error guardando progreso:", e);
-  }
+async function saveProgress(uid,s){
+  if(!uid)return;
+  try{ await setDoc(doc(db,"usuarios",uid),{...s,updatedAt:new Date().toISOString()},{merge:true}); }
+  catch(e){ console.error(e); }
 }
-
-async function loadProgress(uid) {
-  if (!uid) return freshState();
-  try {
-    const snap = await getDoc(doc(db, "usuarios", uid));
-    if (snap.exists()) return { ...freshState(), ...snap.data() };
-    const s = freshState();
-    await setDoc(doc(db, "usuarios", uid), { ...s, createdAt: new Date().toISOString() });
+async function loadProgress(uid){
+  if(!uid)return freshState();
+  try{
+    const snap=await getDoc(doc(db,"usuarios",uid));
+    if(snap.exists())return{...freshState(),...snap.data()};
+    const s=freshState();
+    await setDoc(doc(db,"usuarios",uid),{...s,createdAt:new Date().toISOString()});
     return s;
-  } catch (e) {
-    console.error("[Tier] Error cargando progreso:", e);
-    return freshState();
-  }
+  }catch(e){ return freshState(); }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   4. AUTH — async/await + try/catch robusto
-════════════════════════════════════════════════════════════════════════ */
-async function loginGoogle() {
-  try {
-    console.log("[Tier] Iniciando sesión con Google…");
-    const res = await signInWithPopup(auth, provider);
-    console.log("[Tier] Sesión iniciada:", res.user.displayName);
-    return res.user;
-  } catch (err) {
-    console.error("[Tier] Error login:", err.code, err.message);
-    throw err;
-  }
-}
+let currentUser=null, appState=freshState();
 
-async function logoutApp() {
-  try { await signOut(auth); console.log("[Tier] Sesión cerrada."); }
-  catch (e) { console.error("[Tier] Error logout:", e); }
-}
+/* ════════════════════════════════════════════════
+   AUDIO — 8-bit Web Audio
+════════════════════════════════════════════════ */
+let audioCtx=null, muted=false;
+const getCtx=()=>{ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; };
 
-/* ═══════════════════════════════════════════════════════════════════════
-   5. AUDIO — síntesis 8-bit Web Audio API
-════════════════════════════════════════════════════════════════════════ */
-let audioCtx = null, muted = false;
-const getCtx = () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; };
-
-function tone(freq, dur = 0.12, vol = 0.05, delay = 0) {
-  if (muted) return;
-  const ctx = getCtx(), t = ctx.currentTime + delay;
-  const o = ctx.createOscillator(), g = ctx.createGain();
-  o.type = "square"; o.frequency.setValueAtTime(freq, t);
-  g.gain.setValueAtTime(vol, t);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+function tone(freq,dur=0.12,vol=0.05,delay=0,type="square"){
+  if(muted)return;
+  const ctx=getCtx(), t=ctx.currentTime+delay;
+  const o=ctx.createOscillator(), g=ctx.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
   o.connect(g); g.connect(ctx.destination);
-  o.start(t); o.stop(t + dur);
+  o.start(t); o.stop(t+dur);
+}
+const sfxClick   = ()=>tone(440,0.05,0.03);
+const sfxCorrect = ()=>{ tone(987.77,0.09,0.05,0); tone(1318.51,0.14,0.05,0.08); tone(1567.98,0.12,0.04,0.18); };
+const sfxWrong   = ()=>{ tone(220,0.08,0.04,0); tone(196,0.12,0.04,0.06,"sawtooth"); };
+const sfxVictory = ()=>{ [523.25,659.25,783.99,987.77,1046.5].forEach((n,i)=>tone(n,0.2,0.06,i*0.1)); };
+const sfxLvlUp   = ()=>{ [440,554,659,880].forEach((n,i)=>tone(n,0.15,0.05,i*0.08,"sine")); };
+const sfxSelect  = ()=>tone(660,0.07,0.03,"sine");
+const sfxEngine  = ()=>{ tone(180+Math.random()*40,0.06,0.025,"sawtooth"); };
+
+/* ════════════════════════════════════════════════
+   ESTRELLAS DE FONDO (bienvenida)
+════════════════════════════════════════════════ */
+function buildStars(){
+  const container=document.getElementById("stars-bg");
+  if(!container)return;
+  for(let i=0;i<120;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    const size=Math.random()*2.5+0.5;
+    s.style.cssText=`
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      animation-duration:${2+Math.random()*4}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    container.appendChild(s);
+  }
 }
 
-const sfxClick   = () => tone(440, 0.05, 0.03);
-const sfxCorrect = () => { tone(987.77, 0.09, 0.05, 0); tone(1318.51, 0.12, 0.05, 0.08); };
-const sfxWrong   = () => tone(392.0, 0.15, 0.04);
-const sfxVictory = () => [523.25,659.25,783.99,1046.5].forEach((n,i) => tone(n, 0.18, 0.05, i*0.12));
-const sfxEngine  = () => tone(220, 0.08, 0.04);
-
-/* ═══════════════════════════════════════════════════════════════════════
-   6. MASCOTA — SVG vectorial "Bolu"
-════════════════════════════════════════════════════════════════════════ */
-const SVG_BOLU = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bolu">
-  <ellipse cx="100" cy="170" rx="46" ry="8" fill="#000" opacity="0.06"/>
-  <rect x="72" y="110" width="56" height="55" rx="22" fill="#FBF3E4"/>
-  <circle cx="86" cy="138" r="4.5" fill="#E8C468" opacity="0.7"/>
-  <circle cx="114" cy="148" r="4" fill="#E8C468" opacity="0.7"/>
-  <path d="M20 108C20 58 56 28 100 28 144 28 180 58 180 108 180 118 172 122 162 122L38 122C28 122 20 118 20 108Z" fill="#D98C7A"/>
-  <circle cx="62" cy="72" r="13" fill="#FAF6EF"/>
-  <circle cx="118" cy="60" r="10" fill="#FAF6EF"/>
-  <circle cx="142" cy="88" r="9"  fill="#FAF6EF"/>
-  <circle cx="78" cy="100" r="7"  fill="#FAF6EF"/>
-  <circle cx="82" cy="118" r="5.5" fill="#3A3A3A"/>
-  <circle cx="118" cy="118" r="5.5" fill="#3A3A3A"/>
-  <path d="M86 132 Q100 142 114 132" stroke="#3A3A3A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-  <circle cx="68" cy="126" r="6" fill="#D98C7A" opacity="0.35"/>
-  <circle cx="132" cy="126" r="6" fill="#D98C7A" opacity="0.35"/>
+/* ════════════════════════════════════════════════
+   MASCOTA "BOLU"
+════════════════════════════════════════════════ */
+const SVG_BOLU=`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bolu mascota">
+  <ellipse cx="100" cy="175" rx="44" ry="7" fill="#000" opacity="0.2"/>
+  <rect x="72" y="112" width="56" height="52" rx="22" fill="#1a2235"/>
+  <circle cx="86" cy="140" r="4" fill="#4f8ef7" opacity="0.5"/>
+  <circle cx="114" cy="150" r="3.5" fill="#4f8ef7" opacity="0.5"/>
+  <path d="M22 108C22 60 58 30 100 30 142 30 178 60 178 108 178 118 170 122 160 122L40 122C30 122 22 118 22 108Z" fill="#e8725a"/>
+  <circle cx="63" cy="74" r="12" fill="#eef2ff" opacity="0.9"/>
+  <circle cx="116" cy="62" r="9"  fill="#eef2ff" opacity="0.9"/>
+  <circle cx="140" cy="90" r="8"  fill="#eef2ff" opacity="0.9"/>
+  <circle cx="80"  cy="102" r="6.5" fill="#eef2ff" opacity="0.9"/>
+  <circle cx="82"  cy="119" r="5.5" fill="#0d1224"/>
+  <circle cx="118" cy="119" r="5.5" fill="#0d1224"/>
+  <circle cx="84"  cy="117" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="120" cy="117" r="2" fill="#fff" opacity="0.7"/>
+  <path d="M87 133 Q100 144 113 133" stroke="#0d1224" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="68" cy="128" r="6" fill="#e8725a" opacity="0.3"/>
+  <circle cx="132" cy="128" r="6" fill="#e8725a" opacity="0.3"/>
+  <!-- Antena con estrella -->
+  <line x1="100" y1="30" x2="100" y2="14" stroke="#4f8ef7" stroke-width="2"/>
+  <circle cx="100" cy="11" r="4" fill="#f5c842"/>
 </svg>`;
 
-function renderMascot(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.innerHTML = SVG_BOLU;
+function renderMascot(id){
+  const el=document.getElementById(id);
+  if(el) el.innerHTML=SVG_BOLU;
 }
-
-function say(id, msg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg;
+function say(id,msg){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=msg;
   el.classList.add("visible");
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   7. SISTEMA ADAPTATIVO DE PREGUNTAS
-════════════════════════════════════════════════════════════════════════ */
-function genQuestion(adaptLevel = 1) {
-  const range = { 1: 5, 2: 10, 3: 20 }[adaptLevel] ?? 5;
-  const a = Math.floor(Math.random() * range) + 1;
-  const b = Math.floor(Math.random() * range) + 1;
-  const correct = a + b;
-  const opts = new Set([correct]);
-  while (opts.size < 4) {
-    const d = correct + Math.floor(Math.random() * 5) - 2;
-    if (d >= 0 && d !== correct) opts.add(d);
+/* ════════════════════════════════════════════════
+   SISTEMA ADAPTATIVO DE PREGUNTAS
+════════════════════════════════════════════════ */
+const DIFFICULTY = {
+  1: { range:5,  ops:["+"],        label:"Nivel 1 — Fácil",   class:"diff-1" },
+  2: { range:10, ops:["+","-"],    label:"Nivel 2 — Medio",   class:"diff-2" },
+  3: { range:20, ops:["+","-","×"],label:"Nivel 3 — Difícil", class:"diff-3" },
+};
+
+function genQuestion(level=1){
+  const cfg = DIFFICULTY[level] || DIFFICULTY[1];
+  const op  = cfg.ops[Math.floor(Math.random()*cfg.ops.length)];
+  let a,b,correct,text;
+  if(op==="+"){
+    a=rnd(1,cfg.range); b=rnd(1,cfg.range);
+    correct=a+b; text=`¿Cuánto es ${a} + ${b}?`;
+  } else if(op==="-"){
+    a=rnd(cfg.range/2,cfg.range); b=rnd(1,Math.floor(a));
+    correct=a-b; text=`¿Cuánto es ${a} − ${b}?`;
+  } else {
+    a=rnd(2,Math.min(cfg.range,10)); b=rnd(2,Math.min(cfg.range,10));
+    correct=a*b; text=`¿Cuánto es ${a} × ${b}?`;
   }
-  return { text: `¿Cuánto es ${a} + ${b}?`, options: shuffle([...opts]), correct };
+  const opts=new Set([correct]);
+  let attempts=0;
+  while(opts.size<4 && attempts<40){
+    attempts++;
+    const noise=rnd(-Math.ceil(cfg.range*0.4),Math.ceil(cfg.range*0.4));
+    const d=correct+noise;
+    if(d>=0 && d!==correct) opts.add(d);
+  }
+  return { text, options:shuffle([...opts]), correct, level, diffLabel:cfg.label, diffClass:cfg.class };
 }
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
-function adaptLevel(current, hist) {
-  const last3 = hist.slice(-3), last2 = hist.slice(-2);
-  if (last3.length === 3 && last3.every(Boolean))          return Math.min(3, current + 1);
-  if (last2.length === 2 && last2.every(v => v === false)) return Math.max(1, current - 1);
+function computeNewLevel(current, hist){
+  const last3=hist.slice(-3), last2=hist.slice(-2);
+  if(last3.length===3 && last3.every(Boolean))    return Math.min(3,current+1);
+  if(last2.length===2 && last2.every(v=>v===false)) return Math.max(1,current-1);
   return current;
 }
 
-function renderQuestion(containerId, q, onResult) {
-  const wrap = document.getElementById(containerId);
-  if (!wrap) return;
-  wrap.innerHTML = "";
+/* ════════════════════════════════════════════════
+   GAMEPAD API
+════════════════════════════════════════════════ */
+let gamepads={}, gamepadConnected=false;
+let gamepadAnswerCb=null; // callback actual para responder
+let gpLastButtons=new Array(16).fill(false);
 
-  const txt = document.createElement("p");
-  txt.className = "question-text";
-  txt.textContent = q.text;
-  wrap.appendChild(txt);
+window.addEventListener("gamepadconnected",(e)=>{
+  gamepads[e.gamepad.index]=e.gamepad;
+  gamepadConnected=true;
+  updateGamepadUI(true, e.gamepad.id);
+  showToast("🎮 Mando conectado: "+e.gamepad.id.substring(0,24));
+});
+window.addEventListener("gamepaddisconnected",(e)=>{
+  delete gamepads[e.gamepad.index];
+  gamepadConnected=Object.keys(gamepads).length>0;
+  updateGamepadUI(gamepadConnected,"");
+});
 
-  const grid = document.createElement("div");
-  grid.className = "blocks-grid";
-
-  q.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "block-btn";
-    btn.type = "button";
-    btn.setAttribute("aria-label", `Responder ${opt}`);
-    btn.innerHTML = `<span class="block-sign">?</span><span class="block-val">${opt}</span>`;
-
-    btn.addEventListener("click", () => {
-      grid.querySelectorAll("button").forEach(b => b.disabled = true);
-      const ok = opt === q.correct;
-      btn.classList.add(ok ? "correct" : "wrong");
-      if (ok) {
-        const coin = document.createElement("span");
-        coin.className = "coin-burst"; coin.textContent = "●";
-        coin.setAttribute("aria-hidden","true");
-        btn.appendChild(coin);
-        coin.addEventListener("animationend", () => coin.remove());
-        sfxCorrect();
-      } else {
-        sfxWrong();
-      }
-      setTimeout(() => onResult(ok), ok ? 700 : 500);
-    });
-    grid.appendChild(btn);
-  });
-  wrap.appendChild(grid);
+function updateGamepadUI(connected, id){
+  const el=document.getElementById("gamepad-indicator");
+  const lbl=document.getElementById("gamepad-label");
+  if(!el)return;
+  el.classList.toggle("connected",connected);
+  if(lbl) lbl.textContent = connected ? "🎮 ON" : "🎮";
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   8. THREE.JS — MOTOR 3D DEL KART
-      Carga: kart.glb + mario-circuit-test-transformed.glb
-════════════════════════════════════════════════════════════════════════ */
+function pollGamepad(){
+  const gps=navigator.getGamepads ? navigator.getGamepads() : [];
+  for(const gp of gps){
+    if(!gp)continue;
+    const buttons=gp.buttons;
+    // Botones A(0), B(1), X(2), Y(3) → respuestas 0-3
+    [0,1,2,3].forEach((btnIdx,ansIdx)=>{
+      const pressed=buttons[btnIdx]?.pressed;
+      if(pressed && !gpLastButtons[btnIdx] && gamepadAnswerCb){
+        gamepadAnswerCb(ansIdx);
+      }
+      gpLastButtons[btnIdx]=!!pressed;
+    });
+  }
+}
+
+/* ════════════════════════════════════════════════
+   TECLADO
+════════════════════════════════════════════════ */
+let keyAnswerCb=null;
+const KEY_MAP={ "a":0,"s":1,"d":2,"f":3,"1":0,"2":1,"3":2,"4":3 };
+
+document.addEventListener("keydown",(e)=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")return;
+  const key=e.key.toLowerCase();
+  if(key in KEY_MAP && keyAnswerCb){
+    e.preventDefault();
+    keyAnswerCb(KEY_MAP[key]);
+  }
+});
+
+/* ════════════════════════════════════════════════
+   DETECTOR TOUCH — muestra controles en pantalla
+════════════════════════════════════════════════ */
+let touchShown=false;
+document.addEventListener("touchstart",()=>{
+  if(!touchShown){
+    touchShown=true;
+    document.querySelectorAll(".touch-controls").forEach(el=>el.classList.add("force-show"));
+  }
+},{passive:true,once:true});
+
+/* ════════════════════════════════════════════════
+   RENDER DE PREGUNTA + CONTROLES
+════════════════════════════════════════════════ */
+function renderQuestion(wrapId, q, onResult){
+  const wrap=document.getElementById(wrapId);
+  if(!wrap)return;
+  wrap.innerHTML="";
+
+  // Cabecera con texto y badge de dificultad
+  const header=document.createElement("div");
+  header.className="question-header";
+  const txt=document.createElement("p");
+  txt.className="question-text";
+  txt.textContent=q.text;
+  const badge=document.createElement("span");
+  badge.className=`diff-badge ${q.diffClass}`;
+  badge.textContent=q.diffLabel;
+  header.appendChild(txt);
+  header.appendChild(badge);
+  wrap.appendChild(header);
+
+  // Grid de bloques
+  const grid=document.createElement("div");
+  grid.className="blocks-grid";
+  const KEYS=["A","S","D","F"];
+  const GP_BTNS=["A","B","X","Y"];
+
+  const buttons=[];
+
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement("button");
+    btn.className="block-btn";
+    btn.type="button";
+    btn.setAttribute("aria-label",`Responder ${opt}`);
+    btn.innerHTML=`
+      <span class="block-key">${KEYS[i]}</span>
+      <span class="block-gp">${GP_BTNS[i]}</span>
+      <span class="block-sign">?</span>
+      <span class="block-val">${opt}</span>
+    `;
+    buttons.push(btn);
+    grid.appendChild(btn);
+  });
+
+  wrap.appendChild(grid);
+
+  // Función de responder por índice
+  let answered=false;
+  function answer(idx){
+    if(answered||idx<0||idx>=buttons.length)return;
+    answered=true;
+    keyAnswerCb=null;
+    gamepadAnswerCb=null;
+
+    // Limpiar touch buttons
+    const tb=document.getElementById("touch-buttons");
+    if(tb) tb.querySelectorAll(".touch-btn").forEach(b=>b.disabled=true);
+
+    buttons.forEach(b=>b.disabled=true);
+    const opt=q.options[idx];
+    const ok=opt===q.correct;
+    buttons[idx].classList.add(ok?"correct":"wrong");
+
+    // Highlight visual de tecla
+    buttons[idx].classList.remove("key-highlight");
+
+    if(ok){
+      const coin=document.createElement("span");
+      coin.className="coin-burst"; coin.textContent="🪙";
+      coin.setAttribute("aria-hidden","true");
+      buttons[idx].appendChild(coin);
+      coin.addEventListener("animationend",()=>coin.remove());
+      sfxCorrect();
+    } else {
+      // Mostrar respuesta correcta
+      const corrIdx=q.options.indexOf(q.correct);
+      if(corrIdx>=0) buttons[corrIdx].classList.add("correct");
+      sfxWrong();
+    }
+    setTimeout(()=>onResult(ok), ok?750:600);
+  }
+
+  // Activar callbacks de teclado y gamepad
+  keyAnswerCb=(idx)=>{
+    if(answered)return;
+    // Efecto visual antes de seleccionar
+    buttons[idx]?.classList.add("key-highlight");
+    setTimeout(()=>{ buttons[idx]?.classList.remove("key-highlight"); answer(idx); },80);
+  };
+  gamepadAnswerCb=(idx)=>{ answer(idx); };
+
+  // Click mouse normal
+  buttons.forEach((btn,i)=>{
+    btn.addEventListener("click",()=>answer(i));
+  });
+
+  // Controles táctiles en pantalla
+  buildTouchButtons(q.options, answer);
+
+  // Info de controles
+  buildControlsInfo();
+}
+
+function buildTouchButtons(options, answerFn){
+  const tb=document.getElementById("touch-buttons");
+  if(!tb)return;
+  tb.innerHTML="";
+  const icons=["🅰️","🅱️","❎","🟡"];
+  options.forEach((opt,i)=>{
+    const btn=document.createElement("button");
+    btn.className="touch-btn answer-btn";
+    btn.type="button";
+    btn.setAttribute("aria-label",`Tocar para responder ${opt}`);
+    btn.innerHTML=`<span class="touch-btn-icon">${icons[i]}</span><span class="touch-btn-label">${opt}</span>`;
+    btn.addEventListener("click",()=>answerFn(i));
+    // Feedback visual touch
+    btn.addEventListener("touchstart",()=>btn.classList.add("pressing"),{passive:true});
+    btn.addEventListener("touchend",()=>btn.classList.remove("pressing"),{passive:true});
+    tb.appendChild(btn);
+  });
+}
+
+function buildControlsInfo(){
+  const ci=document.getElementById("controls-info");
+  if(!ci)return;
+  ci.innerHTML=`
+    <div class="ctrl-item"><span class="key-badge">A</span> Opción 1</div>
+    <div class="ctrl-item"><span class="key-badge">S</span> Opción 2</div>
+    <div class="ctrl-item"><span class="key-badge">D</span> Opción 3</div>
+    <div class="ctrl-item"><span class="key-badge">F</span> Opción 4</div>
+    <div class="ctrl-item"><span class="key-badge">1-4</span> Alternativo</div>
+    <div class="ctrl-item"><span class="key-badge">🎮</span> A/B/X/Y</div>
+  `;
+}
+
+/* ════════════════════════════════════════════════
+   BARRA ADAPTATIVA VISUAL
+════════════════════════════════════════════════ */
+function updateAdaptiveUI(level, hist){
+  const fill=document.getElementById("adaptive-fill");
+  const streak=document.getElementById("adaptive-streak");
+  if(fill){
+    fill.className="adaptive-fill"+(level===2?" lvl2":level===3?" lvl3":"");
+  }
+  if(streak){
+    const last5=hist.slice(-5);
+    streak.innerHTML=last5.map(v=>`<div class="streak-dot ${v?"hit":"miss"}"></div>`).join("");
+  }
+  const lvlEl=document.getElementById("hud-level");
+  if(lvlEl) lvlEl.textContent=level;
+}
+
+/* ════════════════════════════════════════════════
+   THREE.JS — MOTOR 3D
+════════════════════════════════════════════════ */
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let threeScene = null;
+let threeHandle=null;
 
-async function initThreeJS(canvasId) {
-  const canvas = document.getElementById(canvasId);
-  if (!canvas) return null;
+async function initThreeJS(canvasId){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas)return null;
 
-  // Renderer
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(canvas.clientWidth,canvas.clientHeight,false);
+  renderer.shadowMap.enabled=true;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.2;
 
-  // Scene
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0e1428);
-  scene.fog = new THREE.FogExp2(0x0e1428, 0.012);
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x050810);
+  scene.fog=new THREE.FogExp2(0x070b18,0.018);
 
-  // Camera
-  const aspect = canvas.clientWidth / canvas.clientHeight;
-  const camera = new THREE.PerspectiveCamera(55, aspect, 0.1, 500);
-  camera.position.set(0, 5, 14);
-  camera.lookAt(0, 0, 0);
+  const aspect=canvas.clientWidth/canvas.clientHeight;
+  const camera=new THREE.PerspectiveCamera(50,aspect,0.1,600);
+  camera.position.set(0,6,16);
+  camera.lookAt(0,0,0);
 
-  // Controls (limitados para que se sienta cinematico)
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.minDistance = 5;
-  controls.maxDistance = 40;
-  controls.maxPolarAngle = Math.PI / 2.1;
-  controls.enablePan = false;
-  controls.autoRotate = true;
-  controls.autoRotateSpeed = 0.4;
+  const controls=new OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true;
+  controls.dampingFactor=0.07;
+  controls.minDistance=4; controls.maxDistance=45;
+  controls.maxPolarAngle=Math.PI/2.05;
+  controls.enablePan=false;
+  controls.autoRotate=true;
+  controls.autoRotateSpeed=0.5;
+  controls.enableZoom=false; // evitar conflicto con scroll en móvil
 
-  // Luces
-  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
-  scene.add(ambient);
+  // ── LUCES ──
+  scene.add(new THREE.AmbientLight(0x223366,1.2));
 
-  const sun = new THREE.DirectionalLight(0xffecd2, 2.2);
-  sun.position.set(12, 20, 10);
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
-  sun.shadow.camera.near = 0.5;
-  sun.shadow.camera.far = 100;
-  sun.shadow.camera.left = -30; sun.shadow.camera.right = 30;
-  sun.shadow.camera.top  =  30; sun.shadow.camera.bottom = -30;
+  const sun=new THREE.DirectionalLight(0xfff0d0,2.8);
+  sun.position.set(14,22,12);
+  sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048);
+  sun.shadow.camera.near=0.5; sun.shadow.camera.far=120;
+  sun.shadow.camera.left=-35; sun.shadow.camera.right=35;
+  sun.shadow.camera.top=35;   sun.shadow.camera.bottom=-35;
   scene.add(sun);
 
-  const fill = new THREE.DirectionalLight(0x9bbfe8, 0.8);
-  fill.position.set(-8, 8, -6);
+  const fill=new THREE.DirectionalLight(0x4466cc,1.0);
+  fill.position.set(-10,8,-8);
   scene.add(fill);
 
-  const rim = new THREE.PointLight(0xe8c468, 1.5, 40);
-  rim.position.set(0, 8, -12);
-  scene.add(rim);
+  const rimBlue=new THREE.PointLight(0x4f8ef7,2.2,50);
+  rimBlue.position.set(0,10,-14);
+  scene.add(rimBlue);
 
-  // Suelo reflectante de emergencia (por si el track tarda)
-  const floorGeo  = new THREE.PlaneGeometry(120, 120);
-  const floorMat  = new THREE.MeshStandardMaterial({
-    color: 0x2a2a3a, roughness: 0.85, metalness: 0.1
+  const rimGold=new THREE.PointLight(0xf5c842,1.5,30);
+  rimGold.position.set(10,4,0);
+  scene.add(rimGold);
+
+  // ── SUELO REFLECTANTE ──
+  const floorMat=new THREE.MeshStandardMaterial({
+    color:0x1a2040, roughness:0.6, metalness:0.4
   });
-  const floor = new THREE.Mesh(floorGeo, floorMat);
-  floor.rotation.x = -Math.PI / 2;
-  floor.receiveShadow = true;
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(160,160),floorMat);
+  floor.rotation.x=-Math.PI/2; floor.receiveShadow=true;
   scene.add(floor);
 
-  // Partículas de ambiente (estrellas/polvo)
-  const starGeo = new THREE.BufferGeometry();
-  const starCount = 900;
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 200;
-  starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xfaf6ef, size: 0.18, sizeAttenuation: true });
-  scene.add(new THREE.Points(starGeo, starMat));
+  // ── PARTÍCULAS ESTRELLAS ──
+  const starGeo=new THREE.BufferGeometry();
+  const sCnt=1200, sPos=new Float32Array(sCnt*3);
+  for(let i=0;i<sCnt*3;i++) sPos[i]=(Math.random()-0.5)*300;
+  starGeo.setAttribute("position",new THREE.BufferAttribute(sPos,3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+    color:0xaaccff, size:0.22, sizeAttenuation:true, transparent:true, opacity:0.7
+  })));
 
-  // Estado de carrera 3D
-  const raceState3D = {
-    kart: null,
-    track: null,
-    kartProgress: 0,       // 0-1
-    targetProgress: 0,
-    kartPath: [],
-    engineTime: 0,
-  };
+  // ── TEXTURA DE SMOKE/SPARK desde assets ──
+  const texLoader=new THREE.TextureLoader();
+  let smokeTex=null, sparkTex=null;
+  try{
+    smokeTex=await texLoader.loadAsync(A.SMOKE);
+    sparkTex=await texLoader.loadAsync(A.SPARK);
+  }catch(_){}
 
-  const loader = new GLTFLoader();
-
-  // Carga del circuito
-  const trackPromise = new Promise((resolve, reject) => {
-    loader.load(
-      A.TRACK_GLB,
-      (gltf) => {
-        const track = gltf.scene;
-        track.scale.set(0.8, 0.8, 0.8);
-        track.position.set(0, 0, 0);
-        track.traverse(c => {
-          if (c.isMesh) {
-            c.receiveShadow = true;
-            c.castShadow = false;
-          }
-        });
-        scene.add(track);
-        raceState3D.track = track;
-        resolve(track);
-      },
-      undefined,
-      reject
-    );
+  // ── PARTÍCULAS DE HUMO DEL ESCAPE ──
+  const smokeGeo=new THREE.BufferGeometry();
+  const smCnt=60, smPos=new Float32Array(smCnt*3), smAlpha=new Float32Array(smCnt);
+  for(let i=0;i<smCnt;i++){ smPos[i*3]=smPos[i*3+1]=smPos[i*3+2]=0; smAlpha[i]=0; }
+  smokeGeo.setAttribute("position",new THREE.BufferAttribute(smPos,3));
+  smokeGeo.setAttribute("alpha",   new THREE.BufferAttribute(smAlpha,1));
+  const smokeMat=new THREE.PointsMaterial({
+    map:smokeTex||null, size:0.6, transparent:true, opacity:0.35,
+    depthWrite:false, color:0x8899cc, sizeAttenuation:true
   });
+  const smokePS=new THREE.Points(smokeGeo,smokeMat);
+  scene.add(smokePS);
 
-  // Carga del kart
-  const kartPromise = new Promise((resolve, reject) => {
-    loader.load(
-      A.KART_GLB,
-      (gltf) => {
-        const kart = gltf.scene;
-        kart.scale.set(0.5, 0.5, 0.5);
-        kart.position.set(0, 0.3, 0);
-        kart.traverse(c => {
-          if (c.isMesh) {
-            c.castShadow = true;
-            c.receiveShadow = true;
-          }
-        });
-        scene.add(kart);
-        raceState3D.kart = kart;
-        resolve(kart);
-      },
-      undefined,
-      reject
-    );
+  // ── PARTÍCULAS DE SPARK ──
+  const sparkGeo=new THREE.BufferGeometry();
+  const spCnt=30, spPos=new Float32Array(spCnt*3);
+  sparkGeo.setAttribute("position",new THREE.BufferAttribute(spPos,3));
+  const sparkMat=new THREE.PointsMaterial({
+    map:sparkTex||null, size:0.3, transparent:true, opacity:0,
+    depthWrite:false, color:0xf5c842
   });
+  const sparkPS=new THREE.Points(sparkGeo,sparkMat);
+  scene.add(sparkPS);
 
-  // Esperar ambos modelos
-  try {
-    await Promise.all([trackPromise, kartPromise]);
-    console.log("[Tier 3D] Modelos cargados correctamente.");
-  } catch (err) {
-    console.warn("[Tier 3D] Fallo cargando modelos, usando fallback Canvas 2D:", err);
+  // ── GLB LOADER ──
+  const gltfLoader=new GLTFLoader();
+  const state3D={ kart:null, track:null, witch:null, wheels:[], kartProgress:0, targetProgress:0, kartPath:[], speed:0 };
+
+  // Carga en paralelo de circuito + kart + witch
+  const loadGLB=(url)=>new Promise((res,rej)=>gltfLoader.load(url,g=>res(g.scene),undefined,rej));
+
+  const [trackScene,kartScene,witchScene,wheelScene] = await Promise.allSettled([
+    loadGLB(A.TRACK_GLB),
+    loadGLB(A.KART_GLB),
+    loadGLB(A.WITCH_GLB),
+    loadGLB(A.WHEEL_GLB),
+  ]).then(rs=>rs.map(r=>r.status==="fulfilled"?r.value:null));
+
+  if(trackScene){
+    trackScene.scale.set(0.9,0.9,0.9);
+    trackScene.traverse(c=>{ if(c.isMesh){ c.receiveShadow=true; c.castShadow=false; } });
+    scene.add(trackScene);
+    state3D.track=trackScene;
+  }
+  if(kartScene){
+    kartScene.scale.set(0.45,0.45,0.45);
+    kartScene.position.set(0,0.3,0);
+    kartScene.traverse(c=>{ if(c.isMesh){ c.castShadow=true; c.receiveShadow=true; } });
+    scene.add(kartScene);
+    state3D.kart=kartScene;
+  }
+  if(witchScene){
+    witchScene.scale.set(0.25,0.25,0.25);
+    witchScene.position.set(3,0.3,3);
+    witchScene.traverse(c=>{ if(c.isMesh){ c.castShadow=true; } });
+    scene.add(witchScene);
+    state3D.witch=witchScene;
+  }
+  // 4 ruedas adicionales
+  if(wheelScene){
+    const offsets=[[-0.35,0.1,0.35],[0.35,0.1,0.35],[-0.35,0.1,-0.28],[0.35,0.1,-0.28]];
+    offsets.forEach(off=>{
+      const w=wheelScene.clone();
+      w.scale.set(0.45,0.45,0.45);
+      if(state3D.kart) state3D.kart.add(w);
+      w.position.set(...off);
+      state3D.wheels.push(w);
+    });
   }
 
-  // Generar un camino circular simple de la pista para animar el kart
-  const pathRadius = 8;
-  const pathPoints = 120;
-  raceState3D.kartPath = Array.from({ length: pathPoints }, (_, i) => {
-    const angle = (i / pathPoints) * Math.PI * 2;
-    return new THREE.Vector3(
-      Math.cos(angle) * pathRadius,
-      0.35,
-      Math.sin(angle) * pathRadius
-    );
+  // ── CAMINO CIRCULAR ──
+  const PR=9, PP=200;
+  state3D.kartPath=Array.from({length:PP},(_,i)=>{
+    const angle=(i/PP)*Math.PI*2;
+    return new THREE.Vector3(Math.cos(angle)*PR, 0.32, Math.sin(angle)*PR);
+  });
+  // Camino de la bruja (ligeramente desfasado)
+  const witchPath=Array.from({length:PP},(_,i)=>{
+    const angle=((i+30)/PP)*Math.PI*2 + Math.PI*0.3;
+    return new THREE.Vector3(Math.cos(angle)*PR*1.1, 0.32, Math.sin(angle)*PR*1.1);
   });
 
-  // Bucle de renderizado
-  let animId = null;
-  function animate() {
-    animId = requestAnimationFrame(animate);
-    const delta = 0.016;
+  let witchIdx=0;
+  let smIdx=0;
 
-    // Suavizar movimiento del kart
-    if (raceState3D.kart && raceState3D.kartPath.length > 0) {
-      raceState3D.kartProgress += (raceState3D.targetProgress - raceState3D.kartProgress) * 0.04;
-      const idx = Math.floor(raceState3D.kartProgress * raceState3D.kartPath.length) % raceState3D.kartPath.length;
-      const next = (idx + 1) % raceState3D.kartPath.length;
-      const pos  = raceState3D.kartPath[idx];
-      const look = raceState3D.kartPath[next];
-      raceState3D.kart.position.lerp(pos, 0.12);
-      raceState3D.kart.lookAt(look);
-      // Leve cabeceo del kart
-      raceState3D.kart.rotation.z = Math.sin(Date.now() * 0.003) * 0.04;
+  // ── LOOP DE RENDER ──
+  let animId=null, lastT=0;
+  function animate(t){
+    animId=requestAnimationFrame(animate);
+    const dt=Math.min((t-lastT)/1000,0.05);
+    lastT=t;
+
+    // Gamepad poll
+    pollGamepad();
+
+    // Kart movement
+    if(state3D.kart && state3D.kartPath.length>0){
+      state3D.speed+=(state3D.targetProgress-state3D.kartProgress)*0.06;
+      state3D.speed*=0.88;
+      state3D.kartProgress=Math.min(1,Math.max(0,state3D.kartProgress+state3D.speed));
+      const frac=state3D.kartProgress%1;
+      const idx=Math.floor(frac*PP);
+      const nxt=(idx+1)%PP;
+      const pos=state3D.kartPath[idx];
+      const lk=state3D.kartPath[nxt];
+      state3D.kart.position.lerp(pos,0.1);
+      state3D.kart.lookAt(lk);
+      state3D.kart.rotation.z=Math.sin(t*0.004)*0.06;
+
+      // Ruedas girando
+      state3D.wheels.forEach(w=>{ w.rotation.x-=dt*8*state3D.speed; });
     }
 
-    // Rim light pulsante
-    rim.intensity = 1.3 + Math.sin(Date.now() * 0.002) * 0.3;
+    // Witch NPC
+    if(state3D.witch){
+      witchIdx=(witchIdx+0.2)%PP;
+      const wi=Math.floor(witchIdx);
+      const wn=(wi+1)%PP;
+      state3D.witch.position.lerp(witchPath[wi],0.08);
+      state3D.witch.lookAt(witchPath[wn]);
+      state3D.witch.rotation.y+=0.01;
+    }
+
+    // Smoke particles
+    {
+      const pos=smokePS.geometry.attributes.position;
+      const basePos=state3D.kart?state3D.kart.position:new THREE.Vector3();
+      pos.array[smIdx*3]   = basePos.x + (Math.random()-0.5)*0.4;
+      pos.array[smIdx*3+1] = basePos.y + 0.1;
+      pos.array[smIdx*3+2] = basePos.z + (Math.random()-0.5)*0.4;
+      pos.needsUpdate=true;
+      smIdx=(smIdx+1)%smCnt;
+      // Drift particles upward
+      for(let i=0;i<smCnt;i++) pos.array[i*3+1]+=0.008;
+      pos.needsUpdate=true;
+    }
+
+    // Pulsing rim lights
+    rimBlue.intensity = 1.8+Math.sin(t*0.002)*0.6;
+    rimGold.intensity = 1.2+Math.cos(t*0.0025)*0.4;
 
     controls.update();
-    renderer.render(scene, camera);
+    renderer.render(scene,camera);
   }
-  animate();
+  animate(0);
 
-  // Responsive
-  const ro = new ResizeObserver(() => {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
+  const ro=new ResizeObserver(()=>{
+    const w=canvas.clientWidth, h=Math.max(canvas.clientHeight,1);
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;
     camera.updateProjectionMatrix();
   });
   ro.observe(canvas);
 
   return {
-    advance(progress01) {
-      raceState3D.targetProgress = progress01;
-    },
-    destroy() {
-      if (animId) cancelAnimationFrame(animId);
+    advance(p){ state3D.targetProgress=p; },
+    setSpeed(on){ controls.autoRotate=!on; },
+    destroy(){
+      if(animId) cancelAnimationFrame(animId);
       ro.disconnect();
       renderer.dispose();
     }
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   9. PILOTO — selección
-════════════════════════════════════════════════════════════════════════ */
-const PILOTS = [
-  { id: "red",   name: "Rojo",  color: "#D98C7A" },
-  { id: "blue",  name: "Azul",  color: "#5B7FA6" },
-  { id: "green", name: "Verde", color: "#7FAE8E" },
+/* ════════════════════════════════════════════════
+   PILOTOS
+════════════════════════════════════════════════ */
+const PILOTS=[
+  { id:"blue",   name:"Bolu",    color:"#4f8ef7", stat:"VEL ★★★ ACC ★★" },
+  { id:"red",    name:"Terra",   color:"#e8725a", stat:"VEL ★★  ACC ★★★" },
+  { id:"green",  name:"Salvia",  color:"#56c99a", stat:"VEL ★★  ACC ★★" },
+  { id:"purple", name:"Mística", color:"#9b72f5", stat:"VEL ★★★ ACC ★" },
 ];
+let chosenPilot=PILOTS[0];
 
-let chosenPilot = PILOTS[0];
-
-function renderPilotSelect(containerId, onChoose) {
-  const wrap = document.getElementById(containerId);
-  if (!wrap) return;
-  wrap.innerHTML = `<h3 class="section-title">Elige tu vehículo</h3>`;
-  const grid = document.createElement("div");
-  grid.className = "pilots-grid";
-
-  PILOTS.forEach(p => {
-    const btn = document.createElement("button");
-    btn.className = "pilot-card";
-    btn.type = "button";
-    btn.setAttribute("aria-label", `Elegir ${p.name}`);
-    btn.style.setProperty("--color-p", p.color);
-    btn.innerHTML = `
-      <div class="pilot-swatch" style="background:${p.color}"></div>
-      <span class="pilot-name">${p.name}</span>`;
-    btn.addEventListener("click", () => {
-      chosenPilot = p;
-      sfxClick();
-      onChoose(p.id);
+function renderPilotSelect(wrapId, onChoose){
+  const wrap=document.getElementById(wrapId);
+  if(!wrap)return;
+  wrap.innerHTML=`<h3 class="section-title">Elige tu Kart</h3>`;
+  const grid=document.createElement("div");
+  grid.className="pilots-grid";
+  PILOTS.forEach(p=>{
+    const btn=document.createElement("button");
+    btn.className="pilot-card";
+    btn.type="button";
+    btn.style.setProperty("--pilot-color",p.color);
+    btn.setAttribute("aria-label",`Elegir ${p.name}`);
+    btn.innerHTML=`<div class="pilot-swatch"></div><span class="pilot-name">${p.name}</span><span class="pilot-stat">${p.stat}</span>`;
+    btn.addEventListener("click",()=>{
+      chosenPilot=p; sfxSelect(); onChoose(p.id);
     });
     grid.appendChild(btn);
   });
   wrap.appendChild(grid);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   10. TOAST DE NIVEL
-════════════════════════════════════════════════════════════════════════ */
-function showToast(msg) {
-  const t = document.getElementById("level-toast");
-  if (!t) return;
-  t.textContent = msg;
+/* ════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════ */
+function showToast(msg,dur=2800){
+  const t=document.getElementById("level-toast");
+  if(!t)return;
+  t.textContent=msg;
   t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2800);
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.classList.remove("show"),dur);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   11. CARRERA 3D — orquestador del minijuego
-════════════════════════════════════════════════════════════════════════ */
-const TRACK_LEN  = 10;   // preguntas para completar el circuito
-let   raceEngine = null;
+/* ════════════════════════════════════════════════
+   TIMER DE CARRERA
+════════════════════════════════════════════════ */
+let raceTimer=null, raceSeconds=0;
+function startRaceTimer(){
+  raceSeconds=0;
+  clearInterval(raceTimer);
+  raceTimer=setInterval(()=>{
+    raceSeconds++;
+    const m=String(Math.floor(raceSeconds/60)).padStart(2,"0");
+    const s=String(raceSeconds%60).padStart(2,"0");
+    const el=document.getElementById("race-time");
+    if(el) el.textContent=`${m}:${s}`;
+  },1000);
+}
+function stopRaceTimer(){ clearInterval(raceTimer); }
 
-async function startKartMode() {
-  const loading  = document.getElementById("race-loading");
-  const speedBar = document.getElementById("speed-bar");
+/* ════════════════════════════════════════════════
+   CHECKPOINTS UI
+════════════════════════════════════════════════ */
+const TRACK_LEN=10;
+function initCheckpoints(){
+  const cp=document.getElementById("checkpoints");
+  if(!cp)return;
+  cp.innerHTML=Array.from({length:TRACK_LEN},(_,i)=>`<div class="checkpoint" id="cp-${i}"></div>`).join("");
+}
+function updateCheckpoints(done){
+  for(let i=0;i<TRACK_LEN;i++){
+    const cp=document.getElementById(`cp-${i}`);
+    if(!cp)continue;
+    cp.classList.toggle("done",i<done);
+    cp.classList.toggle("current",i===done);
+  }
+}
 
-  if (raceEngine) { raceEngine.destroy(); raceEngine = null; }
-  raceEngine = await initThreeJS("race-canvas");
-  if (loading) loading.classList.add("hidden");
+/* ════════════════════════════════════════════════
+   RESULTADO FINAL
+════════════════════════════════════════════════ */
+function showRaceResult(answered, correct, time){
+  const wrap=document.getElementById("kart-question-wrap");
+  if(!wrap)return;
+  wrap.innerHTML="";
 
-  let answered  = 0;
-  let adaptLvl  = appState.adaptiveLevel ?? 1;
-  let raceHist  = [];
+  const acc=answered>0?Math.round((correct/answered)*100):0;
+  const isRecord=appState.bestTime===null||time<appState.bestTime;
+  if(isRecord) appState.bestTime=time;
 
-  function nextQuestion() {
-    const q = genQuestion(adaptLvl);
-    renderQuestion("kart-question-wrap", q, (ok) => {
+  const div=document.createElement("div");
+  div.className="race-result";
+  div.innerHTML=`
+    <div class="result-title">🏁 ¡META!</div>
+    <div class="result-stats">
+      <div class="result-stat">
+        <div class="result-stat-val">${correct}/${answered}</div>
+        <div class="result-stat-label">Respuestas correctas</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val">${acc}%</div>
+        <div class="result-stat-label">Precisión</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val">${String(Math.floor(time/60)).padStart(2,"0")}:${String(time%60).padStart(2,"0")}</div>
+        <div class="result-stat-label">${isRecord?"⭐ Mejor tiempo":"Tiempo"}</div>
+      </div>
+      <div class="result-stat">
+        <div class="result-stat-val">+${appState.coins}</div>
+        <div class="result-stat-label">Monedas totales</div>
+      </div>
+    </div>
+    <button class="btn-play-again" id="btn-play-again" type="button">¡Correr de nuevo!</button>
+  `;
+  wrap.appendChild(div);
+  document.getElementById("btn-play-again")?.addEventListener("click",()=>{
+    sfxClick();
+    // Limpiar controles táctiles
+    const tb=document.getElementById("touch-buttons");
+    if(tb) tb.innerHTML="";
+    startKartMode();
+  });
+
+  // Limpiar botones táctiles
+  const tb=document.getElementById("touch-buttons");
+  if(tb) tb.innerHTML="";
+}
+
+/* ════════════════════════════════════════════════
+   MODO CARRERA PRINCIPAL
+════════════════════════════════════════════════ */
+async function startKartMode(){
+  const loadingEl=document.getElementById("race-loading");
+  const speedBar=document.getElementById("speed-bar");
+  const qWrap=document.getElementById("kart-question-wrap");
+  if(qWrap) qWrap.innerHTML=`<p style="font-family:var(--f-mono);color:var(--c-txt-soft);font-size:12px;letter-spacing:2px;">CARGANDO…</p>`;
+
+  if(threeHandle){ threeHandle.destroy(); threeHandle=null; }
+
+  if(loadingEl) loadingEl.classList.remove("hidden");
+  threeHandle=await initThreeJS("race-canvas");
+  if(loadingEl) loadingEl.classList.add("hidden");
+
+  initCheckpoints();
+  startRaceTimer();
+
+  let answered=0, correctCount=0;
+  let adaptLvl=appState.adaptiveLevel??1;
+  let raceHist=[...appState.history.slice(-6)];
+
+  updateAdaptiveUI(adaptLvl, raceHist);
+
+  function nextQ(){
+    if(answered>=TRACK_LEN){
+      // FIN
+      stopRaceTimer();
+      sfxVictory();
+      appState.stars+=1;
+      appState.coins+=Math.ceil(TRACK_LEN/2)+correctCount;
+      appState.adaptiveLevel=adaptLvl;
+      appState.history=[...appState.history,...raceHist].slice(-30);
+      updateHud();
+      syncProgress();
+      updateCheckpoints(TRACK_LEN);
+      showRaceResult(answered, correctCount, raceSeconds);
+      say("bubble-app","¡Llegaste a la meta! Lo lograste 🎉");
+      return;
+    }
+
+    const q=genQuestion(adaptLvl);
+    renderQuestion("kart-question-wrap", q, (ok)=>{
       raceHist.push(ok);
       answered++;
-      const newLvl = adaptLevel(adaptLvl, raceHist);
-      if (newLvl !== adaptLvl) {
-        adaptLvl = newLvl;
-        appState.adaptiveLevel = adaptLvl;
-        const msg = newLvl > adaptLvl - 1
-          ? "🔥 ¡Nivel de dificultad subió!"
-          : "💡 Dificultad ajustada para ti.";
+      if(ok){ correctCount++; sfxEngine(); }
+
+      // Progreso barra y checkpoints
+      const pct=answered/TRACK_LEN;
+      if(speedBar) speedBar.style.width=`${Math.min(100,pct*100)}%`;
+      const pctEl=document.getElementById("race-pct");
+      if(pctEl) pctEl.textContent=`${Math.round(pct*100)}%`;
+      const qcEl=document.getElementById("race-q-count");
+      if(qcEl) qcEl.textContent=`${answered}/${TRACK_LEN}`;
+      updateCheckpoints(answered);
+      if(threeHandle) threeHandle.advance(pct);
+
+      // Nivel adaptativo
+      const newLvl=computeNewLevel(adaptLvl,raceHist);
+      if(newLvl!==adaptLvl){
+        adaptLvl=newLvl;
+        appState.adaptiveLevel=adaptLvl;
+        const msg=newLvl>adaptLvl-1?"🔥 ¡Dificultad subió al nivel "+newLvl+"!":"💡 Dificultad bajada para ti.";
         showToast(msg);
+        sfxLvlUp();
         syncProgress();
       }
+      updateAdaptiveUI(adaptLvl,raceHist);
 
-      if (ok) {
-        appState.coins += 1;
-        updateHud();
-        if (raceEngine) raceEngine.advance(answered / TRACK_LEN);
-        if (speedBar) speedBar.style.width = `${Math.min(100, (answered / TRACK_LEN) * 100)}%`;
-        sfxEngine();
-      }
+      if(ok) appState.coins++;
+      updateHud();
 
-      if (answered >= TRACK_LEN) {
-        sfxVictory();
-        appState.stars += 1;
-        appState.coins += 5;
-        appState.adaptiveLevel = adaptLvl;
-        updateHud();
-        syncProgress();
-        document.getElementById("kart-question-wrap").innerHTML =
-          `<p class="question-text">🏁 ¡Meta alcanzada! +5 monedas ⭐</p>`;
-        say("bubble-app", "¡Llegaste a la meta! Lo hiciste increíble. 🎉");
-        return;
-      }
-      nextQuestion();
+      nextQ();
     });
   }
-
-  nextQuestion();
+  nextQ();
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   12. APP — estado global y orquestador principal
-════════════════════════════════════════════════════════════════════════ */
-let currentUser = null;
-let appState    = freshState();
+/* ════════════════════════════════════════════════
+   APP SHELL
+════════════════════════════════════════════════ */
+const viewWelcome=document.getElementById("view-welcome");
+const viewApp=document.getElementById("view-app");
 
-const viewWelcome = document.getElementById("view-welcome");
-const viewApp     = document.getElementById("view-app");
-
-function toggleViews(authed) {
-  viewWelcome.hidden = authed;
-  viewApp.hidden     = !authed;
+function toggleViews(authed){
+  viewWelcome.hidden=authed;
+  viewApp.hidden=!authed;
 }
-
-function updateHud() {
-  const firstName = currentUser?.displayName?.split(" ")[0] ?? "Tier";
-  document.getElementById("hud-name").textContent  = `¡Hola, ${firstName}! 👋`;
-  document.getElementById("hud-coins").textContent = appState.coins;
-  document.getElementById("hud-stars").textContent = appState.stars;
-  const av = document.getElementById("hud-avatar");
-  av.src = currentUser?.photoURL ?? A.ICON;
-  av.alt = currentUser?.displayName ?? "Avatar";
+function updateHud(){
+  const first=currentUser?.displayName?.split(" ")[0]??"Piloto";
+  document.getElementById("hud-name").textContent=`${first} 👾`;
+  document.getElementById("hud-coins").textContent=appState.coins;
+  document.getElementById("hud-stars").textContent=appState.stars;
+  document.getElementById("hud-level").textContent=appState.adaptiveLevel??1;
+  const av=document.getElementById("hud-avatar");
+  av.src=currentUser?.photoURL??A.ICON;
+  av.alt=currentUser?.displayName??"Avatar";
 }
+async function syncProgress(){ await saveProgress(currentUser?.uid,appState); }
 
-async function syncProgress() {
-  await saveProgress(currentUser?.uid, appState);
-}
-
-function showSection(id) {
-  document.querySelectorAll(".section-app").forEach(s => { s.hidden = s.id !== id; });
-  document.querySelectorAll(".hud-nav button[id^='nav-']").forEach(b => {
-    b.classList.toggle("active", b.id === `nav-${id.replace("sec-", "")}`);
+function showSection(id){
+  document.querySelectorAll(".section-app").forEach(s=>{ s.hidden=s.id!==id; });
+  document.querySelectorAll(".hud-nav button[id^='nav-']").forEach(b=>{
+    b.classList.toggle("active",b.id===`nav-${id.replace("sec-","")}`);
   });
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   13. EVENTOS DE UI
-════════════════════════════════════════════════════════════════════════ */
-
-// LOGIN — async/await con try/catch por código de error
-document.getElementById("btn-login").addEventListener("click", async () => {
+/* ════════════════════════════════════════════════
+   EVENTOS UI
+════════════════════════════════════════════════ */
+// Login
+document.getElementById("btn-login").addEventListener("click",async()=>{
   sfxClick();
-  const btn = document.getElementById("btn-login");
-  btn.disabled = true;
-  try {
-    await loginGoogle();
-    // onAuthStateChanged manejará el resto
-  } catch (err) {
-    console.error("[Tier] Login fallido:", err.code, err.message);
-    const msgs = {
-      "auth/popup-blocked":               "Tu navegador bloqueó el pop-up. Actívalo e inténtalo de nuevo.",
-      "auth/popup-closed-by-user":        "Cerraste la ventana de inicio de sesión. ¿Lo intentamos de nuevo?",
-      "auth/cancelled-popup-request":     "",  // silencioso
-      "auth/network-request-failed":      "Sin conexión. Revisa tu red y vuelve a intentarlo.",
+  const btn=document.getElementById("btn-login");
+  btn.disabled=true;
+  try{
+    await signInWithPopup(auth,provider);
+  }catch(err){
+    const msgs={
+      "auth/popup-blocked":        "Tu navegador bloqueó el pop-up. Actívalo e intenta de nuevo.",
+      "auth/popup-closed-by-user": "Cerraste la ventana. ¿Lo intentamos de nuevo?",
+      "auth/network-request-failed":"Sin conexión. Revisa tu red.",
     };
-    const msg = msgs[err.code] ?? "No pudimos iniciar sesión. ¿Probamos otra vez?";
-    if (msg) say("bubble-welcome", msg);
-  } finally {
-    btn.disabled = false;
+    const msg=msgs[err.code]??"No pudimos iniciar sesión. ¿Probamos de nuevo?";
+    if(msg) say("bubble-welcome",msg);
+  }finally{
+    btn.disabled=false;
   }
 });
 
-document.getElementById("btn-logout").addEventListener("click", async () => {
+// Logout
+document.getElementById("btn-logout").addEventListener("click",async()=>{
   sfxClick();
-  if (raceEngine) { raceEngine.destroy(); raceEngine = null; }
-  await logoutApp();
+  if(threeHandle){ threeHandle.destroy(); threeHandle=null; }
+  keyAnswerCb=null; gamepadAnswerCb=null;
+  await signOut(auth);
 });
 
-document.getElementById("nav-home").addEventListener("click", () => {
-  sfxClick();
-  showSection("sec-home");
+// Nav home
+document.getElementById("nav-home").addEventListener("click",()=>{
+  sfxClick(); showSection("sec-home");
 });
 
-document.getElementById("nav-kart").addEventListener("click", () => {
-  sfxClick();
-  showSection("sec-kart");
-
-  const pilotWrap = document.getElementById("pilot-select");
-  const kartGame  = document.getElementById("kart-game");
-  kartGame.hidden  = true;
-  pilotWrap.hidden = false;
-
-  renderPilotSelect("pilot-select", async () => {
-    pilotWrap.hidden = true;
-    kartGame.hidden  = false;
-    document.getElementById("kart-question-wrap").innerHTML = "";
-    document.getElementById("race-loading").classList.remove("hidden");
-    if (document.getElementById("speed-bar"))
-      document.getElementById("speed-bar").style.width = "0%";
+// Nav kart
+document.getElementById("nav-kart").addEventListener("click",()=>{
+  sfxClick(); showSection("sec-kart");
+  const pilotWrap=document.getElementById("pilot-select");
+  const kartGame=document.getElementById("kart-game");
+  kartGame.hidden=true; pilotWrap.hidden=false;
+  renderPilotSelect("pilot-select",async()=>{
+    pilotWrap.hidden=true; kartGame.hidden=false;
+    const sp=document.getElementById("speed-bar");
+    const pct=document.getElementById("race-pct");
+    const qc=document.getElementById("race-q-count");
+    if(sp) sp.style.width="0%";
+    if(pct) pct.textContent="0%";
+    if(qc)  qc.textContent=`0/${TRACK_LEN}`;
+    const tb=document.getElementById("touch-buttons");
+    if(tb) tb.innerHTML="";
     await startKartMode();
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════════
-   14. AUTH STATE OBSERVER
-════════════════════════════════════════════════════════════════════════ */
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser = user;
-    appState    = await loadProgress(user.uid);
+// Home card → kart
+document.getElementById("home-go-kart")?.addEventListener("click",()=>{
+  document.getElementById("nav-kart").click();
+});
+
+/* ════════════════════════════════════════════════
+   AUTH STATE
+════════════════════════════════════════════════ */
+onAuthStateChanged(auth,async(user)=>{
+  if(user){
+    currentUser=user;
+    appState=await loadProgress(user.uid);
     toggleViews(true);
     updateHud();
     renderMascot("mascot-app");
-    say("bubble-app", "¡Todo listo! Escoge Kart para la aventura. 🏎️");
+    say("bubble-app","¡Listo! Elige tu Kart y ¡a correr! 🏎️");
     showSection("sec-home");
-  } else {
-    currentUser = null;
-    appState    = freshState();
+  }else{
+    currentUser=null;
+    appState=freshState();
+    keyAnswerCb=null; gamepadAnswerCb=null;
     toggleViews(false);
     renderMascot("mascot-welcome");
-    say("bubble-welcome", "Hola, soy Bolu. ¿Listo para correr? 🎮");
+    say("bubble-welcome","Hola, soy Bolu. ¿Listo para correr? 🎮");
+    buildStars();
   }
 });
+
+// Inicializar estrellas al cargar (antes de login)
+buildStars();
+
 </script>
 </body>
 </html>
