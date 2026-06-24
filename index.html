@@ -1,531 +1,558 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Reino de Tier</title>
-<link rel="icon" href="data:," />
+<title>Reino de Tier — Retro Kart</title>
+
+<!-- ═══════════════════════════════════════════════════
+     FAVICON INLINE — sin dependencia externa
+════════════════════════════════════════════════════ -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b7fa6'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle'%3E🏎%3C/text%3E%3C/svg%3E" />
 
 <style>
-/* ============================================================
-   TOKENS DE DISEÑO — paleta mate/pastel de bajo estímulo
-   ============================================================ */
+/* ═══════════════════════════════════════════════════════════
+   TIPOGRAFÍA — Mario Kart F2 embebida como base64
+════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: "MarioKart";
+  src: url("data:font/truetype;base64,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AAAAAAAAADQAAAABAAAAAAABAA0AOwABAAAAAAACAAcANAABAAAAAAADABoAOwABAAAAAAAEAA0AOwABAAAAAAAFAC4AVQABAAAAAAAGAAsAgwABAAAAAAAKAD8AjgADAAEEAwACAAwC0wADAAEEBQACABAAzQADAAEEBgACAAwA3QADAAEEBwACABAA6QADAAEECAACABAA+QADAAEECQAAAGgBCQADAAEECQABABoBfwADAAEECQACAA4BcQADAAEECQADADQBfwADAAEECQAEABoBfwADAAEECQAFAFwBswADAAEECQAGABYCDwADAAEECQAKAH4CJQADAAEECgACAAwC0wADAAEECwACABACowADAAEEDAACAAwC0wADAAEEDgACAAwC8QADAAEEEAACAA4CswADAAEEEwACABICwQADAAEEFAACAAwC0wADAAEEFQACABAC0wADAAEEFgACAAwC0wADAAEEGQACAA4C4wADAAEEGwACABAC8QADAAEEHQACAAwC0wADAAEEHwACAAwC0wADAAEEJAACAA4DAQADAAEELQACAA4DDwADAAEICgACAAwC0wADAAEIFgACAAwC0wADAAEMCgACAAwC0wADAAEMDAACAAwC01R5cGVmYWNlIKkgKHlvdXIgY29tcGFueSkuIDIwMTQuIEFsbCBSaWdodHMgUmVzZXJ2ZWRSZWd1bGFyTWFyaW8gS2FydCBGMjpWZXJzaW9uIDEuMDBWZXJzaW9uIDEuMDAgTm92ZW1iZXIgMSwgMjAxNCwgaW5pdGlhbCByZWxlYXNlTWFyaW9LYXJ0RjJUaGlzIGZvbnQgd2FzIGNyZWF0ZWQgdXNpbmcgRm9udENyZWF0b3IgNi41IGZyb20gSGlnaC1Mb2dpYy5jb20AbwBiAHkBDQBlAGoAbgDpAG4AbwByAG0AYQBsAFMAdABhAG4AZABhAHIAZAOaA7EDvQO/A70DuQO6A6wAVAB5AHAAZQBmAGEAYwBlACAAqQAgACgAeQBvAHUAcgAgAGMAbwBtAHAAYQBuAHkAKQAuACAAMgAwADEANAAuACAAQQBsAGwAIABSAGkAZwBoAHQAcwAgAFIAZQBzAGUAcgB2AGUAZABSAGUAZwB1AGwAYQByAE0AYQByAGkAbwAgAEsAYQByAHQAIABGADIAOgBWAGUAcgBzAGkAbwBuACAAMQAuADAAMABWAGUAcgBzAGkAbwBuACAAMQAuADAAMAAgAE4AbwB2AGUAbQBiAGUAcgAgADEALAAgADIAMAAxADQALAAgAGkAbgBpAHQAaQBhAGwAIAByAGUAbABlAGEAcwBlAE0AYQByAGkAbwBLAGEAcgB0AEYAMgBUAGgAaQBzACAAZgBvAG4AdAAgAHcAYQBzACAAYwByAGUAYQB0AGUAZAAgAHUAcwBpAG4AZwAgAEYAbwBuAHQAQwByAGUAYQB0AG8AcgAgADYALgA1ACAAZgByAG8AbQAgAEgAaQBnAGgALQBMAG8AZwBpAGMALgBjAG8AbQBOAG8AcgBtAGEAYQBsAGkATgBvAHIAbQBhAGwAZQBTAHQAYQBuAGQAYQBhAHIAZABOAG8AcgBtAGEAbABuAHkEHgQxBEsERwQ9BEsEOQBOAG8AcgBtAOEAbABuAGUATgBhAHYAYQBkAG4AbwBBAHIAcgB1AG4AdABhAAACAAAAAAAA/ycAlgAAAAAAAAAAAAAAAAAAAAAAAAAAAOwAAAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEAQgBDAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAKMAhACFAL0AlgDoAIYAjgCLAJ0AqQCkAIoA2gCDAJMBAgEDAI0AlwCIAMMA3gEEAJ4AqgD1APQA9gCiAK0AyQDHAK4AYgBjAJAAZADLAGUAyADKAM8AzADNAM4A6QBmANMA0ADRAK8AZwDwAJEA1gDUANUAaADrAO0AiQBqAGkAawBtAGwAbgCgAG8AcQBwAHIAcwB1AHQAdgB3AOoAeAB6AHkAewB9AHwAuAChAH8AfgCAAIEA7ADuALoA1wDYAOEBBQDbANwA3QDgANkA3wCyALMAtgC3AMQAtAC1AMUAggDCAIcAqwC+AL8AvAD3AQYBBwEIAQkAjACYAKgAmgCZAO8ApQCSAJwApwCUAJUBCgELB3VuaTAwQjIHdW5pMDBCMwd1bmkwMEI5B3VuaTAyQzkEbGlyYQZwZXNldGEERXVybwlhZmlpNjEzNTIHdW5pRjAwMQd1bmlGMDAyAAAAAAAAAf//AAI=") format("truetype");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — paleta pastel/mate retro arcade
+════════════════════════════════════════════════════════════ */
 :root {
-  --color-cielo:       #5b7fa6;
-  --color-terracota:   #d98c7a;
-  --color-sauce:       #7fae8e;
-  --color-mostaza:     #e8c468;
-  --color-crema:       #faf6ef;
-  --color-crema-suave: #f1ece1;
-  --color-texto:       #3a3a3a;
-  --color-texto-suave: #6b6b6b;
-  --color-borde:       #e3dcc9;
-  --color-vidrio:      rgba(250, 246, 239, 0.72);
+  /* Paleta principal */
+  --c-sky:       #5b7fa6;
+  --c-terra:     #d98c7a;
+  --c-sage:      #7fae8e;
+  --c-mustard:   #e8c468;
+  --c-cream:     #faf6ef;
+  --c-cream-2:   #f1ece1;
+  --c-txt:       #3a3a3a;
+  --c-txt-soft:  #6b6b6b;
+  --c-border:    #e3dcc9;
+  --c-glass:     rgba(250,246,239,0.70);
+  --c-glass-dk:  rgba(20,20,36,0.82);
 
-  --fuente-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
-  --fuente-cuerpo:  "Atkinson Hyperlegible", system-ui, sans-serif;
-  --fuente-datos:   "JetBrains Mono", "Courier New", monospace;
+  /* Tipografía */
+  --f-game: "MarioKart", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: system-ui, -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", "Courier New", monospace;
 
-  --radio-xs:   10px;
-  --radio-sm:   16px;
-  --radio-md:   24px;
-  --radio-lg:   32px;
-  --radio-pill: 999px;
+  /* Radios */
+  --r-xs:   10px;
+  --r-sm:   16px;
+  --r-md:   24px;
+  --r-lg:   32px;
+  --r-pill: 999px;
 
-  --sombra-flotante: 0 8px 32px rgba(58,58,58,0.10), 0 2px 8px rgba(58,58,58,0.06);
-  --sombra-suave:    0 4px 14px rgba(58,58,58,0.08);
-  --sombra-hud:      0 4px 24px rgba(58,58,58,0.12), 0 1px 4px rgba(58,58,58,0.08);
+  /* Sombras */
+  --sh-float: 0 8px 32px rgba(58,58,58,0.12), 0 2px 8px rgba(58,58,58,0.06);
+  --sh-soft:  0 4px 14px rgba(58,58,58,0.08);
+  --sh-hud:   0 4px 28px rgba(58,58,58,0.14), 0 1px 4px rgba(58,58,58,0.08);
+  --sh-btn:   0 6px 20px rgba(91,127,166,0.25);
 
-  --dur:    320ms;
-  --ease:   cubic-bezier(0.22, 1, 0.36, 1);
+  /* Animaciones */
+  --dur:  300ms;
+  --ease: cubic-bezier(0.22,1,0.36,1);
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--color-crema);
-  color: var(--color-texto);
-  font-family: var(--fuente-cuerpo);
+  background: var(--c-cream);
+  color: var(--c-txt);
+  font-family: var(--f-body);
   line-height: 1.55;
-  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
 }
 
-button:focus-visible, a:focus-visible {
-  outline: 3px solid var(--color-cielo);
-  outline-offset: 3px;
-  border-radius: var(--radio-xs);
-}
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
+button:focus-visible, a:focus-visible {
+  outline: 3px solid var(--c-sky);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
 
-/* ============================================================
-   PANTALLA DE BIENVENIDA
-   ============================================================ */
-.pantalla-bienvenida {
-  min-height: 100vh;
+/* ═══════════════════════════════════════════════════════════
+   PANTALLA BIENVENIDA
+════════════════════════════════════════════════════════════ */
+.welcome-screen {
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 28px;
-  padding: 40px 24px;
-  background:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(91,127,166,0.13) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 80% 90%, rgba(217,140,122,0.10) 0%, transparent 60%),
-    linear-gradient(180deg, var(--color-crema) 0%, var(--color-crema-suave) 100%);
-  text-align: center;
+  padding: 32px 20px;
   position: relative;
   overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%,  rgba(91,127,166,0.18) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 35% at 85% 95%, rgba(217,140,122,0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 80%, rgba(232,196,104,0.12) 0%, transparent 55%),
+    linear-gradient(175deg, var(--c-cream) 0%, var(--c-cream-2) 100%);
 }
 
-/* Decoración ambiental */
-.pantalla-bienvenida::before,
-.pantalla-bienvenida::after {
+/* Burbujas decorativas de fondo */
+.welcome-screen::before,
+.welcome-screen::after {
   content: "";
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.22;
+  animation: drift 12s ease-in-out infinite alternate;
 }
-.pantalla-bienvenida::before {
+.welcome-screen::before {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, var(--c-mustard) 0%, transparent 70%);
+  top: -130px; right: -100px;
+  animation-delay: 0s;
+}
+.welcome-screen::after {
   width: 340px; height: 340px;
-  background: radial-gradient(circle, var(--color-mostaza) 0%, transparent 70%);
-  top: -120px; right: -100px;
-}
-.pantalla-bienvenida::after {
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, var(--color-cielo) 0%, transparent 70%);
-  bottom: -80px; left: -80px;
+  background: radial-gradient(circle, var(--c-sky) 0%, transparent 70%);
+  bottom: -80px; left: -90px;
+  animation-delay: -5s;
 }
 
-.bienvenida-card {
-  background: var(--color-vidrio);
-  border: 1.5px solid rgba(227,220,201,0.7);
-  border-radius: var(--radio-lg);
-  box-shadow: var(--sombra-flotante);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  padding: 40px 36px 36px;
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(20px, 15px) scale(1.06); }
+}
+
+.welcome-card {
+  background: var(--c-glass);
+  border: 1.5px solid rgba(227,220,201,0.75);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-float);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 44px 40px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  max-width: 380px;
+  gap: 22px;
+  max-width: 400px;
   width: 100%;
   position: relative;
   z-index: 1;
 }
 
-.pantalla-bienvenida h1 {
-  font-family: var(--fuente-display);
-  font-size: clamp(26px, 5vw, 38px);
-  font-weight: 700;
-  color: var(--color-cielo);
-  letter-spacing: -0.5px;
-  line-height: 1.15;
-}
-
-.pantalla-bienvenida h1 span {
-  color: var(--color-terracota);
-}
-
-.mascota-contenedor { width: 120px; height: 120px; flex-shrink: 0; }
-.mascota-img { width: 100%; height: 100%; object-fit: contain; }
-
-.globo-dialogo {
-  background: #fff;
-  border: 1.5px solid var(--color-borde);
-  border-radius: var(--radio-md);
-  padding: 10px 18px;
-  font-size: 15px;
-  color: var(--color-texto-suave);
-  max-width: 280px;
+.welcome-card h1 {
+  font-family: var(--f-game);
+  font-size: clamp(22px,5vw,34px);
+  color: var(--c-sky);
   text-align: center;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+.welcome-card h1 em {
+  font-style: normal;
+  color: var(--c-terra);
+}
+
+.mascot-wrap { width: 108px; height: 108px; flex-shrink: 0; }
+.mascot-img  { width: 100%; height: 100%; object-fit: contain; }
+
+.speech-bubble {
+  background: #fff;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: 9px 16px;
+  font-size: 14px;
+  color: var(--c-txt-soft);
+  text-align: center;
+  max-width: 260px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
   position: relative;
 }
-.globo-dialogo::before {
+.speech-bubble::after {
   content: "";
   position: absolute;
-  top: -7px; left: 50%;
+  top: -8px; left: 50%;
   transform: translateX(-50%);
-  border: 7px solid transparent;
-  border-top: none;
-  border-bottom-color: var(--color-borde);
-}
-.globo-dialogo::after {
-  content: "";
-  position: absolute;
-  top: -5px; left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
+  border: 8px solid transparent;
   border-top: none;
   border-bottom-color: #fff;
 }
-.globo-dialogo.visible { opacity: 1; transform: translateY(0); }
+.speech-bubble.visible { opacity: 1; transform: translateY(0); }
 
-.boton-iniciar-sesion {
+.btn-login {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   background: #fff;
-  border: 2px solid var(--color-borde);
-  border-radius: var(--radio-pill);
-  padding: 13px 26px;
+  border: 2px solid var(--c-border);
+  border-radius: var(--r-pill);
+  padding: 14px 28px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-texto);
-  box-shadow: var(--sombra-suave);
-  transition:
-    transform var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease),
-    border-color 200ms ease;
+  font-family: var(--f-body);
+  color: var(--c-txt);
+  box-shadow: var(--sh-soft);
   width: 100%;
-  justify-content: center;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color 200ms;
 }
-.boton-iniciar-sesion:hover {
+.btn-login:hover {
   transform: translateY(-3px);
-  box-shadow: var(--sombra-flotante);
-  border-color: var(--color-cielo);
+  box-shadow: var(--sh-float);
+  border-color: var(--c-sky);
 }
-.boton-iniciar-sesion:active { transform: translateY(-1px); }
-.boton-iniciar-sesion svg { width: 22px; height: 22px; flex-shrink: 0; }
+.btn-login:active  { transform: translateY(0); }
+.btn-login:disabled { opacity: 0.6; pointer-events: none; }
+.btn-login svg { width: 22px; height: 22px; flex-shrink: 0; }
 
-/* ============================================================
+/* ═══════════════════════════════════════════════════════════
    HUD — ISLA DINÁMICA FLOTANTE
-   ============================================================ */
-.hud-wrapper {
+════════════════════════════════════════════════════════════ */
+.hud-shell {
   position: sticky;
-  top: 12px;
-  z-index: 100;
-  padding: 0 16px;
+  top: 10px;
+  z-index: 200;
+  padding: 0 14px;
   pointer-events: none;
 }
-
 .hud {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px 16px;
-  background: var(--color-vidrio);
-  border: 1.5px solid rgba(227,220,201,0.75);
-  border-radius: var(--radio-pill);
-  box-shadow: var(--sombra-hud);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--c-glass);
+  border: 1.5px solid rgba(227,220,201,0.8);
+  border-radius: var(--r-pill);
+  box-shadow: var(--sh-hud);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   pointer-events: all;
-  max-width: 680px;
+  max-width: 700px;
   margin: 0 auto;
-  transition: box-shadow 300ms ease;
+  transition: box-shadow 300ms;
 }
+.hud:hover { box-shadow: 0 8px 40px rgba(58,58,58,0.17); }
 
-.hud:hover { box-shadow: 0 8px 36px rgba(58,58,58,0.15), 0 2px 8px rgba(58,58,58,0.08); }
-
-.hud-usuario { display: flex; align-items: center; gap: 10px; }
+.hud-user  { display: flex; align-items: center; gap: 9px; }
 .hud-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 2.5px solid var(--color-cielo);
-  object-fit: cover;
-  flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2.5px solid var(--c-sky); object-fit: cover; flex-shrink: 0;
 }
-.hud-saludo {
-  font-family: var(--fuente-display);
-  font-size: 15px;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 160px;
+.hud-name {
+  font-family: var(--f-game);
+  font-size: 14px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 140px;
 }
 
-.hud-stats {
-  display: flex;
-  gap: 14px;
-  font-family: var(--fuente-datos);
-  font-size: 13px;
-  font-weight: 600;
-}
-.hud-stat {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--color-crema-suave);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-pill);
+.hud-stats { display: flex; gap: 10px; }
+.hud-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--c-cream-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-pill);
   padding: 4px 10px;
+  font-family: var(--f-mono);
+  font-size: 12px; font-weight: 700;
 }
-.hud-moneda-icono {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--color-mostaza);
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.hud nav { display: flex; gap: 6px; }
-.hud nav button {
-  background: var(--color-crema-suave);
-  border: 1.5px solid var(--color-borde);
-  border-radius: var(--radio-pill);
-  padding: 6px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-texto);
-  transition:
-    background 200ms ease,
-    border-color 200ms ease,
-    transform 150ms ease;
-}
-.hud nav button:hover {
-  background: var(--color-borde);
-  transform: translateY(-1px);
-}
-.hud nav button:active { transform: translateY(0); }
-.hud nav button.nav-activo {
-  background: var(--color-cielo);
-  border-color: var(--color-cielo);
-  color: #fff;
+.coin-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--c-mustard); flex-shrink: 0;
 }
 
-/* ============================================================
-   MAIN CONTENT
-   ============================================================ */
+.hud-nav { display: flex; gap: 5px; }
+.hud-nav button {
+  background: var(--c-cream-2);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--r-pill);
+  padding: 5px 13px;
+  font-size: 12px; font-weight: 700;
+  color: var(--c-txt);
+  transition: background 200ms, border-color 200ms, transform 150ms;
+}
+.hud-nav button:hover { background: var(--c-border); transform: translateY(-1px); }
+.hud-nav button.active {
+  background: var(--c-sky); border-color: var(--c-sky); color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MAIN
+════════════════════════════════════════════════════════════ */
 main {
-  padding: 24px 16px 48px;
-  max-width: 720px;
+  padding: 20px 16px 60px;
+  max-width: 740px;
   margin: 0 auto;
 }
 
-.seccion-app {
+.section-app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  padding-top: 12px;
+  gap: 18px;
+  padding-top: 10px;
 }
 
-/* ============================================================
-   BLOQUES DE SABER — PREGUNTAS ADAPTATIVAS
-   ============================================================ */
-.pregunta-texto {
-  font-family: var(--fuente-display);
-  font-size: 22px;
-  font-weight: 700;
+.section-title {
+  font-family: var(--f-game);
+  font-size: 20px;
+  color: var(--c-sky);
   text-align: center;
-  color: var(--color-texto);
-  margin-bottom: 8px;
-  letter-spacing: -0.3px;
+  letter-spacing: 0.5px;
 }
 
-.bloques-grilla {
+/* ═══════════════════════════════════════════════════════════
+   BLOQUES ? — PREGUNTAS ADAPTATIVAS
+════════════════════════════════════════════════════════════ */
+.question-text {
+  font-family: var(--f-game);
+  font-size: 20px;
+  text-align: center;
+  color: var(--c-txt);
+  letter-spacing: 0.5px;
+}
+
+.blocks-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 14px;
-  max-width: 320px;
+  grid-template-columns: repeat(2, minmax(120px,1fr));
+  gap: 12px;
+  max-width: 300px;
   width: 100%;
 }
 
-.bloque-saber {
+.block-btn {
   position: relative;
-  background: linear-gradient(145deg, #f5d77a, var(--color-mostaza));
+  background: linear-gradient(145deg, #f5d77a, var(--c-mustard));
   border: none;
-  border-radius: var(--radio-md);
-  padding: 22px 0;
+  border-radius: var(--r-md);
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  box-shadow: 0 4px 16px rgba(232,196,104,0.30), 0 2px 4px rgba(58,58,58,0.06), inset 0 1px 0 rgba(255,255,255,0.4);
-  transition:
-    transform 220ms var(--ease),
-    box-shadow 220ms var(--ease),
-    background 220ms ease;
+  gap: 3px;
+  box-shadow:
+    0 4px 16px rgba(232,196,104,0.32),
+    0 2px 4px rgba(58,58,58,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.45);
   overflow: hidden;
-  animation: flotarBloque 2.8s ease-in-out infinite;
+  animation: blockFloat 2.6s ease-in-out infinite;
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.block-btn:nth-child(2) { animation-delay:  0.2s; }
+.block-btn:nth-child(3) { animation-delay:  0.4s; }
+.block-btn:nth-child(4) { animation-delay:  0.6s; }
+
+@keyframes blockFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
 }
 
-.bloque-saber:nth-child(2) { animation-delay: 0.2s; }
-.bloque-saber:nth-child(3) { animation-delay: 0.4s; }
-.bloque-saber:nth-child(4) { animation-delay: 0.6s; }
-
-@keyframes flotarBloque {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-4px); }
-}
-
-.bloque-saber:not(:disabled):hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 10px 28px rgba(232,196,104,0.40), 0 4px 8px rgba(58,58,58,0.08);
+.block-btn:not(:disabled):hover {
+  transform: translateY(-7px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(232,196,104,0.42), 0 4px 8px rgba(58,58,58,0.08);
   animation-play-state: paused;
 }
+.block-btn:not(:disabled):active { transform: scale(0.97); }
+.block-btn:disabled { animation-play-state: paused; }
 
-.bloque-saber:not(:disabled):active {
-  transform: translateY(-2px) scale(0.98);
+.block-sign {
+  font-family: var(--f-game);
+  font-size: 18px; font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.block-val {
+  font-family: var(--f-mono);
+  font-size: 22px; font-weight: 700;
+  color: var(--c-txt);
 }
 
-.bloque-saber:disabled { animation-play-state: paused; }
-
-.bloque-signo {
-  font-family: var(--fuente-display);
-  font-size: 20px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.9);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+.block-btn.correct {
+  background: linear-gradient(145deg, #95c8a4, var(--c-sage)) !important;
+  box-shadow: 0 4px 16px rgba(127,174,142,0.38), inset 0 1px 0 rgba(255,255,255,0.4) !important;
 }
-.bloque-valor {
-  font-family: var(--fuente-datos);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-texto);
-}
-
-.bloque-acierto {
-  background: linear-gradient(145deg, #95c8a4, var(--color-sauce)) !important;
-  box-shadow: 0 4px 16px rgba(127,174,142,0.35), 0 2px 4px rgba(58,58,58,0.06), inset 0 1px 0 rgba(255,255,255,0.4) !important;
-}
-
-.bloque-intenta-de-nuevo {
-  background: var(--color-crema-suave) !important;
+.block-btn.wrong {
+  background: var(--c-cream-2) !important;
   box-shadow: none !important;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
-.moneda-flotante {
+.coin-burst {
   position: absolute; top: 50%; left: 50%;
-  font-size: 18px; color: var(--color-mostaza);
+  font-size: 16px; color: var(--c-mustard);
   pointer-events: none;
-  animation: flotar-moneda 700ms ease-out forwards;
+  animation: coinBurst 680ms ease-out forwards;
 }
-@keyframes flotar-moneda {
-  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-  60%  { transform: translate(-50%, -160%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -210%) scale(0.8); opacity: 0; }
+@keyframes coinBurst {
+  0%   { transform: translate(-50%,-50%) scale(0.4); opacity: 1; }
+  60%  { transform: translate(-50%,-170%) scale(1.3); opacity: 1; }
+  100% { transform: translate(-50%,-220%) scale(0.8); opacity: 0; }
 }
 
-/* ============================================================
+/* ═══════════════════════════════════════════════════════════
    SELECCIÓN DE PILOTOS
-   ============================================================ */
-.pilotos-grilla {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+════════════════════════════════════════════════════════════ */
+.pilots-grid { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-.tarjeta-piloto {
+.pilot-card {
   background: #fff;
-  border: 2px solid var(--color-borde);
-  border-radius: var(--radio-md);
-  padding: 18px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: 116px;
-  box-shadow: var(--sombra-suave);
-  transition:
-    transform 220ms var(--ease),
-    border-color 220ms ease,
-    box-shadow 220ms ease;
+  border: 2px solid var(--c-border);
+  border-radius: var(--r-md);
+  padding: 18px 12px 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  width: 114px;
+  box-shadow: var(--sh-soft);
+  transition: transform 220ms var(--ease), border-color 220ms, box-shadow 220ms;
 }
-.tarjeta-piloto:hover {
-  transform: translateY(-5px);
-  border-color: var(--color-piloto, var(--color-cielo));
-  box-shadow: 0 8px 24px rgba(58,58,58,0.12);
+.pilot-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-p, var(--c-sky));
+  box-shadow: 0 10px 28px rgba(58,58,58,0.13);
 }
-.tarjeta-piloto:active { transform: translateY(-2px); }
-.tarjeta-piloto span {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-texto-suave);
-  text-align: center;
+.pilot-card:active { transform: translateY(-2px); }
+.pilot-swatch {
+  width: 62px; height: 36px; border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.13), inset 0 1px 0 rgba(255,255,255,0.3);
 }
+.pilot-name { font-size: 12px; font-weight: 700; color: var(--c-txt-soft); text-align: center; }
 
-.vehiculo-preview {
-  width: 64px; height: 38px;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.3);
-}
-
-/* ============================================================
-   CANVAS DE KART — MARCO RETRO-FUTURISTA
-   ============================================================ */
-.kart-frame {
-  background: #1a1a2e;
-  border-radius: var(--radio-md);
+/* ═══════════════════════════════════════════════════════════
+   CANVAS 3D — MARCO RETRO-FUTURISTA
+════════════════════════════════════════════════════════════ */
+.race-frame {
+  width: 100%; max-width: 660px;
+  background: #0e0e1e;
+  border-radius: var(--r-md);
   padding: 10px;
   box-shadow:
-    0 0 0 1.5px rgba(91,127,166,0.4),
-    0 0 20px rgba(91,127,166,0.15),
-    0 8px 32px rgba(0,0,0,0.18);
+    0 0 0 1.5px rgba(91,127,166,0.45),
+    0 0 28px rgba(91,127,166,0.18),
+    0 10px 36px rgba(0,0,0,0.24);
   position: relative;
-  width: 100%;
-  max-width: 640px;
 }
-
-.kart-frame::before {
-  content: "● ● ●";
+.race-frame::before {
+  content: "● ● ●  REINO DE TIER";
   display: block;
-  color: rgba(91,127,166,0.5);
+  color: rgba(91,127,166,0.55);
+  font-family: var(--f-mono);
   font-size: 10px;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   padding: 0 4px 8px;
-  font-family: var(--fuente-datos);
+}
+.race-frame::after {
+  content: "";
+  position: absolute;
+  inset: 10px 10px auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(91,127,166,0.35), transparent);
 }
 
-.kart-canvas {
+#race-canvas {
   display: block;
   width: 100%;
+  height: clamp(240px, 45vw, 380px);
   border-radius: 12px;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+  background: #111;
 }
 
-.titulo-seccion {
-  font-family: var(--fuente-display);
-  font-size: 22px;
-  font-weight: 700;
-  text-align: center;
-  color: var(--color-cielo);
-  letter-spacing: -0.3px;
-}
-
-/* ============================================================
-   CONTENEDOR PREGUNTA KART
-   ============================================================ */
-#contenedor-pregunta-kart {
-  width: 100%;
-  max-width: 640px;
+.race-loading {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  background: rgba(14,14,30,0.88);
+  border-radius: var(--r-md);
+  font-family: var(--f-game);
+  color: var(--c-sky);
+  font-size: 14px;
+  letter-spacing: 2px;
+  backdrop-filter: blur(6px);
+  transition: opacity 500ms;
+}
+.race-loading.hidden { opacity: 0; pointer-events: none; }
+
+.speed-bar-wrap {
+  margin-top: 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: var(--r-pill);
+  height: 8px;
+  overflow: hidden;
+}
+.speed-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-sky), var(--c-mustard));
+  border-radius: var(--r-pill);
+  width: 0%;
+  transition: width 420ms var(--ease);
+  box-shadow: 0 0 8px rgba(232,196,104,0.6);
 }
 
-/* ============================================================
+/* ═══════════════════════════════════════════════════════════
+   PREGUNTA EN KART
+════════════════════════════════════════════════════════════ */
+#kart-question-wrap {
+  width: 100%; max-width: 660px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NOTIFICACIÓN DE NIVEL
+════════════════════════════════════════════════════════════ */
+.level-toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--c-glass-dk);
+  border: 1.5px solid rgba(91,127,166,0.45);
+  border-radius: var(--r-pill);
+  padding: 10px 24px;
+  font-family: var(--f-game);
+  font-size: 14px;
+  color: #fff;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--sh-float);
+  transition: transform 350ms var(--ease), opacity 350ms;
+  z-index: 500;
+  pointer-events: none;
+  opacity: 0;
+}
+.level-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
    UTILS
-   ============================================================ */
+════════════════════════════════════════════════════════════ */
 [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 
-<!-- ============ PANTALLA DE BIENVENIDA / LOGIN ============ -->
-<section id="vista-bienvenida" class="pantalla-bienvenida">
-  <div class="bienvenida-card">
-    <div id="mascota-bienvenida" class="mascota-contenedor"></div>
-    <p id="globo-bienvenida" class="globo-dialogo"></p>
-    <h1>Reino de <span>Tier</span></h1>
-    <button id="btn-iniciar-sesion" class="boton-iniciar-sesion" type="button">
+<!-- ═══════════════════════════════ BIENVENIDA ═══════════════════════════════ -->
+<section id="view-welcome" class="welcome-screen">
+  <div class="welcome-card">
+    <div id="mascot-welcome" class="mascot-wrap"></div>
+    <p id="bubble-welcome" class="speech-bubble"></p>
+    <h1>Reino de <em>Tier</em></h1>
+    <button id="btn-login" class="btn-login" type="button">
       <svg viewBox="0 0 48 48" aria-hidden="true">
         <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/>
         <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 16.3 3 9.7 7.3 6.3 14.7z"/>
@@ -537,87 +564,100 @@ main {
   </div>
 </section>
 
-<!-- ============ APLICACIÓN PRINCIPAL ============ -->
-<section id="vista-app" hidden>
-  <div class="hud-wrapper">
+<!-- ═══════════════════════════════ APP ═══════════════════════════════ -->
+<section id="view-app" hidden>
+  <div class="hud-shell">
     <header class="hud">
-      <div class="hud-usuario">
+      <div class="hud-user">
         <img id="hud-avatar" class="hud-avatar" alt="" />
-        <span id="hud-saludo" class="hud-saludo"></span>
+        <span id="hud-name" class="hud-name"></span>
       </div>
       <div class="hud-stats">
-        <span class="hud-stat">
-          <span class="hud-moneda-icono"></span>
-          <span id="hud-monedas">0</span>
-        </span>
-        <span class="hud-stat">⭐ <span id="hud-estrellas">0</span></span>
+        <span class="hud-chip"><span class="coin-dot"></span><span id="hud-coins">0</span></span>
+        <span class="hud-chip">⭐ <span id="hud-stars">0</span></span>
       </div>
-      <nav>
-        <button id="nav-inicio" type="button">Inicio</button>
-        <button id="nav-aventura-kart" type="button">Kart</button>
-        <button id="btn-cerrar-sesion" type="button">Salir</button>
+      <nav class="hud-nav">
+        <button id="nav-home" type="button">Inicio</button>
+        <button id="nav-kart" type="button">Kart 🏁</button>
+        <button id="btn-logout" type="button">Salir</button>
       </nav>
     </header>
   </div>
 
   <main>
-    <section id="seccion-inicio" class="seccion-app">
-      <div id="mascota-app" class="mascota-contenedor"></div>
-      <p id="globo-app" class="globo-dialogo visible"></p>
+    <!-- Sección Inicio -->
+    <section id="sec-home" class="section-app">
+      <div id="mascot-app" class="mascot-wrap"></div>
+      <p id="bubble-app" class="speech-bubble visible"></p>
     </section>
 
-    <section id="seccion-kart" class="seccion-app" hidden>
-      <div id="seleccion-piloto"></div>
-      <div id="juego-kart" hidden>
-        <div class="kart-frame">
-          <canvas id="canvas-pista" class="kart-canvas" width="640" height="280"></canvas>
+    <!-- Sección Kart -->
+    <section id="sec-kart" class="section-app" hidden>
+      <div id="pilot-select"></div>
+
+      <div id="kart-game" hidden>
+        <!-- Marco retro-futurista con canvas 3D -->
+        <div class="race-frame">
+          <canvas id="race-canvas"></canvas>
+          <div class="race-loading" id="race-loading">CARGANDO CIRCUITO…</div>
+          <div class="speed-bar-wrap">
+            <div class="speed-bar" id="speed-bar"></div>
+          </div>
         </div>
-        <div id="contenedor-pregunta-kart"></div>
+
+        <!-- Bloques ? de preguntas -->
+        <div id="kart-question-wrap"></div>
       </div>
     </section>
   </main>
 </section>
 
-<script type="module">
-/* ============================================================
-   1. CONFIGURACIÓN CENTRALIZADA DE ASSETS (marca blanca)
-   ============================================================ */
-const BASE_ASSETS = "/assets";
+<!-- Toast de nivel adaptativo -->
+<div class="level-toast" id="level-toast"></div>
 
-const ASSETS = {
-  FAVICON:             `${BASE_ASSETS}/favicon.ico`,
-  LOGIN_BACKGROUND:    `${BASE_ASSETS}/textures/fondo-bienvenida.webp`,
-  HUD_BACKGROUND:      `${BASE_ASSETS}/textures/fondo-hud.webp`,
-  MASCOTA_SPRITE:      `${BASE_ASSETS}/textures/mascota-guia.webp`,
-  AVATAR_DEFECTO:      `${BASE_ASSETS}/textures/avatar-por-defecto.webp`,
-  PISTA_FONDO:         `${BASE_ASSETS}/textures/pista-fondo.webp`,
-  VEHICULO_JUGADOR:    `${BASE_ASSETS}/textures/vehiculo-jugador.webp`,
-  VEHICULOS_SELECCION: [
-    `${BASE_ASSETS}/textures/vehiculo-rojo.webp`,
-    `${BASE_ASSETS}/textures/vehiculo-azul.webp`,
-    `${BASE_ASSETS}/textures/vehiculo-verde.webp`,
-  ],
-  VEHICULO_MODELO_3D: `${BASE_ASSETS}/models/vehiculo.glb`,
-  FUENTE_DISPLAY:     `${BASE_ASSETS}/fonts/fuente-display.woff2`,
-  FUENTE_CUERPO:      `${BASE_ASSETS}/fonts/fuente-cuerpo.woff2`,
-  SONIDO_ACIERTO:     `${BASE_ASSETS}/audio/acierto.mp3`,
-  SONIDO_VICTORIA:    `${BASE_ASSETS}/audio/victoria.mp3`,
+<!-- ═══════════════════════════════════════════════════════════
+     THREE.JS — importmap + módulo principal
+════════════════════════════════════════════════════════════ -->
+<script type="importmap">
+{
+  "imports": {
+    "three":              "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/":      "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+/* ═══════════════════════════════════════════════════════════════════════
+   1. ASSET MANIFEST — rutas relativas al ZIP descomprimido junto al HTML
+════════════════════════════════════════════════════════════════════════ */
+const A = {
+  ICON:        "mario-assets/icon.webp",
+  FAVICON:     "mario-assets/favicon.ico",
+  GRADIENT:    "mario-assets/gradient.jpg",
+  SNES:        "mario-assets/snes.webp",
+  KART_GLB:    "mario-assets/models/kart.glb",
+  TRACK_GLB:   "mario-assets/models/mario-circuit-test-transformed.glb",
+  WHEEL_GLB:   "mario-assets/models/wheel-transformed.glb",
+  WITCH_GLB:   "mario-assets/models/witch-transformed.glb",
+  TEX_NOISE:   "mario-assets/textures/noise.png",
+  TEX_NORMAL:  "mario-assets/textures/normal.jpg",
+  TEX_LENSDIR: "mario-assets/textures/lensDirt.jpg",
+  TEX_SMOKE:   "mario-assets/textures/particles/smoke.png",
+  TEX_SPARK:   "mario-assets/textures/particles/spark.png",
+  TEX_SUN:     "mario-assets/textures/sun.png",
 };
 
-/* ============================================================
+/* ═══════════════════════════════════════════════════════════════════════
    2. FIREBASE — CDN oficial Web SDK v10.8.0
-      Importaciones desde URLs completas (compatible con módulos ES en browser)
-   ============================================================ */
+════════════════════════════════════════════════════════════════════════ */
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-
 import { getFirestore, doc, setDoc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-/* Credenciales reales del proyecto tier-e6a45 */
 const firebaseConfig = {
   apiKey:            "AIzaSyAmF7xlObPgrrJf47iBNYIjIkq5TjPkVqY",
   authDomain:        "tier-e6a45.firebaseapp.com",
@@ -628,131 +668,107 @@ const firebaseConfig = {
   measurementId:     "G-WT2YRGKEZW",
 };
 
-/* Instancias correctas del Web SDK */
-const app      = initializeApp(firebaseConfig);
-const db       = getFirestore(app);
-const auth     = getAuth(app);
+const fbApp    = initializeApp(firebaseConfig);
+const db       = getFirestore(fbApp);
+const auth     = getAuth(fbApp);
 const provider = new GoogleAuthProvider();
-
 provider.setCustomParameters({ prompt: "select_account" });
 
-/* ============================================================
-   3. ESTADO Y PERSISTENCIA EN FIRESTORE
-   ============================================================ */
-function estadoInicial() {
+/* ═══════════════════════════════════════════════════════════════════════
+   3. FIRESTORE — estado y persistencia
+════════════════════════════════════════════════════════════════════════ */
+function freshState() {
   return {
-    monedas: 0,
-    estrellas: 0,
-    nivelActual: 1,
-    nivelAdaptativo: 1,
-    nivelesCompletados: [],
-    pilotoElegido: null,
-    ajustes: { sonidoActivo: true, vozActiva: true, animacionesReducidas: false },
+    coins: 0,
+    stars: 0,
+    level: 1,
+    adaptiveLevel: 1,
+    history: [],
+    pilot: null,
+    settings: { sound: true, voice: true, reducedMotion: false },
   };
 }
 
-async function guardarProgreso(uid, estado) {
+async function saveProgress(uid, state) {
   if (!uid) return;
   try {
-    await setDoc(
-      doc(db, "usuarios", uid),
-      { ...estado, actualizadoEn: new Date().toISOString() },
-      { merge: true }
-    );
-    console.log("[Tier] Progreso sincronizado en Firestore.");
-  } catch (error) {
-    console.error("[Tier] No se pudo guardar el progreso:", error);
+    await setDoc(doc(db, "usuarios", uid), { ...state, updatedAt: new Date().toISOString() }, { merge: true });
+    console.log("[Tier] Progreso guardado.");
+  } catch (e) {
+    console.error("[Tier] Error guardando progreso:", e);
   }
 }
 
-async function cargarProgreso(uid) {
-  if (!uid) return estadoInicial();
+async function loadProgress(uid) {
+  if (!uid) return freshState();
   try {
-    const ref  = doc(db, "usuarios", uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) return { ...estadoInicial(), ...snap.data() };
-    const inicial = estadoInicial();
-    await setDoc(ref, { ...inicial, creadoEn: new Date().toISOString() });
-    return inicial;
-  } catch (error) {
-    console.error("[Tier] No se pudo cargar el progreso:", error);
-    return estadoInicial();
+    const snap = await getDoc(doc(db, "usuarios", uid));
+    if (snap.exists()) return { ...freshState(), ...snap.data() };
+    const s = freshState();
+    await setDoc(doc(db, "usuarios", uid), { ...s, createdAt: new Date().toISOString() });
+    return s;
+  } catch (e) {
+    console.error("[Tier] Error cargando progreso:", e);
+    return freshState();
   }
 }
 
-/* ============================================================
-   4. AUTH — signIn / signOut con async/await + try/catch
-   ============================================================ */
-async function iniciarSesionGoogle() {
+/* ═══════════════════════════════════════════════════════════════════════
+   4. AUTH — async/await + try/catch robusto
+════════════════════════════════════════════════════════════════════════ */
+async function loginGoogle() {
   try {
-    console.log("[Tier] Abriendo ventana de autenticación Google…");
-    const resultado = await signInWithPopup(auth, provider);
-    console.log("[Tier] Sesión iniciada:", resultado.user.displayName);
-    return resultado.user;
-  } catch (error) {
-    /* Errores comunes: auth/popup-blocked, auth/popup-closed-by-user, auth/cancelled-popup-request */
-    console.error("[Tier] Error en signInWithPopup:", error.code, error.message);
-    throw error; // propaga para que el listener del botón muestre feedback
+    console.log("[Tier] Iniciando sesión con Google…");
+    const res = await signInWithPopup(auth, provider);
+    console.log("[Tier] Sesión iniciada:", res.user.displayName);
+    return res.user;
+  } catch (err) {
+    console.error("[Tier] Error login:", err.code, err.message);
+    throw err;
   }
 }
 
-async function cerrarSesionApp() {
-  try {
-    await signOut(auth);
-    console.log("[Tier] Sesión cerrada.");
-  } catch (error) {
-    console.error("[Tier] Error al cerrar sesión:", error);
-  }
+async function logoutApp() {
+  try { await signOut(auth); console.log("[Tier] Sesión cerrada."); }
+  catch (e) { console.error("[Tier] Error logout:", e); }
 }
 
-/* ============================================================
-   5. AUDIO — síntesis 8-bit con Web Audio API
-   ============================================================ */
-let contextoAudio = null;
-let silenciado    = false;
+/* ═══════════════════════════════════════════════════════════════════════
+   5. AUDIO — síntesis 8-bit Web Audio API
+════════════════════════════════════════════════════════════════════════ */
+let audioCtx = null, muted = false;
+const getCtx = () => { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); return audioCtx; };
 
-function obtenerContextoAudio() {
-  if (!contextoAudio)
-    contextoAudio = new (window.AudioContext || window.webkitAudioContext)();
-  return contextoAudio;
+function tone(freq, dur = 0.12, vol = 0.05, delay = 0) {
+  if (muted) return;
+  const ctx = getCtx(), t = ctx.currentTime + delay;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = "square"; o.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + dur);
 }
 
-function reproducirTono(frecuencia, duracion = 0.12, volumen = 0.05, retraso = 0) {
-  if (silenciado) return;
-  const ctx   = obtenerContextoAudio();
-  const ahora = ctx.currentTime + retraso;
-  const osc   = ctx.createOscillator();
-  const gain  = ctx.createGain();
-  osc.type = "square";
-  osc.frequency.setValueAtTime(frecuencia, ahora);
-  gain.gain.setValueAtTime(volumen, ahora);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ahora + duracion);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start(ahora);
-  osc.stop(ahora + duracion);
-}
+const sfxClick   = () => tone(440, 0.05, 0.03);
+const sfxCorrect = () => { tone(987.77, 0.09, 0.05, 0); tone(1318.51, 0.12, 0.05, 0.08); };
+const sfxWrong   = () => tone(392.0, 0.15, 0.04);
+const sfxVictory = () => [523.25,659.25,783.99,1046.5].forEach((n,i) => tone(n, 0.18, 0.05, i*0.12));
+const sfxEngine  = () => tone(220, 0.08, 0.04);
 
-function sonidoClicSuave()    { reproducirTono(440, 0.05, 0.03); }
-function sonidoAcierto()      { reproducirTono(987.77, 0.09, 0.05, 0); reproducirTono(1318.51, 0.12, 0.05, 0.08); }
-function sonidoIntentaDeNuevo(){ reproducirTono(392.0, 0.15, 0.04, 0); }
-function sonidoVictoriaNivel() { [523.25, 659.25, 783.99, 1046.5].forEach((n, i) => reproducirTono(n, 0.18, 0.05, i * 0.12)); }
-function sonidoAvanceKart()    { reproducirTono(660, 0.07, 0.04); }
-
-/* ============================================================
-   6. MASCOTA GUÍA — SVG vectorial "Bolu"
-   ============================================================ */
-const SVG_BOLU = `
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bolu, tu guía">
+/* ═══════════════════════════════════════════════════════════════════════
+   6. MASCOTA — SVG vectorial "Bolu"
+════════════════════════════════════════════════════════════════════════ */
+const SVG_BOLU = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bolu">
   <ellipse cx="100" cy="170" rx="46" ry="8" fill="#000" opacity="0.06"/>
   <rect x="72" y="110" width="56" height="55" rx="22" fill="#FBF3E4"/>
   <circle cx="86" cy="138" r="4.5" fill="#E8C468" opacity="0.7"/>
   <circle cx="114" cy="148" r="4" fill="#E8C468" opacity="0.7"/>
-  <path d="M20 108 C20 58 56 28 100 28 C144 28 180 58 180 108 C180 118 172 122 162 122 L38 122 C28 122 20 118 20 108 Z" fill="#D98C7A"/>
+  <path d="M20 108C20 58 56 28 100 28 144 28 180 58 180 108 180 118 172 122 162 122L38 122C28 122 20 118 20 108Z" fill="#D98C7A"/>
   <circle cx="62" cy="72" r="13" fill="#FAF6EF"/>
   <circle cx="118" cy="60" r="10" fill="#FAF6EF"/>
-  <circle cx="142" cy="88" r="9" fill="#FAF6EF"/>
-  <circle cx="78" cy="100" r="7" fill="#FAF6EF"/>
+  <circle cx="142" cy="88" r="9"  fill="#FAF6EF"/>
+  <circle cx="78" cy="100" r="7"  fill="#FAF6EF"/>
   <circle cx="82" cy="118" r="5.5" fill="#3A3A3A"/>
   <circle cx="118" cy="118" r="5.5" fill="#3A3A3A"/>
   <path d="M86 132 Q100 142 114 132" stroke="#3A3A3A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
@@ -760,418 +776,525 @@ const SVG_BOLU = `
   <circle cx="132" cy="126" r="6" fill="#D98C7A" opacity="0.35"/>
 </svg>`;
 
-function renderizarMascota(idContenedor) {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) return;
-  if (ASSETS.MASCOTA_SPRITE) {
-    const img   = new Image();
-    img.alt      = "Bolu, tu guía";
-    img.className = "mascota-img";
-    img.onerror  = () => { contenedor.innerHTML = SVG_BOLU; };
-    img.onload   = () => { contenedor.innerHTML = ""; contenedor.appendChild(img); };
-    img.src      = ASSETS.MASCOTA_SPRITE;
-  } else {
-    contenedor.innerHTML = SVG_BOLU;
+function renderMascot(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = SVG_BOLU;
+}
+
+function say(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add("visible");
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   7. SISTEMA ADAPTATIVO DE PREGUNTAS
+════════════════════════════════════════════════════════════════════════ */
+function genQuestion(adaptLevel = 1) {
+  const range = { 1: 5, 2: 10, 3: 20 }[adaptLevel] ?? 5;
+  const a = Math.floor(Math.random() * range) + 1;
+  const b = Math.floor(Math.random() * range) + 1;
+  const correct = a + b;
+  const opts = new Set([correct]);
+  while (opts.size < 4) {
+    const d = correct + Math.floor(Math.random() * 5) - 2;
+    if (d >= 0 && d !== correct) opts.add(d);
   }
+  return { text: `¿Cuánto es ${a} + ${b}?`, options: shuffle([...opts]), correct };
 }
 
-function decirMascota(idGlobo, mensaje) {
-  const globo = document.getElementById(idGlobo);
-  if (!globo) return;
-  globo.textContent = mensaje;
-  globo.classList.add("visible");
-}
-
-/* ============================================================
-   7. PREGUNTAS ADAPTATIVAS + BLOQUES DE SABER
-   ============================================================ */
-function generarPregunta(nivelAdaptativo = 1) {
-  const rango = { 1: 5, 2: 10, 3: 20 }[nivelAdaptativo] || 5;
-  const a = Math.floor(Math.random() * rango) + 1;
-  const b = Math.floor(Math.random() * rango) + 1;
-  const respuestaCorrecta = a + b;
-
-  const opciones = new Set([respuestaCorrecta]);
-  while (opciones.size < 4) {
-    const distractor = respuestaCorrecta + (Math.floor(Math.random() * 5) - 2);
-    if (distractor >= 0 && distractor !== respuestaCorrecta) opciones.add(distractor);
-  }
-  return { texto: `¿Cuánto es ${a} + ${b}?`, opciones: barajar([...opciones]), respuestaCorrecta };
-}
-
-function barajar(arreglo) {
-  const copia = [...arreglo];
-  for (let i = copia.length - 1; i > 0; i--) {
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [copia[i], copia[j]] = [copia[j], copia[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return copia;
+  return a;
 }
 
-function ajustarNivelAdaptativo(nivelActual, historialReciente) {
-  const ultimos3 = historialReciente.slice(-3);
-  const ultimos2 = historialReciente.slice(-2);
-  if (ultimos3.length === 3 && ultimos3.every(Boolean))              return Math.min(3, nivelActual + 1);
-  if (ultimos2.length === 2 && ultimos2.every((r) => r === false))   return Math.max(1, nivelActual - 1);
-  return nivelActual;
+function adaptLevel(current, hist) {
+  const last3 = hist.slice(-3), last2 = hist.slice(-2);
+  if (last3.length === 3 && last3.every(Boolean))          return Math.min(3, current + 1);
+  if (last2.length === 2 && last2.every(v => v === false)) return Math.max(1, current - 1);
+  return current;
 }
 
-function renderizarPregunta(idContenedor, pregunta, onResultado) {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) return;
-  contenedor.innerHTML = "";
+function renderQuestion(containerId, q, onResult) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = "";
 
-  const titulo = document.createElement("p");
-  titulo.className   = "pregunta-texto";
-  titulo.textContent = pregunta.texto;
-  contenedor.appendChild(titulo);
+  const txt = document.createElement("p");
+  txt.className = "question-text";
+  txt.textContent = q.text;
+  wrap.appendChild(txt);
 
-  const grilla = document.createElement("div");
-  grilla.className = "bloques-grilla";
+  const grid = document.createElement("div");
+  grid.className = "blocks-grid";
 
-  pregunta.opciones.forEach((opcion) => {
-    const boton = document.createElement("button");
-    boton.className = "bloque-saber";
-    boton.type      = "button";
-    boton.setAttribute("aria-label", `Responder ${opcion}`);
-    boton.innerHTML = `<span class="bloque-signo">?</span><span class="bloque-valor">${opcion}</span>`;
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "block-btn";
+    btn.type = "button";
+    btn.setAttribute("aria-label", `Responder ${opt}`);
+    btn.innerHTML = `<span class="block-sign">?</span><span class="block-val">${opt}</span>`;
 
-    boton.addEventListener("click", () => {
-      grilla.querySelectorAll("button").forEach((b) => (b.disabled = true));
-      const esCorrecta = opcion === pregunta.respuestaCorrecta;
-      if (esCorrecta) {
-        boton.classList.add("bloque-acierto");
-        emitirMonedaDesdeBloque(boton);
-        sonidoAcierto();
+    btn.addEventListener("click", () => {
+      grid.querySelectorAll("button").forEach(b => b.disabled = true);
+      const ok = opt === q.correct;
+      btn.classList.add(ok ? "correct" : "wrong");
+      if (ok) {
+        const coin = document.createElement("span");
+        coin.className = "coin-burst"; coin.textContent = "●";
+        coin.setAttribute("aria-hidden","true");
+        btn.appendChild(coin);
+        coin.addEventListener("animationend", () => coin.remove());
+        sfxCorrect();
       } else {
-        boton.classList.add("bloque-intenta-de-nuevo");
-        sonidoIntentaDeNuevo();
+        sfxWrong();
       }
-      setTimeout(() => onResultado(esCorrecta), esCorrecta ? 700 : 500);
+      setTimeout(() => onResult(ok), ok ? 700 : 500);
     });
+    grid.appendChild(btn);
+  });
+  wrap.appendChild(grid);
+}
 
-    grilla.appendChild(boton);
+/* ═══════════════════════════════════════════════════════════════════════
+   8. THREE.JS — MOTOR 3D DEL KART
+      Carga: kart.glb + mario-circuit-test-transformed.glb
+════════════════════════════════════════════════════════════════════════ */
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+let threeScene = null;
+
+async function initThreeJS(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+
+  // Scene
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0e1428);
+  scene.fog = new THREE.FogExp2(0x0e1428, 0.012);
+
+  // Camera
+  const aspect = canvas.clientWidth / canvas.clientHeight;
+  const camera = new THREE.PerspectiveCamera(55, aspect, 0.1, 500);
+  camera.position.set(0, 5, 14);
+  camera.lookAt(0, 0, 0);
+
+  // Controls (limitados para que se sienta cinematico)
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.06;
+  controls.minDistance = 5;
+  controls.maxDistance = 40;
+  controls.maxPolarAngle = Math.PI / 2.1;
+  controls.enablePan = false;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.4;
+
+  // Luces
+  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambient);
+
+  const sun = new THREE.DirectionalLight(0xffecd2, 2.2);
+  sun.position.set(12, 20, 10);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.near = 0.5;
+  sun.shadow.camera.far = 100;
+  sun.shadow.camera.left = -30; sun.shadow.camera.right = 30;
+  sun.shadow.camera.top  =  30; sun.shadow.camera.bottom = -30;
+  scene.add(sun);
+
+  const fill = new THREE.DirectionalLight(0x9bbfe8, 0.8);
+  fill.position.set(-8, 8, -6);
+  scene.add(fill);
+
+  const rim = new THREE.PointLight(0xe8c468, 1.5, 40);
+  rim.position.set(0, 8, -12);
+  scene.add(rim);
+
+  // Suelo reflectante de emergencia (por si el track tarda)
+  const floorGeo  = new THREE.PlaneGeometry(120, 120);
+  const floorMat  = new THREE.MeshStandardMaterial({
+    color: 0x2a2a3a, roughness: 0.85, metalness: 0.1
+  });
+  const floor = new THREE.Mesh(floorGeo, floorMat);
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  // Partículas de ambiente (estrellas/polvo)
+  const starGeo = new THREE.BufferGeometry();
+  const starCount = 900;
+  const starPos = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 200;
+  starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+  const starMat = new THREE.PointsMaterial({ color: 0xfaf6ef, size: 0.18, sizeAttenuation: true });
+  scene.add(new THREE.Points(starGeo, starMat));
+
+  // Estado de carrera 3D
+  const raceState3D = {
+    kart: null,
+    track: null,
+    kartProgress: 0,       // 0-1
+    targetProgress: 0,
+    kartPath: [],
+    engineTime: 0,
+  };
+
+  const loader = new GLTFLoader();
+
+  // Carga del circuito
+  const trackPromise = new Promise((resolve, reject) => {
+    loader.load(
+      A.TRACK_GLB,
+      (gltf) => {
+        const track = gltf.scene;
+        track.scale.set(0.8, 0.8, 0.8);
+        track.position.set(0, 0, 0);
+        track.traverse(c => {
+          if (c.isMesh) {
+            c.receiveShadow = true;
+            c.castShadow = false;
+          }
+        });
+        scene.add(track);
+        raceState3D.track = track;
+        resolve(track);
+      },
+      undefined,
+      reject
+    );
   });
 
-  contenedor.appendChild(grilla);
+  // Carga del kart
+  const kartPromise = new Promise((resolve, reject) => {
+    loader.load(
+      A.KART_GLB,
+      (gltf) => {
+        const kart = gltf.scene;
+        kart.scale.set(0.5, 0.5, 0.5);
+        kart.position.set(0, 0.3, 0);
+        kart.traverse(c => {
+          if (c.isMesh) {
+            c.castShadow = true;
+            c.receiveShadow = true;
+          }
+        });
+        scene.add(kart);
+        raceState3D.kart = kart;
+        resolve(kart);
+      },
+      undefined,
+      reject
+    );
+  });
+
+  // Esperar ambos modelos
+  try {
+    await Promise.all([trackPromise, kartPromise]);
+    console.log("[Tier 3D] Modelos cargados correctamente.");
+  } catch (err) {
+    console.warn("[Tier 3D] Fallo cargando modelos, usando fallback Canvas 2D:", err);
+  }
+
+  // Generar un camino circular simple de la pista para animar el kart
+  const pathRadius = 8;
+  const pathPoints = 120;
+  raceState3D.kartPath = Array.from({ length: pathPoints }, (_, i) => {
+    const angle = (i / pathPoints) * Math.PI * 2;
+    return new THREE.Vector3(
+      Math.cos(angle) * pathRadius,
+      0.35,
+      Math.sin(angle) * pathRadius
+    );
+  });
+
+  // Bucle de renderizado
+  let animId = null;
+  function animate() {
+    animId = requestAnimationFrame(animate);
+    const delta = 0.016;
+
+    // Suavizar movimiento del kart
+    if (raceState3D.kart && raceState3D.kartPath.length > 0) {
+      raceState3D.kartProgress += (raceState3D.targetProgress - raceState3D.kartProgress) * 0.04;
+      const idx = Math.floor(raceState3D.kartProgress * raceState3D.kartPath.length) % raceState3D.kartPath.length;
+      const next = (idx + 1) % raceState3D.kartPath.length;
+      const pos  = raceState3D.kartPath[idx];
+      const look = raceState3D.kartPath[next];
+      raceState3D.kart.position.lerp(pos, 0.12);
+      raceState3D.kart.lookAt(look);
+      // Leve cabeceo del kart
+      raceState3D.kart.rotation.z = Math.sin(Date.now() * 0.003) * 0.04;
+    }
+
+    // Rim light pulsante
+    rim.intensity = 1.3 + Math.sin(Date.now() * 0.002) * 0.3;
+
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Responsive
+  const ro = new ResizeObserver(() => {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+  ro.observe(canvas);
+
+  return {
+    advance(progress01) {
+      raceState3D.targetProgress = progress01;
+    },
+    destroy() {
+      if (animId) cancelAnimationFrame(animId);
+      ro.disconnect();
+      renderer.dispose();
+    }
+  };
 }
 
-function emitirMonedaDesdeBloque(boton) {
-  const moneda = document.createElement("span");
-  moneda.className = "moneda-flotante";
-  moneda.textContent = "●";
-  moneda.setAttribute("aria-hidden", "true");
-  boton.appendChild(moneda);
-  moneda.addEventListener("animationend", () => moneda.remove());
-}
-
-/* ============================================================
-   8. AVENTURA KART — minijuego en Canvas 2D
-   ============================================================ */
-const PILOTOS = [
-  { id: "rojo",  nombre: "Piloto Rojo",  color: "#D98C7A", sprite: ASSETS.VEHICULOS_SELECCION?.[0] },
-  { id: "azul",  nombre: "Piloto Azul",  color: "#5B7FA6", sprite: ASSETS.VEHICULOS_SELECCION?.[1] },
-  { id: "verde", nombre: "Piloto Verde", color: "#7FAE8E", sprite: ASSETS.VEHICULOS_SELECCION?.[2] },
+/* ═══════════════════════════════════════════════════════════════════════
+   9. PILOTO — selección
+════════════════════════════════════════════════════════════════════════ */
+const PILOTS = [
+  { id: "red",   name: "Rojo",  color: "#D98C7A" },
+  { id: "blue",  name: "Azul",  color: "#5B7FA6" },
+  { id: "green", name: "Verde", color: "#7FAE8E" },
 ];
 
-const META_DISTANCIA     = 1000;
-const AVANCE_POR_ACIERTO = 110;
+let chosenPilot = PILOTS[0];
 
-let estadoCarrera = { distancia: 0, piloto: null, historial: [] };
+function renderPilotSelect(containerId, onChoose) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = `<h3 class="section-title">Elige tu vehículo</h3>`;
+  const grid = document.createElement("div");
+  grid.className = "pilots-grid";
 
-function renderizarSeleccionPiloto(idContenedor, onElegir) {
-  const contenedor = document.getElementById(idContenedor);
-  if (!contenedor) return;
-  contenedor.innerHTML = `<h3 class="titulo-seccion">Elige tu vehículo</h3>`;
-
-  const grilla = document.createElement("div");
-  grilla.className = "pilotos-grilla";
-
-  PILOTOS.forEach((piloto) => {
-    const tarjeta = document.createElement("button");
-    tarjeta.type      = "button";
-    tarjeta.className = "tarjeta-piloto";
-    tarjeta.setAttribute("aria-label", `Elegir ${piloto.nombre}`);
-    tarjeta.style.setProperty("--color-piloto", piloto.color);
-    tarjeta.innerHTML = `
-      <div class="vehiculo-preview" style="background:${piloto.color}"></div>
-      <span>${piloto.nombre}</span>
-    `;
-    tarjeta.addEventListener("click", () => {
-      estadoCarrera.piloto = piloto;
-      onElegir(piloto.id);
+  PILOTS.forEach(p => {
+    const btn = document.createElement("button");
+    btn.className = "pilot-card";
+    btn.type = "button";
+    btn.setAttribute("aria-label", `Elegir ${p.name}`);
+    btn.style.setProperty("--color-p", p.color);
+    btn.innerHTML = `
+      <div class="pilot-swatch" style="background:${p.color}"></div>
+      <span class="pilot-name">${p.name}</span>`;
+    btn.addEventListener("click", () => {
+      chosenPilot = p;
+      sfxClick();
+      onChoose(p.id);
     });
-    grilla.appendChild(tarjeta);
+    grid.appendChild(btn);
   });
-
-  contenedor.appendChild(grilla);
+  wrap.appendChild(grid);
 }
 
-function iniciarCarrera({ idCanvas, idPregunta, nivelAdaptativoInicial = 1, onCambioNivel, onMeta }) {
-  const canvas = document.getElementById(idCanvas);
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+/* ═══════════════════════════════════════════════════════════════════════
+   10. TOAST DE NIVEL
+════════════════════════════════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById("level-toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
 
-  estadoCarrera.distancia = 0;
-  estadoCarrera.historial = [];
-  let nivelAdaptativo = nivelAdaptativoInicial;
+/* ═══════════════════════════════════════════════════════════════════════
+   11. CARRERA 3D — orquestador del minijuego
+════════════════════════════════════════════════════════════════════════ */
+const TRACK_LEN  = 10;   // preguntas para completar el circuito
+let   raceEngine = null;
 
-  dibujarPista(ctx, canvas, estadoCarrera.distancia);
+async function startKartMode() {
+  const loading  = document.getElementById("race-loading");
+  const speedBar = document.getElementById("speed-bar");
 
-  function siguientePregunta() {
-    const pregunta = generarPregunta(nivelAdaptativo);
-    renderizarPregunta(idPregunta, pregunta, (correcto) => {
-      estadoCarrera.historial.push(correcto);
-      const nuevoNivel = ajustarNivelAdaptativo(nivelAdaptativo, estadoCarrera.historial);
-      if (nuevoNivel !== nivelAdaptativo) {
-        nivelAdaptativo = nuevoNivel;
-        onCambioNivel?.(nivelAdaptativo);
+  if (raceEngine) { raceEngine.destroy(); raceEngine = null; }
+  raceEngine = await initThreeJS("race-canvas");
+  if (loading) loading.classList.add("hidden");
+
+  let answered  = 0;
+  let adaptLvl  = appState.adaptiveLevel ?? 1;
+  let raceHist  = [];
+
+  function nextQuestion() {
+    const q = genQuestion(adaptLvl);
+    renderQuestion("kart-question-wrap", q, (ok) => {
+      raceHist.push(ok);
+      answered++;
+      const newLvl = adaptLevel(adaptLvl, raceHist);
+      if (newLvl !== adaptLvl) {
+        adaptLvl = newLvl;
+        appState.adaptiveLevel = adaptLvl;
+        const msg = newLvl > adaptLvl - 1
+          ? "🔥 ¡Nivel de dificultad subió!"
+          : "💡 Dificultad ajustada para ti.";
+        showToast(msg);
+        syncProgress();
       }
 
-      if (correcto) {
-        estadoCarrera.distancia = Math.min(META_DISTANCIA, estadoCarrera.distancia + AVANCE_POR_ACIERTO);
-        sonidoAvanceKart();
-        animarAvance(ctx, canvas, estadoCarrera.distancia);
+      if (ok) {
+        appState.coins += 1;
+        updateHud();
+        if (raceEngine) raceEngine.advance(answered / TRACK_LEN);
+        if (speedBar) speedBar.style.width = `${Math.min(100, (answered / TRACK_LEN) * 100)}%`;
+        sfxEngine();
       }
 
-      if (estadoCarrera.distancia >= META_DISTANCIA) {
-        sonidoVictoriaNivel();
-        document.getElementById(idPregunta).innerHTML = "";
-        onMeta?.();
+      if (answered >= TRACK_LEN) {
+        sfxVictory();
+        appState.stars += 1;
+        appState.coins += 5;
+        appState.adaptiveLevel = adaptLvl;
+        updateHud();
+        syncProgress();
+        document.getElementById("kart-question-wrap").innerHTML =
+          `<p class="question-text">🏁 ¡Meta alcanzada! +5 monedas ⭐</p>`;
+        say("bubble-app", "¡Llegaste a la meta! Lo hiciste increíble. 🎉");
         return;
       }
-      siguientePregunta();
+      nextQuestion();
     });
   }
 
-  siguientePregunta();
+  nextQuestion();
 }
 
-function animarAvance(ctx, canvas, distanciaObjetivo) {
-  const duracionMs       = 450;
-  const inicio           = performance.now();
-  const distanciaInicial = distanciaObjetivo - AVANCE_POR_ACIERTO;
+/* ═══════════════════════════════════════════════════════════════════════
+   12. APP — estado global y orquestador principal
+════════════════════════════════════════════════════════════════════════ */
+let currentUser = null;
+let appState    = freshState();
 
-  function paso(ahora) {
-    const t              = Math.min(1, (ahora - inicio) / duracionMs);
-    const distanciaActual = distanciaInicial + (distanciaObjetivo - distanciaInicial) * t;
-    dibujarPista(ctx, canvas, distanciaActual);
-    if (t < 1) requestAnimationFrame(paso);
-  }
-  requestAnimationFrame(paso);
+const viewWelcome = document.getElementById("view-welcome");
+const viewApp     = document.getElementById("view-app");
+
+function toggleViews(authed) {
+  viewWelcome.hidden = authed;
+  viewApp.hidden     = !authed;
 }
 
-function dibujarPista(ctx, canvas, distancia) {
-  const ancho   = canvas.width;
-  const alto    = canvas.height;
-  const progreso = distancia / META_DISTANCIA;
-
-  /* Cielo */
-  ctx.fillStyle = "#CFE3EC";
-  ctx.fillRect(0, 0, ancho, alto * 0.55);
-
-  /* Asfalto */
-  ctx.fillStyle = "#9C9C9C";
-  ctx.fillRect(0, alto * 0.55, ancho, alto * 0.45);
-
-  /* Línea central */
-  ctx.strokeStyle = "#FAF6EF";
-  ctx.lineWidth   = 4;
-  ctx.setLineDash([18, 18]);
-  ctx.beginPath();
-  ctx.moveTo(0, alto * 0.78);
-  ctx.lineTo(ancho, alto * 0.78);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  /* Meta */
-  const xMeta = ancho - 50;
-  ctx.fillStyle = "#3A3A3A";
-  ctx.fillRect(xMeta, alto * 0.45, 4, alto * 0.4);
-  ctx.fillStyle = "#D98C7A";
-  ctx.fillRect(xMeta + 4, alto * 0.45, 22, 16);
-
-  /* Kart */
-  const piloto = estadoCarrera.piloto || PILOTOS[0];
-  const xKart  = 40 + progreso * (xMeta - 90);
-  const yKart  = alto * 0.78;
-  dibujarKart(ctx, xKart, yKart, piloto.color);
-
-  /* Barra de progreso */
-  ctx.fillStyle = "#E8C46844";
-  ctx.fillRect(20, 14, ancho - 40, 10);
-  ctx.fillStyle = "#E8C468";
-  ctx.fillRect(20, 14, (ancho - 40) * progreso, 10);
+function updateHud() {
+  const firstName = currentUser?.displayName?.split(" ")[0] ?? "Tier";
+  document.getElementById("hud-name").textContent  = `¡Hola, ${firstName}! 👋`;
+  document.getElementById("hud-coins").textContent = appState.coins;
+  document.getElementById("hud-stars").textContent = appState.stars;
+  const av = document.getElementById("hud-avatar");
+  av.src = currentUser?.photoURL ?? A.ICON;
+  av.alt = currentUser?.displayName ?? "Avatar";
 }
 
-function dibujarKart(ctx, x, y, color) {
-  ctx.save();
-  ctx.translate(x, y);
-
-  /* Sombra */
-  ctx.fillStyle = "rgba(0,0,0,0.12)";
-  ctx.beginPath();
-  ctx.ellipse(0, 16, 26, 6, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  /* Carrocería */
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.roundRect(-24, -10, 48, 22, 8);
-  ctx.fill();
-
-  /* Cabina */
-  ctx.fillStyle = "#FAF6EF";
-  ctx.beginPath();
-  ctx.roundRect(-10, -20, 24, 14, 6);
-  ctx.fill();
-
-  /* Ruedas */
-  ctx.fillStyle = "#3A3A3A";
-  ctx.beginPath();
-  ctx.arc(-16, 14, 7, 0, Math.PI * 2);
-  ctx.arc(16, 14, 7, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.restore();
+async function syncProgress() {
+  await saveProgress(currentUser?.uid, appState);
 }
 
-/* ============================================================
-   9. APP — orquestador principal (auth, HUD, navegación)
-   ============================================================ */
-let usuarioActual = null;
-let progreso      = null;
-
-const vistaBienvenida  = document.getElementById("vista-bienvenida");
-const vistaApp         = document.getElementById("vista-app");
-const btnIniciarSesion = document.getElementById("btn-iniciar-sesion");
-const btnCerrarSesion  = document.getElementById("btn-cerrar-sesion");
-
-function alternarVistas(autenticado) {
-  vistaBienvenida.hidden = autenticado;
-  vistaApp.hidden        = !autenticado;
-}
-
-function inicializarHud() {
-  document.getElementById("hud-saludo").textContent =
-    `¡Hola, ${usuarioActual.displayName?.split(" ")[0] || "Tier"}! 👋`;
-
-  const avatar = document.getElementById("hud-avatar");
-  avatar.src   = usuarioActual.photoURL || ASSETS.AVATAR_DEFECTO;
-  avatar.alt   = usuarioActual.displayName || "Tu avatar";
-
-  document.getElementById("hud-monedas").textContent  = progreso.monedas;
-  document.getElementById("hud-estrellas").textContent = progreso.estrellas;
-}
-
-async function sincronizar() {
-  await guardarProgreso(usuarioActual.uid, progreso);
-}
-
-function iniciarModuloKart() {
-  const contenedorSeleccion = document.getElementById("seleccion-piloto");
-  const contenedorJuego     = document.getElementById("juego-kart");
-  contenedorJuego.hidden    = true;
-  contenedorSeleccion.hidden = false;
-
-  renderizarSeleccionPiloto("seleccion-piloto", () => {
-    contenedorSeleccion.hidden = true;
-    contenedorJuego.hidden     = false;
-
-    iniciarCarrera({
-      idCanvas:               "canvas-pista",
-      idPregunta:             "contenedor-pregunta-kart",
-      nivelAdaptativoInicial: progreso.nivelAdaptativo,
-      onCambioNivel: (nuevoNivel) => {
-        progreso.nivelAdaptativo = nuevoNivel;
-        sincronizar();
-      },
-      onMeta: () => {
-        progreso.estrellas += 1;
-        progreso.monedas   += 5;
-        inicializarHud();
-        sincronizar();
-        decirMascota("globo-app", "¡Llegaste a la meta! Qué bien lo hiciste. 🎉");
-      },
-    });
+function showSection(id) {
+  document.querySelectorAll(".section-app").forEach(s => { s.hidden = s.id !== id; });
+  document.querySelectorAll(".hud-nav button[id^='nav-']").forEach(b => {
+    b.classList.toggle("active", b.id === `nav-${id.replace("sec-", "")}`);
   });
 }
 
-function mostrarSeccion(idSeccion) {
-  document.querySelectorAll(".seccion-app").forEach((s) => {
-    s.hidden = s.id !== idSeccion;
-  });
-  /* Marcar botón activo en nav */
-  document.querySelectorAll(".hud nav button[id^='nav-']").forEach((b) => {
-    b.classList.toggle("nav-activo", b.id === `nav-${idSeccion.replace("seccion-", "")}`);
-  });
-}
+/* ═══════════════════════════════════════════════════════════════════════
+   13. EVENTOS DE UI
+════════════════════════════════════════════════════════════════════════ */
 
-/* ============================================================
-   10. EVENTOS
-   ============================================================ */
-
-/* LOGIN — async/await + try/catch con manejo de errores específicos */
-btnIniciarSesion.addEventListener("click", async () => {
-  sonidoClicSuave();
-  btnIniciarSesion.disabled = true;
+// LOGIN — async/await con try/catch por código de error
+document.getElementById("btn-login").addEventListener("click", async () => {
+  sfxClick();
+  const btn = document.getElementById("btn-login");
+  btn.disabled = true;
   try {
-    await iniciarSesionGoogle();
-    /* onAuthStateChanged toma el control a partir de aquí */
-  } catch (error) {
-    console.error("[Tier] Falló el inicio de sesión:", error.code, error.message);
-    switch (error.code) {
-      case "auth/popup-blocked":
-        decirMascota("globo-bienvenida", "Tu navegador bloqueó la ventana emergente. Permítela e inténtalo de nuevo.");
-        break;
-      case "auth/popup-closed-by-user":
-        decirMascota("globo-bienvenida", "Cerraste la ventana antes de completar. ¿Lo intentamos otra vez?");
-        break;
-      case "auth/cancelled-popup-request":
-        /* Silencioso: el usuario abrió otro popup antes de cerrar el anterior */
-        break;
-      default:
-        decirMascota("globo-bienvenida", "No pudimos iniciar sesión. ¿Probamos otra vez?");
-    }
+    await loginGoogle();
+    // onAuthStateChanged manejará el resto
+  } catch (err) {
+    console.error("[Tier] Login fallido:", err.code, err.message);
+    const msgs = {
+      "auth/popup-blocked":               "Tu navegador bloqueó el pop-up. Actívalo e inténtalo de nuevo.",
+      "auth/popup-closed-by-user":        "Cerraste la ventana de inicio de sesión. ¿Lo intentamos de nuevo?",
+      "auth/cancelled-popup-request":     "",  // silencioso
+      "auth/network-request-failed":      "Sin conexión. Revisa tu red y vuelve a intentarlo.",
+    };
+    const msg = msgs[err.code] ?? "No pudimos iniciar sesión. ¿Probamos otra vez?";
+    if (msg) say("bubble-welcome", msg);
   } finally {
-    btnIniciarSesion.disabled = false;
+    btn.disabled = false;
   }
 });
 
-btnCerrarSesion.addEventListener("click", async () => {
-  sonidoClicSuave();
-  await cerrarSesionApp();
+document.getElementById("btn-logout").addEventListener("click", async () => {
+  sfxClick();
+  if (raceEngine) { raceEngine.destroy(); raceEngine = null; }
+  await logoutApp();
 });
 
-document.getElementById("nav-aventura-kart").addEventListener("click", () => {
-  sonidoClicSuave();
-  mostrarSeccion("seccion-kart");
-  iniciarModuloKart();
+document.getElementById("nav-home").addEventListener("click", () => {
+  sfxClick();
+  showSection("sec-home");
 });
 
-document.getElementById("nav-inicio").addEventListener("click", () => {
-  sonidoClicSuave();
-  mostrarSeccion("seccion-inicio");
+document.getElementById("nav-kart").addEventListener("click", () => {
+  sfxClick();
+  showSection("sec-kart");
+
+  const pilotWrap = document.getElementById("pilot-select");
+  const kartGame  = document.getElementById("kart-game");
+  kartGame.hidden  = true;
+  pilotWrap.hidden = false;
+
+  renderPilotSelect("pilot-select", async () => {
+    pilotWrap.hidden = true;
+    kartGame.hidden  = false;
+    document.getElementById("kart-question-wrap").innerHTML = "";
+    document.getElementById("race-loading").classList.remove("hidden");
+    if (document.getElementById("speed-bar"))
+      document.getElementById("speed-bar").style.width = "0%";
+    await startKartMode();
+  });
 });
 
-/* ============================================================
-   11. OBSERVER DE AUTH — entrada/salida de sesión
-   ============================================================ */
+/* ═══════════════════════════════════════════════════════════════════════
+   14. AUTH STATE OBSERVER
+════════════════════════════════════════════════════════════════════════ */
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    usuarioActual = user;
-    progreso      = await cargarProgreso(user.uid);
-    alternarVistas(true);
-    inicializarHud();
-    renderizarMascota("mascota-app");
-    decirMascota("globo-app", "¡Vamos a jugar y aprender juntos!");
-    mostrarSeccion("seccion-inicio");
+    currentUser = user;
+    appState    = await loadProgress(user.uid);
+    toggleViews(true);
+    updateHud();
+    renderMascot("mascot-app");
+    say("bubble-app", "¡Todo listo! Escoge Kart para la aventura. 🏎️");
+    showSection("sec-home");
   } else {
-    usuarioActual = null;
-    progreso      = null;
-    alternarVistas(false);
-    renderizarMascota("mascota-bienvenida");
-    decirMascota("globo-bienvenida", "Hola, soy Bolu. ¿Listo para jugar?");
+    currentUser = null;
+    appState    = freshState();
+    toggleViews(false);
+    renderMascot("mascot-welcome");
+    say("bubble-welcome", "Hola, soy Bolu. ¿Listo para correr? 🎮");
   }
 });
 </script>
